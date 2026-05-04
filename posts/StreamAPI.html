@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<!-- Mirrored from chinaai.cc.cd/posts/StreamAPI.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Mar 2026 16:02:21 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="StreamAPI.html">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <meta name="theme-color" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net/" crossorigin>
+  <link rel="dns-prefetch" href="https://comment.codepzj.cn/">
+  <link rel="preconnect" href="https://comment.codepzj.cn/" crossorigin>
+  <link rel="dns-prefetch" href="https://image.codepzj.cn/">
+  <link rel="preconnect" href="https://image.codepzj.cn/" crossorigin>
+  <link rel="dns-prefetch" href="https://npm.elemecdn.com/">
+  <link rel="preconnect" href="https://npm.elemecdn.com/" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Content-Security-Policy"
+    content=" default-src 'self' https:; block-all-mixed-content; base-uri 'self' https:; form-action 'self' https:; worker-src 'self' https:; connect-src 'self' https: *; img-src 'self' data: https: *; media-src 'self' https: *; font-src 'self' data: https: *; frame-src 'self' https: *; manifest-src 'self' https: *; child-src https:; script-src 'self' https: 'unsafe-inline' *; style-src 'self' https: 'unsafe-inline' *; ">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
+  <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+  <meta content="telephone=no" name="format-detection">
+  <link rel="icon" type="image/jpeg" href="../assets/images/avatar.jpeg">
+  <link rel="shortcut icon" type="image/x-icon" href="../404.html">
+  <link rel="preload" href="../css/extra.css" as="style">
+  <link rel="alternate" href="../atom.xml" title="StreamAPI | Honcho" type="application/atom+xml">
+  <title>StreamAPI | Honcho</title>
+  <meta name="author" content="honcho">
+  <meta name="keywords"
+    content="honcho,Honcho的博客,Honcho的blog,chinaai.cc.cd,技术分享,生活思考,产品思考,设计开发,hexo,前端,web,js,html,css,vue,react,angular,node,python,java,go,rust,swift,php,mysql,mongodb,redis,linux,docker,kubernetes,git,github,markdown,seo,webpush,web-push,web-push-notification,web-push-api,web-push-protocol,web-push-service-worker,web-push-api-service-worker,web-push-api-service-worker-protocol,web-push-api-service-worker-specification,web-push-api-service-worker-specification-draft,web-push-api-service-worker-specification-draft-01,web-push-api-service-worker-specification-draft-02,web-push-api-service-worker-specification-draft-03,web-push-api-service-worker-specification-draft-04,web-push-api-service-worker-specification-draft">
+  <meta name="description" content="Java 8 Stream API一、Stream 概述Stream 是 Java 8 中处理集合的关键抽象概念，它可以对集合进行非常复杂的查找、过滤和映射数据等操作。Stream API 提供了一种高效且易于使用的处理数据的方式。
+Stream 的特点：
+不是数据结构：不存储数据，只是从数据...">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="StreamAPI | Honcho">
+  <meta property="og:image" content="../assets/images/404.html">
+  <meta property="og:site_name" content="honcho">
+  <meta property="og:url" content="StreamAPI.html">
+  <link rel="stylesheet" href="../css/main226a.css?v=1.29.1">
+  <meta name="baidu-site-verification" content="codeva-NVhlE81dTF">
+  <meta name="msvalidate.01" content="30CD55A935E75B69A1565E31EA21513B">
+  <meta name="google-site-verification" content="Qy3yx1TuuE2ugoMZxLVO06pQ0cGF_oy7Ruemxkv3Ro0">
+  <link rel="stylesheet" href="../vendor/css/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../css/extra.css">
+  <link rel="stylesheet" href="../../cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">
+  <meta name="generator" content="Hexo 7.3.0">
+</head>
+
+<body>
+  <div class="l_body s:aa content tech" id="start" layout="post">
+    <aside class="l_left">
+      <div class="leftbar-container">
+        <header class="header">
+          <div class="logo-wrap"><a class="avatar" href="../social/about/index.html">
+              <div class="bg"
+                style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp)">
+              </div><img no-lazy src="../assets/images/avatar.jpeg" alt="avatar"
+                onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';">
+            </a><a class="title" href="../index.html">
+              <div class="main" ff="title">Honcho</div>
+              <div class="sub normal cap">代码,硬件,工作</div>
+              <div class="sub hover cap" style="opacity:0">chinaai.cc.cd</div>
+            </a></div>
+        </header>
+        <div class="nav-area">
+          <div class="search-wrapper" id="search-wrapper">
+            <form class="search-form">
+              <div class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg
+                  t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560"
+                  width="200" height="200">
+                  <path
+                    d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z"
+                    p-id="1561"></path>
+                  <path
+                    d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z"
+                    p-id="1562"></path>
+                </svg></div><input type="text" class="search-input" id="search-input" placeholder="站内搜索">
+            </form>
+            <div id="search-result"></div>
+            <div class="search-no-result">没有找到内容！</div>
+          </div>
+          <nav class="menu dis-select"><a class="nav-item active" title="首页" href="../index.html"
+              style="color:#1bcdfc"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z"
+                  opacity=".5" />
+              </svg></a><a class="nav-item" title="文档" href="../wiki/index.html" style="color:#3dc550"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z" />
+                <path fill="currentColor"
+                  d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z"
+                  opacity=".5" />
+                <path fill="currentColor"
+                  d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z" />
+              </svg></a><a class="nav-item" title="探索"
+              href="../explore/sites/%e6%94%b6%e8%97%8f%e7%9a%84%e7%ab%99%e7%82%b9.html" style="color:#fa6400"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5" />
+                <path fill="currentColor"
+                  d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203" />
+              </svg></a><a class="nav-item" title="社交" href="../social/friends/index.html" style="color:#f44336"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                  d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262"
+                  opacity=".5" />
+                <path fill="currentColor"
+                  d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502" />
+              </svg></a></nav>
+        </div>
+        <div class="widgets">
+          <widget class="widget-wrapper post-list">
+            <div class="widget-header dis-select"><span class="name">最近更新</span><a class="cap-action" id="rss"
+                title="Subscribe" href="../atom.xml"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                  viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M5 21q-.825 0-1.412-.587T3 19q0-.825.588-1.412T5 17q.825 0 1.413.588T7 19q0 .825-.587 1.413T5 21m13.5 0q-.65 0-1.088-.475T16.9 19.4q-.275-2.425-1.312-4.537T12.9 11.1q-1.65-1.65-3.762-2.687T4.6 7.1q-.65-.075-1.125-.512T3 5.5q0-.65.45-1.062t1.075-.363q3.075.275 5.763 1.563t4.737 3.337q2.05 2.05 3.338 4.738t1.562 5.762q.05.625-.363 1.075T18.5 21m-6 0q-.625 0-1.075-.437T10.85 19.5q-.225-1.225-.787-2.262T8.65 15.35q-.85-.85-1.888-1.412T4.5 13.15q-.625-.125-1.062-.575T3 11.5q0-.65.45-1.075t1.075-.325q1.825.25 3.413 1.063t2.837 2.062q1.25 1.25 2.063 2.838t1.062 3.412q.1.625-.325 1.075T12.5 21" />
+                </svg></a></div>
+            <div class="widget-body fs14"><a class="item title" href="ai-entrepreneur.html"><span class="title">AI 优先创业
+                  - 普通人致富的最佳路径</span></a><a class="item title" href="aqal-thinking.html"><span class="title">万物认知地图 -
+                  天才思考的模型</span></a><a class="item title" href="deep-work-routine.html"><span class="title">深度工作 Routine
+                  - 4小时完成8小时的工作</span></a><a class="item title" href="first-day-new-life.html"><span
+                  class="title">全新生活第一天 - 深度自我反思的方法论</span></a><a class="item title" href="life-balance.html"><span
+                  class="title">人生的试错期与爆发期 - 平静与进步的平衡</span></a><a class="item title" href="mental-order.html"><span
+                  class="title">掌控注意力 - 走出焦虑与迷茫的唯一路径</span></a><a class="item title"
+                href="openclaw-deployment-guide.html"><span class="title">Windows 环境下部署 OpenClaw 完整指南</span></a><a
+                class="item title" href="reading-habit.html"><span class="title">我的阅读方法 - 每天5分钟，让阅读成为习惯</span></a></div>
+          </widget>
+        </div>
+        <footer class="footer dis-select">
+          <div class="social-wrap"><a class="social" href="https://github.com/honcholee" target="_blank"
+              rel="external nofollow noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/github.svg" alt="github"></a><a class="social" href="mailto:fignet@163.com"
+              rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="../assets/footer/envelopes-bulk.svg"></a><a class="social"
+              href="../social/about/index.html#comments" rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/comment.svg" alt="comment"></a><a class="social"
+              href="javaScript:switchTheme();" rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/moon.svg" alt="moon"></a><a class="social" href="../settings/index.html"
+              rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/settings.svg" alt="settings"></a></div>
+        </footer>
+      </div>
+    </aside>
+    <div class="l_main" id="main">
+      <div class="article banner top">
+        <div class="content">
+          <div class="top bread-nav footnote">
+            <div class="left">
+              <div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="../index.html">主页</a> <span
+                  class="sep"></span><a class="cap breadcrumb" href="../index.html">文章</a><span class="sep"></span><a
+                  class="cap breadcrumb-link" href="../categories/JAVA/index.html">JAVA</a></div>
+              <div class="flex-row" id="post-meta"><span class="text created">发布于：<time
+                    datetime="2025-05-05T04:09:29.000Z">2025-05-05</time></span><span class="sep updated"></span><span
+                  class="text updated">更新于：<time datetime="2025-05-05T04:09:29.000Z">2025-05-05</time></span></div>
+            </div>
+          </div>
+          <div class="bottom only-title">
+            <div class="text-area">
+              <h1 class="text title"><span>StreamAPI</span></h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <article class="md-text content">
+        <h1 id="Java-8-Stream-API"><a href="#Java-8-Stream-API" class="headerlink" title="Java 8 Stream API"></a>Java 8
+          Stream API</h1>
+        <h2 id="一、Stream-概述"><a href="#一、Stream-概述" class="headerlink" title="一、Stream 概述"></a>一、Stream 概述</h2>
+        <p>Stream 是 Java 8 中处理集合的关键抽象概念，它可以对集合进行非常复杂的查找、过滤和映射数据等操作。Stream API 提供了一种高效且易于使用的处理数据的方式。</p>
+        <h3 id="Stream-的特点："><a href="#Stream-的特点：" class="headerlink" title="Stream 的特点："></a>Stream 的特点：</h3>
+        <ol>
+          <li><strong>不是数据结构</strong>：不存储数据，只是从数据源（集合、数组等）获取数据</li>
+          <li><strong>不修改源数据</strong>：对Stream的操作会产生新Stream，不会修改原始数据源</li>
+          <li><strong>惰性执行</strong>：中间操作是惰性的，只有终端操作才会触发实际计算</li>
+          <li><strong>可消费性</strong>：Stream只能被消费一次，终端操作后就不能再次使用</li>
+        </ol>
+        <h2 id="二、Stream-操作分类"><a href="#二、Stream-操作分类" class="headerlink" title="二、Stream 操作分类"></a>二、Stream 操作分类</h2>
+        <p>Stream 操作分为两类：</p>
+        <ol>
+          <li>**中间操作(Intermediate Operations)**：返回一个新的Stream，可以链式调用</li>
+          <li>**终端操作(Terminal Operations)**：返回具体结果或产生副作用，执行后Stream就不能再使用</li>
+        </ol>
+        <h2 id="三、创建-Stream"><a href="#三、创建-Stream" class="headerlink" title="三、创建 Stream"></a>三、创建 Stream</h2>
+        <h3 id="1-从集合创建"><a href="#1-从集合创建" class="headerlink" title="1. 从集合创建"></a>1. 从集合创建</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>);<br>Stream&lt;String&gt; stream = list.stream();          <span class="hljs-comment">// 创建顺序流</span><br>Stream&lt;String&gt; parallelStream = list.parallelStream(); <span class="hljs-comment">// 创建并行流</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-从数组创建"><a href="#2-从数组创建" class="headerlink" title="2. 从数组创建"></a>2. 从数组创建</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">String[] array = &#123;<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>&#125;;<br>Stream&lt;String&gt; stream = Arrays.stream(array);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="3-使用Stream-of-静态方法"><a href="#3-使用Stream-of-静态方法" class="headerlink" title="3. 使用Stream.of()静态方法"></a>3.
+          使用Stream.of()静态方法</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Stream&lt;String&gt; stream = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-使用Stream-generate-创建无限流"><a href="#4-使用Stream-generate-创建无限流" class="headerlink"
+            title="4. 使用Stream.generate()创建无限流"></a>4. 使用Stream.generate()创建无限流</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Stream&lt;Double&gt; randomStream = Stream.generate(Math::random).limit(<span class="hljs-number">5</span>);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="5-使用Stream-iterate-创建无限流"><a href="#5-使用Stream-iterate-创建无限流" class="headerlink"
+            title="5. 使用Stream.iterate()创建无限流"></a>5. 使用Stream.iterate()创建无限流</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Stream&lt;Integer&gt; iterateStream = Stream.iterate(<span class="hljs-number">0</span>, n -&gt; n + <span class="hljs-number">2</span>).limit(<span class="hljs-number">5</span>);<br><span class="hljs-comment">// 0, 2, 4, 6, 8</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="6-其他创建方式"><a href="#6-其他创建方式" class="headerlink" title="6. 其他创建方式"></a>6. 其他创建方式</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 从文件创建</span><br>Stream&lt;String&gt; lines = Files.lines(Paths.get(<span class="hljs-string">&quot;data.txt&quot;</span>));<br><br><span class="hljs-comment">// 从字符串创建</span><br><span class="hljs-type">IntStream</span> <span class="hljs-variable">charsStream</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcde&quot;</span>.chars();<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="四、中间操作详解"><a href="#四、中间操作详解" class="headerlink" title="四、中间操作详解"></a>四、中间操作详解</h2>
+        <p>中间操作会返回一个新的Stream，可以链式调用多个中间操作。</p>
+        <h3 id="1-filter-Predicate-过滤"><a href="#1-filter-Predicate-过滤" class="headerlink"
+            title="1. filter(Predicate) - 过滤"></a>1. filter(Predicate<t>) - 过滤</t>
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>, <span class="hljs-string">&quot;grape&quot;</span>);<br>list.stream()<br>    .filter(s -&gt; s.length() &gt; <span class="hljs-number">5</span>)  <span class="hljs-comment">// 过滤长度大于5的字符串</span><br>    .forEach(System.out::println); <span class="hljs-comment">// banana, orange</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-map-Function-映射"><a href="#2-map-Function-映射" class="headerlink"
+            title="2. map(Function&lt;T,R&gt;) - 映射"></a>2. map(Function&lt;T,R&gt;) - 映射</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>);<br>list.stream()<br>    .map(String::toUpperCase)  <span class="hljs-comment">// 转换为大写</span><br>    .forEach(System.out::println); <span class="hljs-comment">// A, B, C</span><br><br><span class="hljs-comment">// 提取对象属性</span><br>List&lt;Person&gt; persons = ...;<br>persons.stream()<br>       .map(Person::getName)  <span class="hljs-comment">// 提取name属性</span><br>       .forEach(System.out::println);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="3-flatMap-Function-扁平化映射"><a href="#3-flatMap-Function-扁平化映射" class="headerlink"
+            title="3. flatMap(Function&lt;T,Stream&gt;) - 扁平化映射"></a>3. flatMap(Function&lt;T,Stream<r>&gt;) - 扁平化映射</r>
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;List&lt;String&gt;&gt; listOfLists = Arrays.asList(<br>    Arrays.asList(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>),<br>    Arrays.asList(<span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>)<br>);<br><br>List&lt;String&gt; flatList = listOfLists.stream()<br>    .flatMap(List::stream)  <span class="hljs-comment">// 将多个流合并为一个流</span><br>    .collect(Collectors.toList()); <span class="hljs-comment">// [a, b, c, d]</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-distinct-去重"><a href="#4-distinct-去重" class="headerlink" title="4. distinct() - 去重"></a>4. distinct()
+          - 去重</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>);<br>numbers.stream()<br>       .distinct()  <span class="hljs-comment">// 去重</span><br>       .forEach(System.out::println); <span class="hljs-comment">// 1, 2, 3, 4</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="5-sorted-sorted-Comparator-排序"><a href="#5-sorted-sorted-Comparator-排序" class="headerlink"
+            title="5. sorted() &#x2F; sorted(Comparator) - 排序"></a>5. sorted() &#x2F; sorted(Comparator<t>) - 排序</t>
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;String&gt; words = Arrays.asList(<span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;pear&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>);<br><br><span class="hljs-comment">// 自然排序</span><br>words.stream()<br>     .sorted()<br>     .forEach(System.out::println); <span class="hljs-comment">// apple, banana, orange, pear</span><br><br><span class="hljs-comment">// 自定义排序</span><br>words.stream()<br>     .sorted((s1, s2) -&gt; s1.length() - s2.length())<br>     .forEach(System.out::println); <span class="hljs-comment">// pear, apple, banana, orange</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="6-peek-Consumer-查看元素"><a href="#6-peek-Consumer-查看元素" class="headerlink"
+            title="6. peek(Consumer) - 查看元素"></a>6. peek(Consumer<t>) - 查看元素</t>
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Stream.of(<span class="hljs-string">&quot;one&quot;</span>, <span class="hljs-string">&quot;two&quot;</span>, <span class="hljs-string">&quot;three&quot;</span>)<br>    .filter(e -&gt; e.length() &gt; <span class="hljs-number">3</span>)<br>    .peek(e -&gt; System.out.println(<span class="hljs-string">&quot;Filtered value: &quot;</span> + e))<br>    .map(String::toUpperCase)<br>    .peek(e -&gt; System.out.println(<span class="hljs-string">&quot;Mapped value: &quot;</span> + e))<br>    .collect(Collectors.toList());<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="7-limit-long-限制数量"><a href="#7-limit-long-限制数量" class="headerlink" title="7. limit(long) - 限制数量"></a>7.
+          limit(long) - 限制数量</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Stream.iterate(<span class="hljs-number">1</span>, n -&gt; n + <span class="hljs-number">1</span>)<br>      .limit(<span class="hljs-number">5</span>)<br>      .forEach(System.out::println); <span class="hljs-comment">// 1, 2, 3, 4, 5</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="8-skip-long-跳过元素"><a href="#8-skip-long-跳过元素" class="headerlink" title="8. skip(long) - 跳过元素"></a>8.
+          skip(long) - 跳过元素</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Stream.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)<br>      .skip(<span class="hljs-number">2</span>)<br>      .forEach(System.out::println); <span class="hljs-comment">// 3, 4, 5</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="五、终端操作详解"><a href="#五、终端操作详解" class="headerlink" title="五、终端操作详解"></a>五、终端操作详解</h2>
+        <p>终端操作会触发实际计算，执行后Stream就不能再使用。</p>
+        <h3 id="1-forEach-Consumer-遍历"><a href="#1-forEach-Consumer-遍历" class="headerlink"
+            title="1. forEach(Consumer) - 遍历"></a>1. forEach(Consumer<t>) - 遍历</t>
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>);<br>list.stream().forEach(System.out::println); <span class="hljs-comment">// a, b, c</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-toArray-转换为数组"><a href="#2-toArray-转换为数组" class="headerlink" title="2. toArray() - 转换为数组"></a>2.
+          toArray() - 转换为数组</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">String[] array = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).toArray(String[]::<span class="hljs-keyword">new</span>);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="3-collect-Collector-收集为集合"><a href="#3-collect-Collector-收集为集合" class="headerlink"
+            title="3. collect(Collector&lt;T,A,R&gt;) - 收集为集合"></a>3. collect(Collector&lt;T,A,R&gt;) - 收集为集合</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 收集为List</span><br>List&lt;String&gt; list = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).collect(Collectors.toList());<br><br><span class="hljs-comment">// 收集为Set</span><br>Set&lt;String&gt; set = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>).collect(Collectors.toSet());<br><br><span class="hljs-comment">// 收集为Map</span><br>Map&lt;String, Integer&gt; map = Stream.of(<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>)<br>    .collect(Collectors.toMap(Function.identity(), String::length));<br><br><span class="hljs-comment">// 连接字符串</span><br><span class="hljs-type">String</span> <span class="hljs-variable">joined</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).collect(Collectors.joining(<span class="hljs-string">&quot;, &quot;</span>));<br><span class="hljs-comment">// &quot;a, b, c&quot;</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-reduce-BinaryOperator-归约"><a href="#4-reduce-BinaryOperator-归约" class="headerlink"
+            title="4. reduce(BinaryOperator) - 归约"></a>4. reduce(BinaryOperator<t>) - 归约</t>
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 求和</span><br>Optional&lt;Integer&gt; sum = Stream.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>).reduce(Integer::sum);<br>System.out.println(sum.get()); <span class="hljs-comment">// 10</span><br><br><span class="hljs-comment">// 求最大值</span><br>Optional&lt;Integer&gt; max = Stream.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>).reduce(Integer::max);<br>System.out.println(max.get()); <span class="hljs-comment">// 4</span><br><br><span class="hljs-comment">// 带初始值的reduce</span><br><span class="hljs-type">Integer</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>).reduce(<span class="hljs-number">10</span>, Integer::sum);<br>System.out.println(total); <span class="hljs-comment">// 20 (10+1+2+3+4)</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="5-min-max-最小-最大值"><a href="#5-min-max-最小-最大值" class="headerlink"
+            title="5. min()&#x2F;max() - 最小&#x2F;最大值"></a>5. min()&#x2F;max() - 最小&#x2F;最大值</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Optional&lt;String&gt; min = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;ccc&quot;</span>).min(Comparator.comparing(String::length));<br>System.out.println(min.get()); <span class="hljs-comment">// &quot;a&quot;</span><br><br>Optional&lt;String&gt; max = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;ccc&quot;</span>).max(Comparator.comparing(String::length));<br>System.out.println(max.get()); <span class="hljs-comment">// &quot;ccc&quot;</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="6-count-计数"><a href="#6-count-计数" class="headerlink" title="6. count() - 计数"></a>6. count() - 计数</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).count();<br>System.out.println(count); <span class="hljs-comment">// 3</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="7-anyMatch-allMatch-noneMatch-匹配"><a href="#7-anyMatch-allMatch-noneMatch-匹配" class="headerlink"
+            title="7. anyMatch()&#x2F;allMatch()&#x2F;noneMatch() - 匹配"></a>7.
+          anyMatch()&#x2F;allMatch()&#x2F;noneMatch() - 匹配</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-type">boolean</span> <span class="hljs-variable">anyStartsWithA</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>)<br>    .anyMatch(s -&gt; s.startsWith(<span class="hljs-string">&quot;a&quot;</span>)); <span class="hljs-comment">// true</span><br><br><span class="hljs-type">boolean</span> <span class="hljs-variable">allLongerThan3</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>)<br>    .allMatch(s -&gt; s.length() &gt; <span class="hljs-number">3</span>); <span class="hljs-comment">// true</span><br><br><span class="hljs-type">boolean</span> <span class="hljs-variable">noneStartsWithZ</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>)<br>    .noneMatch(s -&gt; s.startsWith(<span class="hljs-string">&quot;z&quot;</span>)); <span class="hljs-comment">// true</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="8-findFirst-findAny-查找元素"><a href="#8-findFirst-findAny-查找元素" class="headerlink"
+            title="8. findFirst()&#x2F;findAny() - 查找元素"></a>8. findFirst()&#x2F;findAny() - 查找元素</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Optional&lt;String&gt; first = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).findFirst();<br>System.out.println(first.get()); <span class="hljs-comment">// &quot;a&quot;</span><br><br>Optional&lt;String&gt; any = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).findAny();<br>System.out.println(any.get()); <span class="hljs-comment">// 可能是&quot;a&quot;, &quot;b&quot;或&quot;c&quot;（并行流中不确定）</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="六、数值流"><a href="#六、数值流" class="headerlink" title="六、数值流"></a>六、数值流</h2>
+        <p>Stream API 提供了专门的数值流来处理原始类型，避免装箱拆箱开销。</p>
+        <h3 id="1-IntStream"><a href="#1-IntStream" class="headerlink" title="1. IntStream"></a>1. IntStream</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">IntStream.range(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>).forEach(System.out::println); <span class="hljs-comment">// 1, 2, 3, 4</span><br>IntStream.rangeClosed(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>).forEach(System.out::println); <span class="hljs-comment">// 1, 2, 3, 4, 5</span><br><br><span class="hljs-comment">// 统计信息</span><br><span class="hljs-type">IntSummaryStatistics</span> <span class="hljs-variable">stats</span> <span class="hljs-operator">=</span> IntStream.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>).summaryStatistics();<br>System.out.println(stats.getMax());     <span class="hljs-comment">// 3</span><br>System.out.println(stats.getMin());     <span class="hljs-comment">// 1</span><br>System.out.println(stats.getAverage()); <span class="hljs-comment">// 2.0</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-LongStream"><a href="#2-LongStream" class="headerlink" title="2. LongStream"></a>2. LongStream</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">LongStream.range(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>).forEach(System.out::println);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="3-DoubleStream"><a href="#3-DoubleStream" class="headerlink" title="3. DoubleStream"></a>3. DoubleStream
+        </h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">DoubleStream.of(<span class="hljs-number">1.1</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">3.3</span>).forEach(System.out::println);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-对象流与数值流转换"><a href="#4-对象流与数值流转换" class="headerlink" title="4. 对象流与数值流转换"></a>4. 对象流与数值流转换</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 对象流转数值流</span><br>List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);<br><span class="hljs-type">IntStream</span> <span class="hljs-variable">intStream</span> <span class="hljs-operator">=</span> numbers.stream().mapToInt(Integer::intValue);<br><br><span class="hljs-comment">// 数值流转对象流</span><br>Stream&lt;Integer&gt; boxedStream = intStream.boxed();<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="七、并行流"><a href="#七、并行流" class="headerlink" title="七、并行流"></a>七、并行流</h2>
+        <p>Stream API 可以很容易地实现并行操作。</p>
+        <h3 id="1-创建并行流"><a href="#1-创建并行流" class="headerlink" title="1. 创建并行流"></a>1. 创建并行流</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 从集合创建并行流</span><br>List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>);<br>Stream&lt;String&gt; parallelStream = list.parallelStream();<br><br><span class="hljs-comment">// 将顺序流转为并行流</span><br>Stream&lt;String&gt; parallelStream2 = Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).parallel();<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-并行流注意事项"><a href="#2-并行流注意事项" class="headerlink" title="2. 并行流注意事项"></a>2. 并行流注意事项</h3>
+        <ul>
+          <li>确保操作是无状态的</li>
+          <li>确保操作不会对共享变量进行修改</li>
+          <li>确保操作是关联的（不影响结果顺序）</li>
+          <li>数据量较大时使用并行流才有优势</li>
+          <li>某些操作（如limit、findFirst）在并行流中性能可能更差</li>
+        </ul>
+        <h3 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> IntStream.range(<span class="hljs-number">1</span>, <span class="hljs-number">1_000_000</span>)<br>                     .parallel()  <span class="hljs-comment">// 转为并行流</span><br>                     .filter(n -&gt; n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>)<br>                     .count();<br>System.out.println(count);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="八、收集器-Collectors-详解"><a href="#八、收集器-Collectors-详解" class="headerlink"
+            title="八、收集器(Collectors)详解"></a>八、收集器(Collectors)详解</h2>
+        <p>Collectors 类提供了许多静态工厂方法，用于创建常见的收集器。</p>
+        <h3 id="1-转换为集合"><a href="#1-转换为集合" class="headerlink" title="1. 转换为集合"></a>1. 转换为集合</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">List&lt;String&gt; list = stream.collect(Collectors.toList());<br>Set&lt;String&gt; set = stream.collect(Collectors.toSet());<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-转换为特定集合"><a href="#2-转换为特定集合" class="headerlink" title="2. 转换为特定集合"></a>2. 转换为特定集合</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Collection&lt;String&gt; treeSet = stream.collect(Collectors.toCollection(TreeSet::<span class="hljs-keyword">new</span>));<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="3-连接字符串"><a href="#3-连接字符串" class="headerlink" title="3. 连接字符串"></a>3. 连接字符串</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">joined</span> <span class="hljs-operator">=</span> stream.collect(Collectors.joining()); <span class="hljs-comment">// 直接连接</span><br><span class="hljs-type">String</span> <span class="hljs-variable">joinedWithDelimiter</span> <span class="hljs-operator">=</span> stream.collect(Collectors.joining(<span class="hljs-string">&quot;, &quot;</span>)); <span class="hljs-comment">// 带分隔符</span><br><span class="hljs-type">String</span> <span class="hljs-variable">joinedWithPrefixSuffix</span> <span class="hljs-operator">=</span> stream.collect(Collectors.joining(<span class="hljs-string">&quot;, &quot;</span>, <span class="hljs-string">&quot;[&quot;</span>, <span class="hljs-string">&quot;]&quot;</span>)); <span class="hljs-comment">// 带前后缀</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-分组"><a href="#4-分组" class="headerlink" title="4. 分组"></a>4. 分组</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 简单分组</span><br>Map&lt;Integer, List&lt;String&gt;&gt; groupByLength = <br>    Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;cc&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>)<br>          .collect(Collectors.groupingBy(String::length));<br><span class="hljs-comment">// &#123;1=[&quot;a&quot;, &quot;d&quot;], 2=[&quot;bb&quot;, &quot;cc&quot;]&#125;</span><br><br><span class="hljs-comment">// 多级分组</span><br>Map&lt;Integer, Map&lt;String, List&lt;String&gt;&gt;&gt; multiGroup = <br>    Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;cc&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>)<br>          .collect(Collectors.groupingBy(String::length, <br>                   Collectors.groupingBy(s -&gt; s.startsWith(<span class="hljs-string">&quot;c&quot;</span>) ? <span class="hljs-string">&quot;starts with c&quot;</span> : <span class="hljs-string">&quot;others&quot;</span>)));<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="5-分区"><a href="#5-分区" class="headerlink" title="5. 分区"></a>5. 分区</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Map&lt;Boolean, List&lt;String&gt;&gt; partition = <br>    Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;cc&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>)<br>          .collect(Collectors.partitioningBy(s -&gt; s.length() &gt; <span class="hljs-number">1</span>));<br><span class="hljs-comment">// &#123;false=[&quot;a&quot;, &quot;d&quot;], true=[&quot;bb&quot;, &quot;cc&quot;]&#125;</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="6-统计"><a href="#6-统计" class="headerlink" title="6. 统计"></a>6. 统计</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 求和</span><br><span class="hljs-type">int</span> <span class="hljs-variable">totalLength</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;ccc&quot;</span>)<br>    .collect(Collectors.summingInt(String::length)); <span class="hljs-comment">// 6</span><br><br><span class="hljs-comment">// 平均值</span><br><span class="hljs-type">Double</span> <span class="hljs-variable">averageLength</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;ccc&quot;</span>)<br>    .collect(Collectors.averagingInt(String::length)); <span class="hljs-comment">// 2.0</span><br><br><span class="hljs-comment">// 统计汇总</span><br><span class="hljs-type">IntSummaryStatistics</span> <span class="hljs-variable">stats</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;bb&quot;</span>, <span class="hljs-string">&quot;ccc&quot;</span>)<br>    .collect(Collectors.summarizingInt(String::length));<br><span class="hljs-comment">// IntSummaryStatistics&#123;count=3, sum=6, min=1, average=2.000000, max=3&#125;</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="7-自定义收集器"><a href="#7-自定义收集器" class="headerlink" title="7. 自定义收集器"></a>7. 自定义收集器</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java">Collector&lt;String, StringBuilder, String&gt; customCollector = <br>    Collector.of(<br>        StringBuilder::<span class="hljs-keyword">new</span>,           <span class="hljs-comment">// supplier</span><br>        StringBuilder::append,        <span class="hljs-comment">// accumulator</span><br>        (sb1, sb2) -&gt; sb1.append(sb2), <span class="hljs-comment">// combiner</span><br>        StringBuilder::toString       <span class="hljs-comment">// finisher</span><br>    );<br><br><span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> Stream.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>).collect(customCollector);<br>System.out.println(result); <span class="hljs-comment">// &quot;abc&quot;</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="九、实战示例"><a href="#九、实战示例" class="headerlink" title="九、实战示例"></a>九、实战示例</h2>
+        <h3 id="示例1：处理对象集合"><a href="#示例1：处理对象集合" class="headerlink" title="示例1：处理对象集合"></a>示例1：处理对象集合</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br>    <span class="hljs-keyword">private</span> String city;<br>    <span class="hljs-comment">// 构造方法、getter/setter省略</span><br>&#125;<br><br>List&lt;Person&gt; people = Arrays.asList(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;New York&quot;</span>),<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&quot;London&quot;</span>),<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Charlie&quot;</span>, <span class="hljs-number">20</span>, <span class="hljs-string">&quot;New York&quot;</span>),<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;David&quot;</span>, <span class="hljs-number">35</span>, <span class="hljs-string">&quot;London&quot;</span>)<br>);<br><br><span class="hljs-comment">// 1. 筛选年龄大于25的人</span><br>List&lt;Person&gt; olderThan25 = people.stream()<br>    .filter(p -&gt; p.getAge() &gt; <span class="hljs-number">25</span>)<br>    .collect(Collectors.toList());<br><br><span class="hljs-comment">// 2. 按城市分组</span><br>Map&lt;String, List&lt;Person&gt;&gt; peopleByCity = people.stream()<br>    .collect(Collectors.groupingBy(Person::getCity));<br><br><span class="hljs-comment">// 3. 计算每个城市的平均年龄</span><br>Map&lt;String, Double&gt; avgAgeByCity = people.stream()<br>    .collect(Collectors.groupingBy(Person::getCity, <br>             Collectors.averagingInt(Person::getAge)));<br><br><span class="hljs-comment">// 4. 获取所有城市的名称（去重）</span><br>Set&lt;String&gt; cities = people.stream()<br>    .map(Person::getCity)<br>    .collect(Collectors.toSet());<br><br><span class="hljs-comment">// 5. 获取年龄最大的人</span><br>Optional&lt;Person&gt; oldest = people.stream()<br>    .max(Comparator.comparingInt(Person::getAge));<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="示例2：文件处理"><a href="#示例2：文件处理" class="headerlink" title="示例2：文件处理"></a>示例2：文件处理</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// 读取文件并统计单词出现次数</span><br><span class="hljs-keyword">try</span> (Stream&lt;String&gt; lines = Files.lines(Paths.get(<span class="hljs-string">&quot;data.txt&quot;</span>))) &#123;<br>    Map&lt;String, Long&gt; wordCount = lines<br>        .flatMap(line -&gt; Arrays.stream(line.split(<span class="hljs-string">&quot;\\s+&quot;</span>)))<br>        .collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));<br>    <br>    wordCount.forEach((word, count) -&gt; System.out.println(word + <span class="hljs-string">&quot;: &quot;</span> + count));<br>&#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>    e.printStackTrace();<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="十、性能考虑与最佳实践"><a href="#十、性能考虑与最佳实践" class="headerlink" title="十、性能考虑与最佳实践"></a>十、性能考虑与最佳实践</h2>
+        <ol>
+          <li><strong>避免在流中修改外部状态</strong>：保持操作无状态</li>
+          <li><strong>优先使用方法引用</strong>：使代码更简洁</li>
+          <li><strong>避免嵌套流</strong>：考虑使用flatMap替代</li>
+          <li><strong>注意自动装箱</strong>：对原始类型使用专门的流(IntStream等)</li>
+          <li><strong>谨慎使用并行流</strong>：<ul>
+              <li>数据量大时考虑使用</li>
+              <li>确保操作可以并行化</li>
+              <li>避免共享可变状态</li>
+            </ul>
+          </li>
+          <li><strong>重用流</strong>：流一旦被消费就不能再次使用</li>
+          <li><strong>考虑短路操作</strong>：findFirst、limit等可以提前终止流处理</li>
+        </ol>
+        <p>Stream API 提供了一种声明式处理数据的方式，使代码更简洁、更易读，同时能够充分利用多核处理器的优势。掌握Stream API可以显著提高Java编程效率和代码质量。</p>
+        <div class="article-footer fs14">
+          <section id="share">
+            <div class="header"><span>分享文章</span></div>
+            <div class="body">
+              <div class="link"><input class="copy-area" readonly id="copy-link" value="StreamAPI.html"></div>
+              <div class="social-wrap dis-select"><a class="social share-item wechat"
+                  onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a
+                  class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer"
+                  href="https://service.weibo.com/share/share.php?url=https://chinaai.cc.cd/posts/StreamAPI.html&amp;title=StreamAPI%20-%20Alan&amp;summary=Java%208%20Stream%20API%e4%b8%80%e3%80%81Stream%20%e6%a6%82%e8%bf%b0Stream%20%e6%98%af%20Java%208%20%e4%b8%ad%e5%a4%84%e7%90%86%e9%9b%86%e5%90%88%e7%9a%84%e5%85%b3%e9%94%ae%e6%8a%bd%e8%b1%a1%e6%a6%82%e5%bf%b5%ef%bc%8c%e5%ae%83%e5%8f%af%e4%bb%a5%e5%af%b9%e9%9b%86%e5%90%88%e8%bf%9b%e8%a1%8c%e9%9d%9e%e5%b8%b8%e5%a4%8d%e6%9d%82%e7%9a%84%e6%9f%a5%e6%89%be%e3%80%81%e8%bf%87%e6%bb%a4%e5%92%8c%e6%98%a0%e5%b0%84%e6%95%b0%e6%8d%ae%e7%ad%89%e6%93%8d%e4%bd%9c%e3%80%82Stream%20API%20%e6%8f%90%e4%be%9b%e4%ba%86%e4%b8%80%e7%a7%8d%e9%ab%98%e6%95%88%e4%b8%94%e6%98%93%e4%ba%8e%e4%bd%bf%e7%94%a8%e7%9a%84%e5%a4%84%e7%90%86%e6%95%b0%e6%8d%ae%e7%9a%84%e6%96%b9%e5%bc%8f%e3%80%82..."><img
+                    class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a
+                  class="social share-item email"
+                  href="mailto:?subject=StreamAPI - Alan&amp;body=https://chinaai.cc.cd/posts/StreamAPI.html"
+                  rel="external nofollow noreferrer"><img class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a
+                  class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img
+                    class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a>
+              </div>
+              <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0"><img class="lazy"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                  data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&amp;data=https://chinaai.cc.cd/posts/StreamAPI.html">
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+      <div class="related-wrap" id="read-next">
+        <section class="body">
+          <div class="item" id="prev">
+            <div class="note">较新文章</div><a href="JUC%e7%ac%94%e8%ae%b0.html">JUC笔记</a>
+          </div>
+          <div class="item" id="next">
+            <div class="note">较早文章</div><a href="Optional%e7%b1%bb.html">Optional类</a>
+          </div>
+        </section>
+      </div>
+      <div class="related-wrap" id="related-posts">
+        <section class="header">
+          <div class="title cap theme">您可能感兴趣的文章</div>
+        </section>
+        <section class="body">
+          <div class="related-posts"><a class="item"
+              href="Lambda%e8%a1%a8%e8%be%be%e5%bc%8f%e4%b8%8e%e6%96%b9%e6%b3%95%e5%bc%95%e7%94%a8.html"
+              title="Lambda表达式与方法引用"><span class="title">Lambda表达式与方法引用</span></a><a class="item"
+              href="Optional%e7%b1%bb.html" title="Optional类"><span class="title">Optional类</span></a></div>
+        </section>
+      </div>
+      <div class="related-wrap md-text" id="comments">
+        <section class="header cmt-title cap theme">
+          <p>快来参与讨论吧~</p>
+        </section>
+        <section class="body cmt-body giscus"><svg class="loading"
+            style="vertical-align:middle;fill:currentColor;overflow:hidden" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="2709">
+            <path
+              d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z"
+              p-id="2710"></path>
+          </svg>
+          <div id="giscus" src="../../giscus.app/client.js" data-repo="honchoosy/blog" data-repo-id="R_kgDONmjawA"
+            data-category="Announcements" data-category-id="DIC_kwDONmjawM4ClyM5" data-mapping="pathname"
+            data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+            data-theme="light" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+        </section>
+      </div>
+      <footer class="page-footer footnote">
+        <hr>
+        <div class="sitemap">
+          <div class="sitemap-group"><span class="fs15">博客</span><a href="../social/stats/index.html">数据统计</a><a
+              href="../update/index.html">更新日志</a><a href="../document/policy/index.html">隐私政策</a><a
+              href="../document/disclaimer/index.html">免责声明</a></div>
+          <div class="sitemap-group"><span class="fs15">维基</span><a
+              href="../wiki/tags/%e9%a1%b9%e7%9b%ae/index.html">项目</a><a
+              href="../wiki/tags/%e6%96%87%e6%a1%a3/index.html">文档</a><a
+              href="../wiki/tags/%e7%ac%94%e8%ae%b0/index.html">笔记</a><a
+              href="../wiki/tags/%e7%ad%94%e7%96%91/index.html">答疑</a></div>
+          <div class="sitemap-group"><span class="fs15">探索</span><a
+              href="../explore/sites/%e6%94%b6%e8%97%8f%e7%9a%84%e7%ab%99%e7%82%b9.html">我的站点</a><a
+              href="../explore/notes/%e6%8e%a2%e7%b4%a2%e8%80%85%e7%ac%94%e8%ae%b0.html">年度计划</a></div>
+          <div class="sitemap-group"><span class="fs15">社交</span><a target="_blank"
+              rel="noopener external nofollow noreferrer" href="https://www.travellings.cn/go-by-clouds.html">开往</a><a
+              target="_blank" rel="noopener external nofollow noreferrer" href="https://travel.moe/go">异次元之旅</a></div>
+        </div>
+        <div class="text">
+          <p>本站由 <a href="../index.html">Honcho</a> 使用 <a target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a>
+            主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+        </div>
+      </footer>
+      <div class="main-mask" onclick="sidebar.dismiss()"></div>
+    </div>
+    <aside class="l_right">
+      <div class="widgets">
+        <widget class="widget-wrapper toc" id="data-toc" collapse="false">
+          <div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action"
+              onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+              </svg></a></div>
+          <div class="widget-body">
+            <ol class="toc">
+              <li class="toc-item toc-level-1"><a class="toc-link" href="#Java-8-Stream-API"><span class="toc-text">Java
+                    8 Stream API</span></a>
+                <ol class="toc-child">
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B8%80%E3%80%81Stream-%E6%A6%82%E8%BF%B0"><span class="toc-text">一、Stream 概述</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#Stream-%E7%9A%84%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="toc-text">Stream
+                            的特点：</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%BA%8C%E3%80%81Stream-%E6%93%8D%E4%BD%9C%E5%88%86%E7%B1%BB"><span
+                        class="toc-text">二、Stream 操作分类</span></a></li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B8%89%E3%80%81%E5%88%9B%E5%BB%BA-Stream"><span class="toc-text">三、创建 Stream</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E4%BB%8E%E9%9B%86%E5%90%88%E5%88%9B%E5%BB%BA"><span class="toc-text">1.
+                            从集合创建</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-%E4%BB%8E%E6%95%B0%E7%BB%84%E5%88%9B%E5%BB%BA"><span class="toc-text">2.
+                            从数组创建</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#3-%E4%BD%BF%E7%94%A8Stream-of-%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span
+                            class="toc-text">3. 使用Stream.of()静态方法</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#4-%E4%BD%BF%E7%94%A8Stream-generate-%E5%88%9B%E5%BB%BA%E6%97%A0%E9%99%90%E6%B5%81"><span
+                            class="toc-text">4. 使用Stream.generate()创建无限流</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#5-%E4%BD%BF%E7%94%A8Stream-iterate-%E5%88%9B%E5%BB%BA%E6%97%A0%E9%99%90%E6%B5%81"><span
+                            class="toc-text">5. 使用Stream.iterate()创建无限流</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#6-%E5%85%B6%E4%BB%96%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="toc-text">6.
+                            其他创建方式</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E5%9B%9B%E3%80%81%E4%B8%AD%E9%97%B4%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3"><span
+                        class="toc-text">四、中间操作详解</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-filter-Predicate-%E8%BF%87%E6%BB%A4"><span class="toc-text">1. filter(Predicate) -
+                            过滤</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-map-Function-%E6%98%A0%E5%B0%84"><span class="toc-text">2. map(Function&lt;T,R&gt;) -
+                            映射</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#3-flatMap-Function-%E6%89%81%E5%B9%B3%E5%8C%96%E6%98%A0%E5%B0%84"><span
+                            class="toc-text">3. flatMap(Function&lt;T,Stream&gt;) - 扁平化映射</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#4-distinct-%E5%8E%BB%E9%87%8D"><span
+                            class="toc-text">4. distinct() - 去重</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#5-sorted-sorted-Comparator-%E6%8E%92%E5%BA%8F"><span class="toc-text">5. sorted()
+                            &#x2F; sorted(Comparator) - 排序</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#6-peek-Consumer-%E6%9F%A5%E7%9C%8B%E5%85%83%E7%B4%A0"><span class="toc-text">6.
+                            peek(Consumer) - 查看元素</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#7-limit-long-%E9%99%90%E5%88%B6%E6%95%B0%E9%87%8F"><span class="toc-text">7.
+                            limit(long) - 限制数量</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#8-skip-long-%E8%B7%B3%E8%BF%87%E5%85%83%E7%B4%A0"><span class="toc-text">8. skip(long)
+                            - 跳过元素</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%BA%94%E3%80%81%E7%BB%88%E7%AB%AF%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3"><span
+                        class="toc-text">五、终端操作详解</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-forEach-Consumer-%E9%81%8D%E5%8E%86"><span class="toc-text">1. forEach(Consumer) -
+                            遍历</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-toArray-%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%95%B0%E7%BB%84"><span class="toc-text">2.
+                            toArray() - 转换为数组</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#3-collect-Collector-%E6%94%B6%E9%9B%86%E4%B8%BA%E9%9B%86%E5%90%88"><span
+                            class="toc-text">3. collect(Collector&lt;T,A,R&gt;) - 收集为集合</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#4-reduce-BinaryOperator-%E5%BD%92%E7%BA%A6"><span class="toc-text">4.
+                            reduce(BinaryOperator) - 归约</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#5-min-max-%E6%9C%80%E5%B0%8F-%E6%9C%80%E5%A4%A7%E5%80%BC"><span class="toc-text">5.
+                            min()&#x2F;max() - 最小&#x2F;最大值</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#6-count-%E8%AE%A1%E6%95%B0"><span
+                            class="toc-text">6. count() - 计数</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#7-anyMatch-allMatch-noneMatch-%E5%8C%B9%E9%85%8D"><span class="toc-text">7.
+                            anyMatch()&#x2F;allMatch()&#x2F;noneMatch() - 匹配</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#8-findFirst-findAny-%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0"><span class="toc-text">8.
+                            findFirst()&#x2F;findAny() - 查找元素</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E5%85%AD%E3%80%81%E6%95%B0%E5%80%BC%E6%B5%81"><span class="toc-text">六、数值流</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#1-IntStream"><span class="toc-text">1.
+                            IntStream</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#2-LongStream"><span
+                            class="toc-text">2. LongStream</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#3-DoubleStream"><span
+                            class="toc-text">3. DoubleStream</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#4-%E5%AF%B9%E8%B1%A1%E6%B5%81%E4%B8%8E%E6%95%B0%E5%80%BC%E6%B5%81%E8%BD%AC%E6%8D%A2"><span
+                            class="toc-text">4. 对象流与数值流转换</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B8%83%E3%80%81%E5%B9%B6%E8%A1%8C%E6%B5%81"><span class="toc-text">七、并行流</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E5%88%9B%E5%BB%BA%E5%B9%B6%E8%A1%8C%E6%B5%81"><span class="toc-text">1.
+                            创建并行流</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-%E5%B9%B6%E8%A1%8C%E6%B5%81%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span
+                            class="toc-text">2. 并行流注意事项</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A4%BA%E4%BE%8B"><span
+                            class="toc-text">3. 示例</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E5%85%AB%E3%80%81%E6%94%B6%E9%9B%86%E5%99%A8-Collectors-%E8%AF%A6%E8%A7%A3"><span
+                        class="toc-text">八、收集器(Collectors)详解</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E8%BD%AC%E6%8D%A2%E4%B8%BA%E9%9B%86%E5%90%88"><span class="toc-text">1.
+                            转换为集合</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-%E8%BD%AC%E6%8D%A2%E4%B8%BA%E7%89%B9%E5%AE%9A%E9%9B%86%E5%90%88"><span
+                            class="toc-text">2. 转换为特定集合</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#3-%E8%BF%9E%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">3.
+                            连接字符串</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%86%E7%BB%84"><span
+                            class="toc-text">4. 分组</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%86%E5%8C%BA"><span
+                            class="toc-text">5. 分区</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BB%9F%E8%AE%A1"><span
+                            class="toc-text">6. 统计</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#7-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">7.
+                            自定义收集器</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B9%9D%E3%80%81%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B"><span
+                        class="toc-text">九、实战示例</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E5%A4%84%E7%90%86%E5%AF%B9%E8%B1%A1%E9%9B%86%E5%90%88"><span
+                            class="toc-text">示例1：处理对象集合</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86"><span
+                            class="toc-text">示例2：文件处理</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E5%8D%81%E3%80%81%E6%80%A7%E8%83%BD%E8%80%83%E8%99%91%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span
+                        class="toc-text">十、性能考虑与最佳实践</span></a></li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+          <div class="widget-footer"><a class="edit" target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://github.com/honcholee/blog_hexo/tree/main/source/_posts/2025/05/StreamAPI.md"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M11.943 1.25H13.5a.75.75 0 0 1 0 1.5H12c-2.378 0-4.086.002-5.386.176c-1.279.172-2.05.5-2.62 1.069c-.569.57-.896 1.34-1.068 2.619c-.174 1.3-.176 3.008-.176 5.386s.002 4.086.176 5.386c.172 1.279.5 2.05 1.069 2.62c.57.569 1.34.896 2.619 1.068c1.3.174 3.008.176 5.386.176s4.086-.002 5.386-.176c1.279-.172 2.05-.5 2.62-1.069c.569-.57.896-1.34 1.068-2.619c.174-1.3.176-3.008.176-5.386v-1.5a.75.75 0 0 1 1.5 0v1.557c0 2.309 0 4.118-.19 5.53c-.194 1.444-.6 2.584-1.494 3.479c-.895.895-2.035 1.3-3.48 1.494c-1.411.19-3.22.19-5.529.19h-.114c-2.309 0-4.118 0-5.53-.19c-1.444-.194-2.584-.6-3.479-1.494c-.895-.895-1.3-2.035-1.494-3.48c-.19-1.411-.19-3.22-.19-5.529v-.114c0-2.309 0-4.118.19-5.53c.194-1.444.6-2.584 1.494-3.479c.895-.895 2.035-1.3 3.48-1.494c1.411-.19 3.22-.19 5.529-.19m4.827 1.026a3.503 3.503 0 0 1 4.954 4.953l-6.648 6.649c-.371.37-.604.604-.863.806a5.34 5.34 0 0 1-.987.61c-.297.141-.61.245-1.107.411l-2.905.968a1.492 1.492 0 0 1-1.887-1.887l.968-2.905c.166-.498.27-.81.411-1.107c.167-.35.372-.68.61-.987c.202-.26.435-.492.806-.863zm3.893 1.06a2.003 2.003 0 0 0-2.832 0l-.376.377c.022.096.054.21.098.338c.143.413.415.957.927 1.469a3.875 3.875 0 0 0 1.807 1.025l.376-.376a2.003 2.003 0 0 0 0-2.832m-1.558 4.391a5.397 5.397 0 0 1-1.686-1.146a5.395 5.395 0 0 1-1.146-1.686L11.218 9.95c-.417.417-.58.582-.72.76a3.84 3.84 0 0 0-.437.71c-.098.203-.172.423-.359.982l-.431 1.295l1.032 1.033l1.295-.432c.56-.187.779-.261.983-.358c.251-.12.49-.267.71-.439c.177-.139.342-.302.759-.718z"
+                  clip-rule="evenodd" />
+              </svg><span>编辑本文</span></a> <a class="top" onclick="util.scrollTop()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3" />
+                </g>
+              </svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
+              </svg><span>参与讨论</span></a></div>
+        </widget>
+      </div>
+    </aside>
+    <div class="float-panel blur"><button type="button" style="display:none" class="laptop-only rightbar-toggle mobile"
+        onclick="sidebar.rightbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+        </svg></button> <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile"
+        onclick="sidebar.leftbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+              d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z" />
+            <path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3" />
+          </g>
+        </svg></button></div>
+  </div>
+  <div class="scripts">
+    <script
+      type="text/javascript">let ctx = { date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" }, root: "/", search: {} }; if ((ctx.search.service = "local_search") == ctx.search.service) { let e = Object.assign({}, '{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}'); ctx.search[ctx.search.service] = e } let def = { avatar: "https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg", cover: "https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg" }, deps = { jquery: "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js", marked: "https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js" }</script>
+    <script
+      type="text/javascript">let utils = { css: (e, t, r, a) => { var o, n, s = window.document, i = s.createElement("link"), d = (n = t || (o = (s.body || s.getElementsByTagName("head")[0]).childNodes)[o.length - 1], s.styleSheets); if (a) for (var l in a) a.hasOwnProperty(l) && i.setAttribute(l, a[l]); i.rel = "stylesheet", i.href = e, i.media = "only x", function e(t) { if (s.body) return t(); setTimeout(function () { e(t) }) }(function () { n.parentNode.insertBefore(i, t ? n : n.nextSibling) }); function f(e) { for (var t = i.href, r = d.length; r--;)if (d[r].href === t) return e(); setTimeout(function () { f(e) }) } function u() { i.addEventListener && i.removeEventListener("load", u), i.media = r || "all" } return i.addEventListener && i.addEventListener("load", u), i.onloadcssdefined = f, f(u), i }, js: (o, n) => new Promise((t, e) => { var r = document.createElement("script"); if (o.startsWith("../index.html") && (o = ctx.root + o.substring(1)), r.src = o, n) for (var a of Object.keys(n)) r[a] = n[a]; else r.async = !0; r.onerror = e, r.onload = r.onreadystatechange = function () { var e = this.readyState; e && "loaded" !== e && "complete" !== e || (r.onload = r.onreadystatechange = null, t()) }, document.head.appendChild(r) }), jq: e => { "undefined" == typeof jQuery ? utils.js(deps.jquery).then(e) : e() }, onLoading: e => { e && $(e).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>') }, onLoadSuccess: e => { e && $(e).find(".loading-wrap").remove() }, onLoadFailure: e => { e && ($(e).find(".loading-wrap svg").remove(), $(e).find(".loading-wrap").append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>'), $(e).find(".loading-wrap").addClass("error")) }, request: (n, s, i, d) => { let l = 3; utils.onLoading(n), function o() { new Promise((t, e) => { let r = 0, a = setTimeout(() => { 0 === r && (r = 2, a = null, e("请求超时"), 0 == l) && d() }, 5e3); fetch(s).then(function (e) { if (2 !== r && (clearTimeout(a), t(e), a = null, r = 1), e.ok) return e.json(); throw new Error("Network response was not ok.") }).then(function (e) { l = 0, utils.onLoadSuccess(n), i(e) }).catch(function (e) { 0 < l ? (--l, setTimeout(() => { o() }, 5e3)) : (utils.onLoadFailure(n), d()) }) }) }() } }</script>
+    <script>let sidebar = { leftbar: () => { l_body && (l_body.toggleAttribute("leftbar"), l_body.removeAttribute("rightbar")) }, rightbar: () => { l_body && (l_body.toggleAttribute("rightbar"), l_body.removeAttribute("leftbar")) }, dismiss: () => { l_body && (l_body.removeAttribute("leftbar"), l_body.removeAttribute("rightbar")) }, toggleTOC: () => { document.querySelector("#data-toc").classList.toggle("collapse") } }</script>
+    <script
+      type="text/javascript">(() => { var e; for (e of document.querySelectorAll(".tag-subtree.parent-tag > a > .tag-switcher-wrapper")) e.addEventListener("click", e => { e.target.closest(".tag-subtree.parent-tag").classList.toggle("expanded"), e.preventDefault() }); var t = new URLSearchParams(window.location.search).get("tag"); if (t) { let e = document.querySelector(`.tag-subtree[data-tag="${t}"]`); if (e) for (e.querySelector("a").classList.add("active"); e;)e.classList.add("expanded"), e = e.parentElement.closest(".tag-subtree.parent-tag") } })()</script>
+    <script src="../js/main226a.js?v=1.29.1" defer></script>
+    <script
+      type="text/javascript">let applyTheme = e => { "auto" === e ? document.documentElement.removeAttribute("data-theme") : document.documentElement.setAttribute("data-theme", e), applyThemeToGiscus(e) }, applyThemeToGiscus = e => { e = "auto" === e ? "preferred_color_scheme" : e; var t = document.getElementById("giscus"), t = (t && t.setAttribute("data-theme", e), document.querySelector("#comments > section.giscus > iframe")); t && (e = t.src.replace(/theme=[\w]+/, "theme=" + e), t.src = e) }, switchTheme = () => { let e; switch (document.documentElement.getAttribute("data-theme")) { case "light": e = "dark"; break; case "dark": e = "auto"; break; default: e = "light" }applyTheme(e), window.localStorage.setItem("Stellar.theme", e), hud?.toast?.({ light: "切换到浅色模式", dark: "切换到深色模式", auto: "切换到系统模式" }[e]) }; (() => { var e = window.localStorage.getItem("Stellar.theme"); null !== e && applyTheme(e) })()</script>
+    <script type="module">const el = document.querySelector('#comments #giscus');
+      util.viewportLazyload(el, load_discus, false);
+
+      function load_discus() {
+        if (!el) return;
+        try {
+          el.innerHTML = '';
+        } catch (error) {
+          console.error(error);
+        }
+        const script = document.createElement('script');
+        script.async = true;
+        for (const key of Object.keys(el.attributes)) {
+          const attr = el.attributes[key];
+          if (['class', 'id'].includes(attr.name) === false) {
+            script.setAttribute(attr.name, attr.value);
+          }
+        }
+        el.appendChild(script);
+      }</script>
+    <script
+      defer>window.addEventListener("DOMContentLoaded", s => { ctx.services = Object.assign({}, JSON.parse('{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"../js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"}}')); for (let e of Object.keys(ctx.services)) { let s = ctx.services[e].js; "siteinfo" == e ? (ctx.cardlinks = document.querySelectorAll("a.link-card[cardlink]"), 0 < ctx.cardlinks?.length && utils.js(s, { defer: !0 }).then(function () { setCardLink(ctx.cardlinks) })) : 0 < document.getElementsByClassName("ds-" + e)?.length && utils.jq(() => { e, utils.js(deps.marked).then(function () { utils.js(s, { defer: !0 }) }) }) } })</script>
+    <script>window.addEventListener("DOMContentLoaded", e => { ctx.search = { path: "/search.json" }, utils.js("../js/search/local-search.js", { defer: !0 }) })</script>
+    <script defer src="../../gcore.jsdelivr.net/npm/vanilla-lazyload%4017.3.1/dist/lazyload.min.js"></script>
+    <script>window.lazyLoadOptions = { elements_selector: ".lazy" }, window.addEventListener("LazyLoad::Initialized", function (n) { window.lazyLoadInstance = n.detail.instance }, !1), document.addEventListener("DOMContentLoaded", function () { window.lazyLoadInstance?.update() })</script>
+    <script>ctx.fancybox = { selector: ".timenode p>img,article p img,.tag-plugin>.image-bg>img,.atk-content>p>img", css: "/vendor/css/fancybox.css", js: "/vendor/js/fancybox.umd.js" }; var selector = "[data-fancybox]:not(.error)", checkInterval = (ctx.fancybox.selector && (selector += ", " + ctx.fancybox.selector), setInterval(function () { 0 !== document.querySelectorAll(selector).length && (clearInterval(checkInterval), utils.css(ctx.fancybox.css), utils.js(ctx.fancybox.js, { defer: !0 }).then(function () { Fancybox.bind(selector, { hideScrollbar: !1, Thumbs: { autoStart: !1 }, caption: (e, t) => t.triggerEl.alt || t.triggerEl.dataset.caption || null }) })) }, 1e3))</script>
+    <script>window.addEventListener("DOMContentLoaded", e => { let i = document.getElementById("swiper-api"); null != i && (utils.css("../../unpkg.com/swiper%4010.3.1/swiper-bundle.min.css"), utils.js("../../unpkg.com/swiper%4010.3.1/swiper-bundle.min.js", { defer: !0 }).then(function () { var e = i.getAttribute("effect") || "", t = "true" === i.getAttribute("homepage"); new Swiper(".swiper#swiper-api", { slidesPerView: "auto", spaceBetween: 8, centeredSlides: !t, effect: e, rewind: !t, loop: t, autoplay: !1, pagination: { el: ".swiper-pagination", clickable: !0 }, navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" } }) })) })</script>
+    <script defer src="../vendor/js/chatgpt.js"></script>
+    <script
+      defer>window.addEventListener("DOMContentLoaded", e => { new ChucklePostAI(Object.assign({ el: "article.content", css: "/css/_plugins/tianli_gpt" }, JSON.parse('{"enable":true,"js":"../vendor/js/chatgpt.js","field":"post","key":"5Q5mpqRK5DkwT1X9Gi5e","total_length":1000,"typewriter":true,"summary_directly":true,"rec_method":"all","hide_shuttle":true,"summary_toggle":false,"interface":{"name":"文章摘要","introduce":"我是文章辅助AI，点击下方的按钮，让我生成本文简介","version":"OpenAI","button":["介绍自己","推荐文章","生成摘要","矩阵穿梭"]}}'))) })</script>
+    <script>document.addEventListener("DOMContentLoaded", function () { window.codeElements = document.querySelectorAll(".code"), 0 < window.codeElements.length && (ctx.copycode = { default_text: "Copy", success_text: "Copied", toast: "复制成功" }, utils.js("../js/plugins/copycode.js")) })</script>
+    <script src="../js/extra.js"></script>
+    <script src="../vendor/js/snow.js"></script>
+    <script data-website-id="91357f39-3d88-42f3-bf11-e1c1206ac8ab"
+      src="../../logsphere.codepzj.cn/js/track.js"></script>
+  </div>
+  <script src="../vendor/js/echarts.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var t = document.getElementById("heatmapChart"); if (t) { let e = echarts.init(t, "light"); var a = [18, 18]; let i = (e => { let i = {}; return e.forEach(([e, t]) => { var [a] = e.split("-").map(Number); i[a] || (i[a] = []), i[a].push([e, t]) }), i })([["2023-01-26", 1], ["2023-01-27", 1], ["2023-01-30", 2], ["2023-02-02", 1], ["2023-04-06", 1], ["2023-04-10", 1], ["2023-04-17", 1], ["2023-06-20", 1], ["2024-02-22", 1], ["2024-02-27", 1], ["2024-03-01", 1], ["2024-04-02", 1], ["2024-04-30", 1], ["2025-03-30", 2], ["2025-05-04", 2], ["2025-05-05", 3], ["2025-05-10", 1], ["2025-05-11", 5], ["2025-12-20", 1], ["2025-12-21", 4], ["2025-12-22", 1], ["2025-12-23", 1], ["2026-01-08", 1], ["2026-01-18", 1], ["2026-03-01", 2], ["2026-03-09", 1], ["2026-03-13", 1], ["2026-03-14", 1], ["2026-03-21", 1], ["2026-03-22", 9]]), n = Object.keys(i).reverse(); var o = parseInt(t.getAttribute("year")) || (new Date).getFullYear(), t = n[n.length - 1], l = n[0]; (o < t || l < o) && (o = l), console.log("[hexo-graph]generateHeatmapChart|initYear:", o, "minYear:", t, "maxYear:", l), e.setOption({ grid: {}, tooltip: { position: "top", formatter: e => `${e.value[0]}: ${e.value[1]} Articles` }, calendar: { top: "10%", left: "left", right: "8%", range: o, cellSize: a, splitLine: { lineStyle: { color: "#E0E0E0", width: 1 } }, itemStyle: { borderWidth: 1, borderColor: "#E0E0E0" }, dayLabel: { show: !1 }, monthLabel: { show: !0 }, yearLabel: { show: !1 } }, visualMap: { show: !0, right: "8%", bottom: "5%", type: "piecewise", orient: "horizontal", text: ["More", "Less"], min: 0, max: Math.max(...i[o].map(e => e[1])), inRange: { color: ["#ACE7AE", "#69C16D", "#549F57"] } }, legend: { type: "scroll", icon: "none", data: n, orient: "vertical", top: "5%", right: "right", itemWidth: 20, itemHeight: 20, itemGap: 10, pageIconSize: 10, pageTextStyle: { fontSize: 14 }, selectedMode: "single" }, series: n.map(e => ({ type: "heatmap", coordinateSystem: "calendar", data: i[e], name: e, emphasis: { disabled: !0 }, silent: e !== o })) }), e.dispatchAction({ type: "legendSelect", name: o }), e.on("legendselectchanged", function (t) { console.log("[hexo-graph]generateHeatmapChart|legendselectchanged:", t); let a = Object.keys(t.selected).find(e => t.selected[e]); a && i[a] && e.setOption({ calendar: { range: a }, visualMap: { max: Math.max(...i[a].map(e => e[1])) }, series: n.map(e => ({ type: "heatmap", coordinateSystem: "calendar", data: i[e], name: e, emphasis: { disabled: !0 }, silent: e !== a })) }) }), e.on("click", function (e) { var t; "series" === e.componentType && ([e, t] = e.value[0].split("-"), window.location.href = "/archives/" + e + "/" + t) }) } })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("monthlyChart"); e && ((e = echarts.init(e, "light")).setOption({ xAxis: { type: "category", data: ["2023-01", "2023-02", "2023-04", "2023-06", "2024-02", "2024-03", "2024-04", "2025-03", "2025-05", "2025-12", "2026-01", "2026-03"], axisLabel: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }, yAxis: { type: "value", splitLine: { lineStyle: { type: "dashed", color: "#ccc" } } }, series: [{ name: "Articles", type: "line", data: [4, 1, 3, 1, 2, 1, 2, 2, 11, 7, 2, 15], smooth: !0, lineStyle: { color: "#5470C6", width: 2 }, itemStyle: { color: "#5470C6" }, areaStyle: { color: "rgba(84, 112, 198, 0.4)" }, symbolSize: 10, label: { show: !0, position: "top", formatter: e => e.value, fontSize: 14, color: "#000", fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }] }), e.on("click", function (e) { var [e, t] = e.name.split("-"); window.location.href = "/archives/" + e + "/" + t })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("tagsChart"); e && ((e = echarts.init(e, "light")).setOption({ tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" }, series: [{ type: "pie", radius: "60%", data: [{ name: "成长", value: 5 }, { name: "技术分享", value: 5 }, { name: "Java", value: 5 }, { name: "JAVA", value: 4 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "数据结构", value: 3 }, { name: "面向对象编程", value: 3 }], label: { position: "outside", formatter: "{b} {c} ({d}%)", fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" }, color: ["#5470C6", "#91CC75", "#FAC858", "#EE6666", "#73C0DE", "#3BA272", "#FC8452", "#9A60B4"], labelLine: { show: !0 } }], legend: { bottom: "0", left: "center", data: [{ name: "成长", value: 5 }, { name: "技术分享", value: 5 }, { name: "Java", value: 5 }, { name: "JAVA", value: 4 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "数据结构", value: 3 }, { name: "面向对象编程", value: 3 }].map(e => e.name), textStyle: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } } }), e.on("click", function (e) { window.location.href = "/tags/" + e.name })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("categoriesChart"); e && ((e = echarts.init(e, "light")).setOption({ xAxis: { type: "value", splitLine: { lineStyle: { type: "dashed", color: "#ccc" } } }, yAxis: { type: "category", data: [{ name: "JAVA", value: 9 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "软件设计", value: 2 }, { name: "读书笔记", value: 2 }].map(e => e.name).reverse(), axisLabel: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }, series: [{ name: "Category Count", type: "bar", data: [{ name: "JAVA", value: 9 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "软件设计", value: 2 }, { name: "读书笔记", value: 2 }].map(e => e.value).reverse(), label: { show: !0, position: "right", formatter: e => e.value, fontSize: 14, color: "#000", fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" }, itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#91CC75" }, { offset: 1, color: "#73C0DE" }]) } }] }), e.on("click", function (e) { window.location.href = "/categories/" + e.name })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var t = document.getElementById("categoriesTreeChart"); t && ((t = echarts.init(t, "light")).setOption({ title: { text: "操作提示：单击展开分类，双击进入具体分类页面", textStyle: { fontSize: 12, color: "#999", fontWeight: "normal" }, bottom: 0, left: "center" }, tooltip: { trigger: "item", triggerOn: "mousemove" }, series: [{ type: "tree", data: [{ name: "Categories", children: [{ name: "技术教程", children: [], count: 1, path: "技术教程" }, { name: "设计开发", children: [{ name: "技术分享", children: [], count: 1, path: "设计开发/技术分享" }], count: 1, path: "设计开发" }, { name: "中间件", children: [], count: 3, path: "中间件" }, { name: "微服务", children: [], count: 3, path: "微服务" }, { name: "Spring注解", children: [], count: 1, path: "Spring注解" }, { name: "JAVA高级", children: [], count: 1, path: "JAVA高级" }, { name: "JAVA", children: [], count: 9, path: "JAVA" }, { name: "软件设计", children: [], count: 2, path: "软件设计" }, { name: "分布式", children: [], count: 1, path: "分布式" }, { name: "产品", children: [], count: 1, path: "产品" }, { name: "读书笔记", children: [], count: 2, path: "读书笔记" }], count: 0, path: "" }], initialTreeDepth: -1, top: "5%", bottom: "10%", left: "0%", right: "0%", symbolSize: 15, layout: "orthogonal", orient: "TB", itemStyle: { color: "#91CC75", borderColor: "#73C0DE" }, label: { position: "bottom", verticalAlign: "middle", align: "center", fontSize: 14, distance: 28, formatter: function (t) { return t.data.name + (t.data.count ? " (" + t.data.count + ")" : "") } }, leaves: { label: { position: "top", verticalAlign: "middle", align: "center" } }, emphasis: { focus: "descendant" }, expandAndCollapse: !0 }] }), t.on("dblclick", function (t) { t.data && t.data.path && (window.location.href = "/categories/" + t.data.path) })) })</script>
+</body>
+<!-- Mirrored from chinaai.cc.cd/posts/StreamAPI.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Mar 2026 16:02:21 GMT -->
+
+</html>

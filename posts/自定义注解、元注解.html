@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<!-- Mirrored from chinaai.cc.cd/posts/自定义注解、元注解.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Mar 2026 16:02:20 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="%e8%87%aa%e5%ae%9a%e4%b9%89%e6%b3%a8%e8%a7%a3%e3%80%81%e5%85%83%e6%b3%a8%e8%a7%a3.html">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <meta name="theme-color" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net/" crossorigin>
+  <link rel="dns-prefetch" href="https://comment.codepzj.cn/">
+  <link rel="preconnect" href="https://comment.codepzj.cn/" crossorigin>
+  <link rel="dns-prefetch" href="https://image.codepzj.cn/">
+  <link rel="preconnect" href="https://image.codepzj.cn/" crossorigin>
+  <link rel="dns-prefetch" href="https://npm.elemecdn.com/">
+  <link rel="preconnect" href="https://npm.elemecdn.com/" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Content-Security-Policy"
+    content=" default-src 'self' https:; block-all-mixed-content; base-uri 'self' https:; form-action 'self' https:; worker-src 'self' https:; connect-src 'self' https: *; img-src 'self' data: https: *; media-src 'self' https: *; font-src 'self' data: https: *; frame-src 'self' https: *; manifest-src 'self' https: *; child-src https:; script-src 'self' https: 'unsafe-inline' *; style-src 'self' https: 'unsafe-inline' *; ">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
+  <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+  <meta content="telephone=no" name="format-detection">
+  <link rel="icon" type="image/jpeg" href="../assets/images/avatar.jpeg">
+  <link rel="shortcut icon" type="image/x-icon" href="../404.html">
+  <link rel="preload" href="../css/extra.css" as="style">
+  <link rel="alternate" href="../atom.xml" title="自定义注解、元注解 | Honcho" type="application/atom+xml">
+  <title>自定义注解、元注解 | Honcho</title>
+  <meta name="author" content="honcho">
+  <meta name="keywords"
+    content="honcho,Honcho的博客,Honcho的blog,chinaai.cc.cd,技术分享,生活思考,产品思考,设计开发,hexo,前端,web,js,html,css,vue,react,angular,node,python,java,go,rust,swift,php,mysql,mongodb,redis,linux,docker,kubernetes,git,github,markdown,seo,webpush,web-push,web-push-notification,web-push-api,web-push-protocol,web-push-service-worker,web-push-api-service-worker,web-push-api-service-worker-protocol,web-push-api-service-worker-specification,web-push-api-service-worker-specification-draft,web-push-api-service-worker-specification-draft-01,web-push-api-service-worker-specification-draft-02,web-push-api-service-worker-specification-draft-03,web-push-api-service-worker-specification-draft-04,web-push-api-service-worker-specification-draft">
+  <meta name="description" content="Java 注解（Annotations）一、注解基础概念1. 注解的本质
+一种元数据形式，为代码提供附加信息
+不会直接影响代码逻辑，但可以被编译器或运行时环境使用
+以@符号开头，如@Override
+
+2. 注解的作用
+编译检查：如@Override确保方法正确重写
+代码生成：如Lombok的...">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="自定义注解、元注解 | Honcho">
+  <meta property="og:image" content="../assets/images/404.html">
+  <meta property="og:site_name" content="honcho">
+  <meta property="og:url"
+    content="%e8%87%aa%e5%ae%9a%e4%b9%89%e6%b3%a8%e8%a7%a3%e3%80%81%e5%85%83%e6%b3%a8%e8%a7%a3.html">
+  <link rel="stylesheet" href="../css/main226a.css?v=1.29.1">
+  <meta name="baidu-site-verification" content="codeva-NVhlE81dTF">
+  <meta name="msvalidate.01" content="30CD55A935E75B69A1565E31EA21513B">
+  <meta name="google-site-verification" content="Qy3yx1TuuE2ugoMZxLVO06pQ0cGF_oy7Ruemxkv3Ro0">
+  <link rel="stylesheet" href="../vendor/css/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../css/extra.css">
+  <link rel="stylesheet" href="../../cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">
+  <meta name="generator" content="Hexo 7.3.0">
+</head>
+
+<body>
+  <div class="l_body s:aa content tech" id="start" layout="post">
+    <aside class="l_left">
+      <div class="leftbar-container">
+        <header class="header">
+          <div class="logo-wrap"><a class="avatar" href="../social/about/index.html">
+              <div class="bg"
+                style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp)">
+              </div><img no-lazy src="../assets/images/avatar.jpeg" alt="avatar"
+                onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';">
+            </a><a class="title" href="../index.html">
+              <div class="main" ff="title">Honcho</div>
+              <div class="sub normal cap">代码,硬件,工作</div>
+              <div class="sub hover cap" style="opacity:0">chinaai.cc.cd</div>
+            </a></div>
+        </header>
+        <div class="nav-area">
+          <div class="search-wrapper" id="search-wrapper">
+            <form class="search-form">
+              <div class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg
+                  t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560"
+                  width="200" height="200">
+                  <path
+                    d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z"
+                    p-id="1561"></path>
+                  <path
+                    d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z"
+                    p-id="1562"></path>
+                </svg></div><input type="text" class="search-input" id="search-input" placeholder="站内搜索">
+            </form>
+            <div id="search-result"></div>
+            <div class="search-no-result">没有找到内容！</div>
+          </div>
+          <nav class="menu dis-select"><a class="nav-item active" title="首页" href="../index.html"
+              style="color:#1bcdfc"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z"
+                  opacity=".5" />
+              </svg></a><a class="nav-item" title="文档" href="../wiki/index.html" style="color:#3dc550"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z" />
+                <path fill="currentColor"
+                  d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z"
+                  opacity=".5" />
+                <path fill="currentColor"
+                  d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z" />
+              </svg></a><a class="nav-item" title="探索"
+              href="../explore/sites/%e6%94%b6%e8%97%8f%e7%9a%84%e7%ab%99%e7%82%b9.html" style="color:#fa6400"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5" />
+                <path fill="currentColor"
+                  d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203" />
+              </svg></a><a class="nav-item" title="社交" href="../social/friends/index.html" style="color:#f44336"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                  d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262"
+                  opacity=".5" />
+                <path fill="currentColor"
+                  d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502" />
+              </svg></a></nav>
+        </div>
+        <div class="widgets">
+          <widget class="widget-wrapper post-list">
+            <div class="widget-header dis-select"><span class="name">最近更新</span><a class="cap-action" id="rss"
+                title="Subscribe" href="../atom.xml"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                  viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M5 21q-.825 0-1.412-.587T3 19q0-.825.588-1.412T5 17q.825 0 1.413.588T7 19q0 .825-.587 1.413T5 21m13.5 0q-.65 0-1.088-.475T16.9 19.4q-.275-2.425-1.312-4.537T12.9 11.1q-1.65-1.65-3.762-2.687T4.6 7.1q-.65-.075-1.125-.512T3 5.5q0-.65.45-1.062t1.075-.363q3.075.275 5.763 1.563t4.737 3.337q2.05 2.05 3.338 4.738t1.562 5.762q.05.625-.363 1.075T18.5 21m-6 0q-.625 0-1.075-.437T10.85 19.5q-.225-1.225-.787-2.262T8.65 15.35q-.85-.85-1.888-1.412T4.5 13.15q-.625-.125-1.062-.575T3 11.5q0-.65.45-1.075t1.075-.325q1.825.25 3.413 1.063t2.837 2.062q1.25 1.25 2.063 2.838t1.062 3.412q.1.625-.325 1.075T12.5 21" />
+                </svg></a></div>
+            <div class="widget-body fs14"><a class="item title" href="ai-entrepreneur.html"><span class="title">AI 优先创业
+                  - 普通人致富的最佳路径</span></a><a class="item title" href="aqal-thinking.html"><span class="title">万物认知地图 -
+                  天才思考的模型</span></a><a class="item title" href="deep-work-routine.html"><span class="title">深度工作 Routine
+                  - 4小时完成8小时的工作</span></a><a class="item title" href="first-day-new-life.html"><span
+                  class="title">全新生活第一天 - 深度自我反思的方法论</span></a><a class="item title" href="life-balance.html"><span
+                  class="title">人生的试错期与爆发期 - 平静与进步的平衡</span></a><a class="item title" href="mental-order.html"><span
+                  class="title">掌控注意力 - 走出焦虑与迷茫的唯一路径</span></a><a class="item title"
+                href="openclaw-deployment-guide.html"><span class="title">Windows 环境下部署 OpenClaw 完整指南</span></a><a
+                class="item title" href="reading-habit.html"><span class="title">我的阅读方法 - 每天5分钟，让阅读成为习惯</span></a></div>
+          </widget>
+        </div>
+        <footer class="footer dis-select">
+          <div class="social-wrap"><a class="social" href="https://github.com/honcholee" target="_blank"
+              rel="external nofollow noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/github.svg" alt="github"></a><a class="social" href="mailto:fignet@163.com"
+              rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="../assets/footer/envelopes-bulk.svg"></a><a class="social"
+              href="../social/about/index.html#comments" rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/comment.svg" alt="comment"></a><a class="social"
+              href="javaScript:switchTheme();" rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/moon.svg" alt="moon"></a><a class="social" href="../settings/index.html"
+              rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/settings.svg" alt="settings"></a></div>
+        </footer>
+      </div>
+    </aside>
+    <div class="l_main" id="main">
+      <div class="article banner top">
+        <div class="content">
+          <div class="top bread-nav footnote">
+            <div class="left">
+              <div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="../index.html">主页</a> <span
+                  class="sep"></span><a class="cap breadcrumb" href="../index.html">文章</a><span class="sep"></span><a
+                  class="cap breadcrumb-link" href="../categories/JAVA/index.html">JAVA</a></div>
+              <div class="flex-row" id="post-meta"><span class="text created">发布于：<time
+                    datetime="2025-05-10T17:07:27.000Z">2025-05-11</time></span><span class="sep updated"></span><span
+                  class="text updated">更新于：<time datetime="2025-05-10T17:07:27.000Z">2025-05-11</time></span></div>
+            </div>
+          </div>
+          <div class="bottom only-title">
+            <div class="text-area">
+              <h1 class="text title"><span>自定义注解、元注解</span></h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <article class="md-text content">
+        <h1 id="Java-注解（Annotations）"><a href="#Java-注解（Annotations）" class="headerlink"
+            title="Java 注解（Annotations）"></a>Java 注解（Annotations）</h1>
+        <h2 id="一、注解基础概念"><a href="#一、注解基础概念" class="headerlink" title="一、注解基础概念"></a>一、注解基础概念</h2>
+        <h3 id="1-注解的本质"><a href="#1-注解的本质" class="headerlink" title="1. 注解的本质"></a>1. 注解的本质</h3>
+        <ul>
+          <li>一种元数据形式，为代码提供附加信息</li>
+          <li>不会直接影响代码逻辑，但可以被编译器或运行时环境使用</li>
+          <li>以<code>@</code>符号开头，如<code>@Override</code></li>
+        </ul>
+        <h3 id="2-注解的作用"><a href="#2-注解的作用" class="headerlink" title="2. 注解的作用"></a>2. 注解的作用</h3>
+        <ul>
+          <li><strong>编译检查</strong>：如<code>@Override</code>确保方法正确重写</li>
+          <li><strong>代码生成</strong>：如Lombok的<code>@Data</code>自动生成getter&#x2F;setter</li>
+          <li><strong>运行时处理</strong>：如Spring的<code>@Autowired</code>依赖注入</li>
+        </ul>
+        <h2 id="二、元注解（Meta-Annotations）"><a href="#二、元注解（Meta-Annotations）" class="headerlink"
+            title="二、元注解（Meta-Annotations）"></a>二、元注解（Meta-Annotations）</h2>
+        <p>元注解是指用来注解其他注解的注解，Java提供了5种标准元注解：</p>
+        <h3 id="1-Retention-定义注解的生命周期"><a href="#1-Retention-定义注解的生命周期" class="headerlink"
+            title="1. @Retention - 定义注解的生命周期"></a>1. <code>@Retention</code> - 定义注解的生命周期</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>保留策略</th>
+              <th>作用范围</th>
+              <th>典型应用场景</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>RetentionPolicy.SOURCE</code></td>
+              <td>仅保留在源码阶段</td>
+              <td><code>@Override</code>, <code>@SuppressWarnings</code></td>
+            </tr>
+            <tr>
+              <td><code>RetentionPolicy.CLASS</code></td>
+              <td>保留到class文件但JVM不加载</td>
+              <td>字节码处理工具使用</td>
+            </tr>
+            <tr>
+              <td><code>RetentionPolicy.RUNTIME</code></td>
+              <td>运行时可通过反射获取</td>
+              <td>Spring框架注解, JPA注解</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyRuntimeAnnotation &#123;&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-Target-指定注解可以应用的位置"><a href="#2-Target-指定注解可以应用的位置" class="headerlink"
+            title="2. @Target - 指定注解可以应用的位置"></a>2. <code>@Target</code> - 指定注解可以应用的位置</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>目标类型（ElementType）</th>
+              <th>可应用位置</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>TYPE</code></td>
+              <td>类、接口、枚举</td>
+            </tr>
+            <tr>
+              <td><code>FIELD</code></td>
+              <td>字段（包括枚举常量）</td>
+            </tr>
+            <tr>
+              <td><code>METHOD</code></td>
+              <td>方法</td>
+            </tr>
+            <tr>
+              <td><code>PARAMETER</code></td>
+              <td>方法参数</td>
+            </tr>
+            <tr>
+              <td><code>CONSTRUCTOR</code></td>
+              <td>构造函数</td>
+            </tr>
+            <tr>
+              <td><code>LOCAL_VARIABLE</code></td>
+              <td>局部变量</td>
+            </tr>
+            <tr>
+              <td><code>ANNOTATION_TYPE</code></td>
+              <td>注解类型</td>
+            </tr>
+            <tr>
+              <td><code>PACKAGE</code></td>
+              <td>包声明</td>
+            </tr>
+            <tr>
+              <td><code>TYPE_PARAMETER</code></td>
+              <td>类型参数（Java 8+）</td>
+            </tr>
+            <tr>
+              <td><code>TYPE_USE</code></td>
+              <td>类型使用处（Java 8+）</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@Target(&#123;ElementType.METHOD, ElementType.TYPE&#125;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyMethodAndClassAnnotation &#123;&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="3-Documented-控制是否出现在Javadoc中"><a href="#3-Documented-控制是否出现在Javadoc中" class="headerlink"
+            title="3. @Documented - 控制是否出现在Javadoc中"></a>3. <code>@Documented</code> - 控制是否出现在Javadoc中</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@Documented</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyDocumentedAnnotation &#123;&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-Inherited-允许子类继承父类的注解"><a href="#4-Inherited-允许子类继承父类的注解" class="headerlink"
+            title="4. @Inherited - 允许子类继承父类的注解"></a>4. <code>@Inherited</code> - 允许子类继承父类的注解</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@Inherited</span><br><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> MyInheritedAnnotation &#123;&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="5-Repeatable-Java-8-允许重复使用同一注解"><a href="#5-Repeatable-Java-8-允许重复使用同一注解" class="headerlink"
+            title="5. @Repeatable (Java 8+) - 允许重复使用同一注解"></a>5. <code>@Repeatable</code> (Java 8+) - 允许重复使用同一注解</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@Repeatable(Authorities.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> Authority &#123;<br>    String <span class="hljs-title function_">value</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> Authorities &#123;<br>    Authority[] value();<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-meta">@Authority(&quot;admin&quot;)</span><br><span class="hljs-meta">@Authority(&quot;user&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyService</span> &#123;&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="三、自定义注解开发"><a href="#三、自定义注解开发" class="headerlink" title="三、自定义注解开发"></a>三、自定义注解开发</h2>
+        <h3 id="1-基本语法"><a href="#1-基本语法" class="headerlink" title="1. 基本语法"></a>1. 基本语法</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> 注解名称 &#123;<br>    <span class="hljs-comment">// 注解元素</span><br>    元素类型 元素名称() <span class="hljs-keyword">default</span> 默认值;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-注解元素类型限制"><a href="#2-注解元素类型限制" class="headerlink" title="2. 注解元素类型限制"></a>2. 注解元素类型限制</h3>
+        <ul>
+          <li>基本数据类型（int, float, boolean等）</li>
+          <li>String</li>
+          <li>Class</li>
+          <li>枚举</li>
+          <li>其他注解</li>
+          <li>以上类型的数组</li>
+        </ul>
+        <h3 id="3-完整自定义注解示例"><a href="#3-完整自定义注解示例" class="headerlink" title="3. 完整自定义注解示例"></a>3. 完整自定义注解示例</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 用户权限验证注解</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Target(ElementType.METHOD)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> Auth &#123;<br>    <span class="hljs-comment">// 必需的角色</span><br>    String[] roles() <span class="hljs-keyword">default</span> &#123;&#125;;<br>    <br>    <span class="hljs-comment">// 权限等级（默认0）</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">level</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-number">0</span>;<br>    <br>    <span class="hljs-comment">// 错误提示信息</span><br>    String <span class="hljs-title function_">message</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&quot;无访问权限&quot;</span>;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="4-使用自定义注解"><a href="#4-使用自定义注解" class="headerlink" title="4. 使用自定义注解"></a>4. 使用自定义注解</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Auth(roles = &#123;&quot;admin&quot;, &quot;superuser&quot;&#125;, level = 2)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteUser</span><span class="hljs-params">(String userId)</span> &#123;<br>        <span class="hljs-comment">// 方法实现</span><br>    &#125;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="四、注解的运行时处理"><a href="#四、注解的运行时处理" class="headerlink" title="四、注解的运行时处理"></a>四、注解的运行时处理</h2>
+        <h3 id="1-反射API获取注解"><a href="#1-反射API获取注解" class="headerlink" title="1. 反射API获取注解"></a>1. 反射API获取注解</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-type">Method</span> <span class="hljs-variable">method</span> <span class="hljs-operator">=</span> UserService.class.getMethod(<span class="hljs-string">&quot;deleteUser&quot;</span>, String.class);<br><span class="hljs-type">Auth</span> <span class="hljs-variable">authAnnotation</span> <span class="hljs-operator">=</span> method.getAnnotation(Auth.class);<br><br><span class="hljs-keyword">if</span> (authAnnotation != <span class="hljs-literal">null</span>) &#123;<br>    System.out.println(<span class="hljs-string">&quot;所需角色: &quot;</span> + Arrays.toString(authAnnotation.roles()));<br>    System.out.println(<span class="hljs-string">&quot;权限等级: &quot;</span> + authAnnotation.level());<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-Spring风格的注解处理器示例"><a href="#2-Spring风格的注解处理器示例" class="headerlink" title="2. Spring风格的注解处理器示例"></a>2.
+          Spring风格的注解处理器示例</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuthInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">HandlerInterceptor</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">preHandle</span><span class="hljs-params">(HttpServletRequest request, </span><br><span class="hljs-params">                           HttpServletResponse response, </span><br><span class="hljs-params">                           Object handler)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <br>        <span class="hljs-type">HandlerMethod</span> <span class="hljs-variable">handlerMethod</span> <span class="hljs-operator">=</span> (HandlerMethod) handler;<br>        <span class="hljs-type">Auth</span> <span class="hljs-variable">auth</span> <span class="hljs-operator">=</span> handlerMethod.getMethodAnnotation(Auth.class);<br>        <br>        <span class="hljs-keyword">if</span> (auth != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-comment">// 实际权限验证逻辑</span><br>            <span class="hljs-keyword">if</span> (!checkAuth(request, auth.roles(), auth.level())) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AuthException</span>(auth.message());<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkAuth</span><span class="hljs-params">(HttpServletRequest request, </span><br><span class="hljs-params">                             String[] requiredRoles, </span><br><span class="hljs-params">                             <span class="hljs-type">int</span> requiredLevel)</span> &#123;<br>        <span class="hljs-comment">// 实现验证逻辑</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="五、高级特性"><a href="#五、高级特性" class="headerlink" title="五、高级特性"></a>五、高级特性</h2>
+        <h3 id="1-注解与泛型结合"><a href="#1-注解与泛型结合" class="headerlink" title="1. 注解与泛型结合"></a>1. 注解与泛型结合</h3>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Target(ElementType.TYPE_USE)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> NotNull &#123;&#125;<br><br><span class="hljs-comment">// 使用</span><br>List&lt;<span class="hljs-meta">@NotNull</span> String&gt; names = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h3 id="2-注解处理器（编译时处理）"><a href="#2-注解处理器（编译时处理）" class="headerlink" title="2. 注解处理器（编译时处理）"></a>2. 注解处理器（编译时处理）
+        </h3>
+        <p>通过实现<code>AbstractProcessor</code>创建注解处理器：</p>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-meta">@SupportedAnnotationTypes(&quot;com.example.MyAnnotation&quot;)</span><br><span class="hljs-meta">@SupportedSourceVersion(SourceVersion.RELEASE_11)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyAnnotationProcessor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractProcessor</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">process</span><span class="hljs-params">(Set&lt;? extends TypeElement&gt; annotations, </span><br><span class="hljs-params">                         RoundEnvironment roundEnv)</span> &#123;<br>        <span class="hljs-comment">// 处理注解逻辑</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h2 id="六、常见框架注解对比"><a href="#六、常见框架注解对比" class="headerlink" title="六、常见框架注解对比"></a>六、常见框架注解对比</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>注解类型</th>
+              <th>Java标准</th>
+              <th>Spring框架</th>
+              <th>JPA&#x2F;Hibernate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>类级别</strong></td>
+              <td><code>@Deprecated</code></td>
+              <td><code>@Component</code></td>
+              <td><code>@Entity</code></td>
+            </tr>
+            <tr>
+              <td><strong>字段级别</strong></td>
+              <td><code>@SuppressWarnings</code></td>
+              <td><code>@Autowired</code></td>
+              <td><code>@Column</code></td>
+            </tr>
+            <tr>
+              <td><strong>方法级别</strong></td>
+              <td><code>@Override</code></td>
+              <td><code>@RequestMapping</code></td>
+              <td><code>@Transient</code></td>
+            </tr>
+            <tr>
+              <td><strong>参数级别</strong></td>
+              <td>-</td>
+              <td><code>@RequestParam</code></td>
+              <td><code>@Param</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="七、最佳实践"><a href="#七、最佳实践" class="headerlink" title="七、最佳实践"></a>七、最佳实践</h2>
+        <ol>
+          <li>
+            <p><strong>命名规范</strong>：</p>
+            <ul>
+              <li>注解名称应明确表达其用途</li>
+              <li>使用名词或形容词（如<code>@Nullable</code>, <code>@Test</code>）</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>文档说明</strong>：</p>
+            <ul>
+              <li>使用JavaDoc说明注解用途</li>
+              <li>标注是否线程安全</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>性能考虑</strong>：</p>
+            <ul>
+              <li>运行时注解会增加反射开销</li>
+              <li>频繁调用的代码避免过多注解检查</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>组合注解</strong>：</p>
+            <ul>
+              <li>Spring风格的元注解组合<figure class="highlight java">
+                  <table>
+                    <tr>
+                      <td class="gutter">
+                        <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                      </td>
+                      <td class="code">
+                        <pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/v1&quot;)</span><br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> ApiV1Controller &#123;&#125;<br></code></pre>
+                      </td>
+                    </tr>
+                  </table>
+                </figure>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>验证注解</strong>：</p>
+            <ul>
+              <li>结合Bean Validation使用<figure class="highlight java">
+                  <table>
+                    <tr>
+                      <td class="gutter">
+                        <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                      </td>
+                      <td class="code">
+                        <pre><code class="hljs java"><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Target(ElementType.FIELD)</span><br><span class="hljs-meta">@Constraint(validatedBy = PhoneValidator.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> ValidPhone &#123;<br>    String <span class="hljs-title function_">message</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&quot;Invalid phone number&quot;</span>;<br>    Class&lt;?&gt;[] groups() <span class="hljs-keyword">default</span> &#123;&#125;;<br>    Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Payload</span>&gt;[] payload() <span class="hljs-keyword">default</span> &#123;&#125;;<br>&#125;<br></code></pre>
+                      </td>
+                    </tr>
+                  </table>
+                </figure>
+              </li>
+            </ul>
+          </li>
+        </ol>
+        <p>通过合理使用注解，可以极大提高代码的可读性和可维护性，同时减少样板代码。在Spring等现代框架中，注解已成为核心编程范式之一。</p>
+        <div class="article-footer fs14">
+          <section id="share">
+            <div class="header"><span>分享文章</span></div>
+            <div class="body">
+              <div class="link"><input class="copy-area" readonly id="copy-link"
+                  value="%e8%87%aa%e5%ae%9a%e4%b9%89%e6%b3%a8%e8%a7%a3%e3%80%81%e5%85%83%e6%b3%a8%e8%a7%a3.html"></div>
+              <div class="social-wrap dis-select"><a class="social share-item wechat"
+                  onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a
+                  class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer"
+                  href="https://service.weibo.com/share/share.php?url=https://chinaai.cc.cd/posts/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E3%80%81%E5%85%83%E6%B3%A8%E8%A7%A3.html&amp;title=%e8%87%aa%e5%ae%9a%e4%b9%89%e6%b3%a8%e8%a7%a3%e3%80%81%e5%85%83%e6%b3%a8%e8%a7%a3%20-%20Alan&amp;summary=Java%20%e6%b3%a8%e8%a7%a3%ef%bc%88Annotations%ef%bc%89%e4%b8%80%e3%80%81%e6%b3%a8%e8%a7%a3%e5%9f%ba%e7%a1%80%e6%a6%82%e5%bf%b51.%20%e6%b3%a8%e8%a7%a3%e7%9a%84%e6%9c%ac%e8%b4%a8%e4%b8%80%e7%a7%8d%e5%85%83%e6%95%b0%e6%8d%ae%e5%bd%a2%e5%bc%8f%ef%bc%8c%e4%b8%ba%e4%bb%a3%e7%a0%81%e6%8f%90%e4%be%9b%e9%99%84%e5%8a%a0%e4%bf%a1%e6%81%af%e4%b8%8d%e4%bc%9a%e7%9b%b4%e6%8e%a5%e5%bd%b1%e5%93%8d%e4%bb%a3%e7%a0%81%e9%80%bb%e8%be%91%ef%bc%8c%e4%bd%86%e5%8f%af%e4%bb%a5%e8%a2%ab%e7%bc%96%e8%af%91%e5%99%a8%e6%88%96%e8%bf%90%e8%a1%8c%e6%97%b6%e7%8e%af%e5%a2%83%e4%bd%bf%e7%94%a8%e4%bb%a5@%e7%ac%a6%e5%8f%b7%e5%bc%80%e5%a4%b4%ef%bc%8c%e5%a6%82@Override2.%20%e6%b3%a8%e8%a7%a3%e7%9a%84%e4%bd%9c%e7%94%a8%e7%bc%96%e8%af%91%e6%a3%80%e6%9f%a5%ef%bc%9a%e5%a6%82@..."><img
+                    class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a
+                  class="social share-item email"
+                  href="mailto:?subject=自定义注解、元注解 - Alan&amp;body=https://chinaai.cc.cd/posts/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E3%80%81%E5%85%83%E6%B3%A8%E8%A7%A3.html"
+                  rel="external nofollow noreferrer"><img class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a
+                  class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img
+                    class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a>
+              </div>
+              <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0"><img class="lazy"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                  data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&amp;data=https://chinaai.cc.cd/posts/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E3%80%81%E5%85%83%E6%B3%A8%E8%A7%A3.html">
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+      <div class="related-wrap" id="read-next">
+        <section class="body">
+          <div class="item" id="prev">
+            <div class="note">较新文章</div><a
+              href="%e5%8f%8d%e5%b0%84%e6%9c%ba%e5%88%b6%ef%bc%9aClass%e7%b1%bb%e3%80%81%e5%8a%a8%e6%80%81%e4%bb%a3%e7%90%86%e3%80%81%e6%b3%a8%e8%a7%a3%e8%a7%a3%e6%9e%90.html">Java反射机制</a>
+          </div>
+          <div class="item" id="next">
+            <div class="note">较早文章</div><a
+              href="Lambda%e8%a1%a8%e8%be%be%e5%bc%8f%e4%b8%8e%e6%96%b9%e6%b3%95%e5%bc%95%e7%94%a8.html">Lambda表达式与方法引用</a>
+          </div>
+        </section>
+      </div>
+      <div class="related-wrap" id="related-posts">
+        <section class="header">
+          <div class="title cap theme">您可能感兴趣的文章</div>
+        </section>
+        <section class="body">
+          <div class="related-posts"><a class="item"
+              href="Lambda%e8%a1%a8%e8%be%be%e5%bc%8f%e4%b8%8e%e6%96%b9%e6%b3%95%e5%bc%95%e7%94%a8.html"
+              title="Lambda表达式与方法引用"><span class="title">Lambda表达式与方法引用</span></a><a class="item"
+              href="Optional%e7%b1%bb.html" title="Optional类"><span class="title">Optional类</span></a></div>
+        </section>
+      </div>
+      <div class="related-wrap md-text" id="comments">
+        <section class="header cmt-title cap theme">
+          <p>快来参与讨论吧~</p>
+        </section>
+        <section class="body cmt-body giscus"><svg class="loading"
+            style="vertical-align:middle;fill:currentColor;overflow:hidden" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="2709">
+            <path
+              d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z"
+              p-id="2710"></path>
+          </svg>
+          <div id="giscus" src="../../giscus.app/client.js" data-repo="honchoosy/blog" data-repo-id="R_kgDONmjawA"
+            data-category="Announcements" data-category-id="DIC_kwDONmjawM4ClyM5" data-mapping="pathname"
+            data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+            data-theme="light" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+        </section>
+      </div>
+      <footer class="page-footer footnote">
+        <hr>
+        <div class="sitemap">
+          <div class="sitemap-group"><span class="fs15">博客</span><a href="../social/stats/index.html">数据统计</a><a
+              href="../update/index.html">更新日志</a><a href="../document/policy/index.html">隐私政策</a><a
+              href="../document/disclaimer/index.html">免责声明</a></div>
+          <div class="sitemap-group"><span class="fs15">维基</span><a
+              href="../wiki/tags/%e9%a1%b9%e7%9b%ae/index.html">项目</a><a
+              href="../wiki/tags/%e6%96%87%e6%a1%a3/index.html">文档</a><a
+              href="../wiki/tags/%e7%ac%94%e8%ae%b0/index.html">笔记</a><a
+              href="../wiki/tags/%e7%ad%94%e7%96%91/index.html">答疑</a></div>
+          <div class="sitemap-group"><span class="fs15">探索</span><a
+              href="../explore/sites/%e6%94%b6%e8%97%8f%e7%9a%84%e7%ab%99%e7%82%b9.html">我的站点</a><a
+              href="../explore/notes/%e6%8e%a2%e7%b4%a2%e8%80%85%e7%ac%94%e8%ae%b0.html">年度计划</a></div>
+          <div class="sitemap-group"><span class="fs15">社交</span><a target="_blank"
+              rel="noopener external nofollow noreferrer" href="https://www.travellings.cn/go-by-clouds.html">开往</a><a
+              target="_blank" rel="noopener external nofollow noreferrer" href="https://travel.moe/go">异次元之旅</a></div>
+        </div>
+        <div class="text">
+          <p>本站由 <a href="../index.html">Honcho</a> 使用 <a target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a>
+            主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+        </div>
+      </footer>
+      <div class="main-mask" onclick="sidebar.dismiss()"></div>
+    </div>
+    <aside class="l_right">
+      <div class="widgets">
+        <widget class="widget-wrapper toc" id="data-toc" collapse="false">
+          <div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action"
+              onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+              </svg></a></div>
+          <div class="widget-body">
+            <ol class="toc">
+              <li class="toc-item toc-level-1"><a class="toc-link"
+                  href="#Java-%E6%B3%A8%E8%A7%A3%EF%BC%88Annotations%EF%BC%89"><span class="toc-text">Java
+                    注解（Annotations）</span></a>
+                <ol class="toc-child">
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B8%80%E3%80%81%E6%B3%A8%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span
+                        class="toc-text">一、注解基础概念</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E6%B3%A8%E8%A7%A3%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-text">1.
+                            注解的本质</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-%E6%B3%A8%E8%A7%A3%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">2.
+                            注解的作用</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%BA%8C%E3%80%81%E5%85%83%E6%B3%A8%E8%A7%A3%EF%BC%88Meta-Annotations%EF%BC%89"><span
+                        class="toc-text">二、元注解（Meta-Annotations）</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-Retention-%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span
+                            class="toc-text">1. @Retention - 定义注解的生命周期</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-Target-%E6%8C%87%E5%AE%9A%E6%B3%A8%E8%A7%A3%E5%8F%AF%E4%BB%A5%E5%BA%94%E7%94%A8%E7%9A%84%E4%BD%8D%E7%BD%AE"><span
+                            class="toc-text">2. @Target - 指定注解可以应用的位置</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#3-Documented-%E6%8E%A7%E5%88%B6%E6%98%AF%E5%90%A6%E5%87%BA%E7%8E%B0%E5%9C%A8Javadoc%E4%B8%AD"><span
+                            class="toc-text">3. @Documented - 控制是否出现在Javadoc中</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#4-Inherited-%E5%85%81%E8%AE%B8%E5%AD%90%E7%B1%BB%E7%BB%A7%E6%89%BF%E7%88%B6%E7%B1%BB%E7%9A%84%E6%B3%A8%E8%A7%A3"><span
+                            class="toc-text">4. @Inherited - 允许子类继承父类的注解</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#5-Repeatable-Java-8-%E5%85%81%E8%AE%B8%E9%87%8D%E5%A4%8D%E4%BD%BF%E7%94%A8%E5%90%8C%E4%B8%80%E6%B3%A8%E8%A7%A3"><span
+                            class="toc-text">5. @Repeatable (Java 8+) - 允许重复使用同一注解</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B8%89%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91"><span
+                        class="toc-text">三、自定义注解开发</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-text">1. 基本语法</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-%E6%B3%A8%E8%A7%A3%E5%85%83%E7%B4%A0%E7%B1%BB%E5%9E%8B%E9%99%90%E5%88%B6"><span
+                            class="toc-text">2. 注解元素类型限制</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#3-%E5%AE%8C%E6%95%B4%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E7%A4%BA%E4%BE%8B"><span
+                            class="toc-text">3. 完整自定义注解示例</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#4-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span
+                            class="toc-text">4. 使用自定义注解</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E5%9B%9B%E3%80%81%E6%B3%A8%E8%A7%A3%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E5%A4%84%E7%90%86"><span
+                        class="toc-text">四、注解的运行时处理</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E5%8F%8D%E5%B0%84API%E8%8E%B7%E5%8F%96%E6%B3%A8%E8%A7%A3"><span class="toc-text">1.
+                            反射API获取注解</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-Spring%E9%A3%8E%E6%A0%BC%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%E7%A4%BA%E4%BE%8B"><span
+                            class="toc-text">2. Spring风格的注解处理器示例</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%BA%94%E3%80%81%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7"><span
+                        class="toc-text">五、高级特性</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#1-%E6%B3%A8%E8%A7%A3%E4%B8%8E%E6%B3%9B%E5%9E%8B%E7%BB%93%E5%90%88"><span
+                            class="toc-text">1. 注解与泛型结合</span></a></li>
+                      <li class="toc-item toc-level-3"><a class="toc-link"
+                          href="#2-%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%EF%BC%88%E7%BC%96%E8%AF%91%E6%97%B6%E5%A4%84%E7%90%86%EF%BC%89"><span
+                            class="toc-text">2. 注解处理器（编译时处理）</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E5%85%AD%E3%80%81%E5%B8%B8%E8%A7%81%E6%A1%86%E6%9E%B6%E6%B3%A8%E8%A7%A3%E5%AF%B9%E6%AF%94"><span
+                        class="toc-text">六、常见框架注解对比</span></a></li>
+                  <li class="toc-item toc-level-2"><a class="toc-link"
+                      href="#%E4%B8%83%E3%80%81%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span
+                        class="toc-text">七、最佳实践</span></a></li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+          <div class="widget-footer"><a class="edit" target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://github.com/honcholee/blog_hexo/tree/main/source/_posts/2025/05/自定义注解、元注解.md"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M11.943 1.25H13.5a.75.75 0 0 1 0 1.5H12c-2.378 0-4.086.002-5.386.176c-1.279.172-2.05.5-2.62 1.069c-.569.57-.896 1.34-1.068 2.619c-.174 1.3-.176 3.008-.176 5.386s.002 4.086.176 5.386c.172 1.279.5 2.05 1.069 2.62c.57.569 1.34.896 2.619 1.068c1.3.174 3.008.176 5.386.176s4.086-.002 5.386-.176c1.279-.172 2.05-.5 2.62-1.069c.569-.57.896-1.34 1.068-2.619c.174-1.3.176-3.008.176-5.386v-1.5a.75.75 0 0 1 1.5 0v1.557c0 2.309 0 4.118-.19 5.53c-.194 1.444-.6 2.584-1.494 3.479c-.895.895-2.035 1.3-3.48 1.494c-1.411.19-3.22.19-5.529.19h-.114c-2.309 0-4.118 0-5.53-.19c-1.444-.194-2.584-.6-3.479-1.494c-.895-.895-1.3-2.035-1.494-3.48c-.19-1.411-.19-3.22-.19-5.529v-.114c0-2.309 0-4.118.19-5.53c.194-1.444.6-2.584 1.494-3.479c.895-.895 2.035-1.3 3.48-1.494c1.411-.19 3.22-.19 5.529-.19m4.827 1.026a3.503 3.503 0 0 1 4.954 4.953l-6.648 6.649c-.371.37-.604.604-.863.806a5.34 5.34 0 0 1-.987.61c-.297.141-.61.245-1.107.411l-2.905.968a1.492 1.492 0 0 1-1.887-1.887l.968-2.905c.166-.498.27-.81.411-1.107c.167-.35.372-.68.61-.987c.202-.26.435-.492.806-.863zm3.893 1.06a2.003 2.003 0 0 0-2.832 0l-.376.377c.022.096.054.21.098.338c.143.413.415.957.927 1.469a3.875 3.875 0 0 0 1.807 1.025l.376-.376a2.003 2.003 0 0 0 0-2.832m-1.558 4.391a5.397 5.397 0 0 1-1.686-1.146a5.395 5.395 0 0 1-1.146-1.686L11.218 9.95c-.417.417-.58.582-.72.76a3.84 3.84 0 0 0-.437.71c-.098.203-.172.423-.359.982l-.431 1.295l1.032 1.033l1.295-.432c.56-.187.779-.261.983-.358c.251-.12.49-.267.71-.439c.177-.139.342-.302.759-.718z"
+                  clip-rule="evenodd" />
+              </svg><span>编辑本文</span></a> <a class="top" onclick="util.scrollTop()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3" />
+                </g>
+              </svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
+              </svg><span>参与讨论</span></a></div>
+        </widget>
+      </div>
+    </aside>
+    <div class="float-panel blur"><button type="button" style="display:none" class="laptop-only rightbar-toggle mobile"
+        onclick="sidebar.rightbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+        </svg></button> <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile"
+        onclick="sidebar.leftbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+              d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z" />
+            <path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3" />
+          </g>
+        </svg></button></div>
+  </div>
+  <div class="scripts">
+    <script
+      type="text/javascript">let ctx = { date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" }, root: "/", search: {} }; if ((ctx.search.service = "local_search") == ctx.search.service) { let e = Object.assign({}, '{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}'); ctx.search[ctx.search.service] = e } let def = { avatar: "https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg", cover: "https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg" }, deps = { jquery: "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js", marked: "https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js" }</script>
+    <script
+      type="text/javascript">let utils = { css: (e, t, r, a) => { var o, n, s = window.document, i = s.createElement("link"), d = (n = t || (o = (s.body || s.getElementsByTagName("head")[0]).childNodes)[o.length - 1], s.styleSheets); if (a) for (var l in a) a.hasOwnProperty(l) && i.setAttribute(l, a[l]); i.rel = "stylesheet", i.href = e, i.media = "only x", function e(t) { if (s.body) return t(); setTimeout(function () { e(t) }) }(function () { n.parentNode.insertBefore(i, t ? n : n.nextSibling) }); function f(e) { for (var t = i.href, r = d.length; r--;)if (d[r].href === t) return e(); setTimeout(function () { f(e) }) } function u() { i.addEventListener && i.removeEventListener("load", u), i.media = r || "all" } return i.addEventListener && i.addEventListener("load", u), i.onloadcssdefined = f, f(u), i }, js: (o, n) => new Promise((t, e) => { var r = document.createElement("script"); if (o.startsWith("../index.html") && (o = ctx.root + o.substring(1)), r.src = o, n) for (var a of Object.keys(n)) r[a] = n[a]; else r.async = !0; r.onerror = e, r.onload = r.onreadystatechange = function () { var e = this.readyState; e && "loaded" !== e && "complete" !== e || (r.onload = r.onreadystatechange = null, t()) }, document.head.appendChild(r) }), jq: e => { "undefined" == typeof jQuery ? utils.js(deps.jquery).then(e) : e() }, onLoading: e => { e && $(e).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>') }, onLoadSuccess: e => { e && $(e).find(".loading-wrap").remove() }, onLoadFailure: e => { e && ($(e).find(".loading-wrap svg").remove(), $(e).find(".loading-wrap").append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>'), $(e).find(".loading-wrap").addClass("error")) }, request: (n, s, i, d) => { let l = 3; utils.onLoading(n), function o() { new Promise((t, e) => { let r = 0, a = setTimeout(() => { 0 === r && (r = 2, a = null, e("请求超时"), 0 == l) && d() }, 5e3); fetch(s).then(function (e) { if (2 !== r && (clearTimeout(a), t(e), a = null, r = 1), e.ok) return e.json(); throw new Error("Network response was not ok.") }).then(function (e) { l = 0, utils.onLoadSuccess(n), i(e) }).catch(function (e) { 0 < l ? (--l, setTimeout(() => { o() }, 5e3)) : (utils.onLoadFailure(n), d()) }) }) }() } }</script>
+    <script>let sidebar = { leftbar: () => { l_body && (l_body.toggleAttribute("leftbar"), l_body.removeAttribute("rightbar")) }, rightbar: () => { l_body && (l_body.toggleAttribute("rightbar"), l_body.removeAttribute("leftbar")) }, dismiss: () => { l_body && (l_body.removeAttribute("leftbar"), l_body.removeAttribute("rightbar")) }, toggleTOC: () => { document.querySelector("#data-toc").classList.toggle("collapse") } }</script>
+    <script
+      type="text/javascript">(() => { var e; for (e of document.querySelectorAll(".tag-subtree.parent-tag > a > .tag-switcher-wrapper")) e.addEventListener("click", e => { e.target.closest(".tag-subtree.parent-tag").classList.toggle("expanded"), e.preventDefault() }); var t = new URLSearchParams(window.location.search).get("tag"); if (t) { let e = document.querySelector(`.tag-subtree[data-tag="${t}"]`); if (e) for (e.querySelector("a").classList.add("active"); e;)e.classList.add("expanded"), e = e.parentElement.closest(".tag-subtree.parent-tag") } })()</script>
+    <script src="../js/main226a.js?v=1.29.1" defer></script>
+    <script
+      type="text/javascript">let applyTheme = e => { "auto" === e ? document.documentElement.removeAttribute("data-theme") : document.documentElement.setAttribute("data-theme", e), applyThemeToGiscus(e) }, applyThemeToGiscus = e => { e = "auto" === e ? "preferred_color_scheme" : e; var t = document.getElementById("giscus"), t = (t && t.setAttribute("data-theme", e), document.querySelector("#comments > section.giscus > iframe")); t && (e = t.src.replace(/theme=[\w]+/, "theme=" + e), t.src = e) }, switchTheme = () => { let e; switch (document.documentElement.getAttribute("data-theme")) { case "light": e = "dark"; break; case "dark": e = "auto"; break; default: e = "light" }applyTheme(e), window.localStorage.setItem("Stellar.theme", e), hud?.toast?.({ light: "切换到浅色模式", dark: "切换到深色模式", auto: "切换到系统模式" }[e]) }; (() => { var e = window.localStorage.getItem("Stellar.theme"); null !== e && applyTheme(e) })()</script>
+    <script type="module">const el = document.querySelector('#comments #giscus');
+      util.viewportLazyload(el, load_discus, false);
+
+      function load_discus() {
+        if (!el) return;
+        try {
+          el.innerHTML = '';
+        } catch (error) {
+          console.error(error);
+        }
+        const script = document.createElement('script');
+        script.async = true;
+        for (const key of Object.keys(el.attributes)) {
+          const attr = el.attributes[key];
+          if (['class', 'id'].includes(attr.name) === false) {
+            script.setAttribute(attr.name, attr.value);
+          }
+        }
+        el.appendChild(script);
+      }</script>
+    <script
+      defer>window.addEventListener("DOMContentLoaded", s => { ctx.services = Object.assign({}, JSON.parse('{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"../js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"}}')); for (let e of Object.keys(ctx.services)) { let s = ctx.services[e].js; "siteinfo" == e ? (ctx.cardlinks = document.querySelectorAll("a.link-card[cardlink]"), 0 < ctx.cardlinks?.length && utils.js(s, { defer: !0 }).then(function () { setCardLink(ctx.cardlinks) })) : 0 < document.getElementsByClassName("ds-" + e)?.length && utils.jq(() => { e, utils.js(deps.marked).then(function () { utils.js(s, { defer: !0 }) }) }) } })</script>
+    <script>window.addEventListener("DOMContentLoaded", e => { ctx.search = { path: "/search.json" }, utils.js("../js/search/local-search.js", { defer: !0 }) })</script>
+    <script defer src="../../gcore.jsdelivr.net/npm/vanilla-lazyload%4017.3.1/dist/lazyload.min.js"></script>
+    <script>window.lazyLoadOptions = { elements_selector: ".lazy" }, window.addEventListener("LazyLoad::Initialized", function (n) { window.lazyLoadInstance = n.detail.instance }, !1), document.addEventListener("DOMContentLoaded", function () { window.lazyLoadInstance?.update() })</script>
+    <script>ctx.fancybox = { selector: ".timenode p>img,article p img,.tag-plugin>.image-bg>img,.atk-content>p>img", css: "/vendor/css/fancybox.css", js: "/vendor/js/fancybox.umd.js" }; var selector = "[data-fancybox]:not(.error)", checkInterval = (ctx.fancybox.selector && (selector += ", " + ctx.fancybox.selector), setInterval(function () { 0 !== document.querySelectorAll(selector).length && (clearInterval(checkInterval), utils.css(ctx.fancybox.css), utils.js(ctx.fancybox.js, { defer: !0 }).then(function () { Fancybox.bind(selector, { hideScrollbar: !1, Thumbs: { autoStart: !1 }, caption: (e, t) => t.triggerEl.alt || t.triggerEl.dataset.caption || null }) })) }, 1e3))</script>
+    <script>window.addEventListener("DOMContentLoaded", e => { let i = document.getElementById("swiper-api"); null != i && (utils.css("../../unpkg.com/swiper%4010.3.1/swiper-bundle.min.css"), utils.js("../../unpkg.com/swiper%4010.3.1/swiper-bundle.min.js", { defer: !0 }).then(function () { var e = i.getAttribute("effect") || "", t = "true" === i.getAttribute("homepage"); new Swiper(".swiper#swiper-api", { slidesPerView: "auto", spaceBetween: 8, centeredSlides: !t, effect: e, rewind: !t, loop: t, autoplay: !1, pagination: { el: ".swiper-pagination", clickable: !0 }, navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" } }) })) })</script>
+    <script defer src="../vendor/js/chatgpt.js"></script>
+    <script
+      defer>window.addEventListener("DOMContentLoaded", e => { new ChucklePostAI(Object.assign({ el: "article.content", css: "/css/_plugins/tianli_gpt" }, JSON.parse('{"enable":true,"js":"../vendor/js/chatgpt.js","field":"post","key":"5Q5mpqRK5DkwT1X9Gi5e","total_length":1000,"typewriter":true,"summary_directly":true,"rec_method":"all","hide_shuttle":true,"summary_toggle":false,"interface":{"name":"文章摘要","introduce":"我是文章辅助AI，点击下方的按钮，让我生成本文简介","version":"OpenAI","button":["介绍自己","推荐文章","生成摘要","矩阵穿梭"]}}'))) })</script>
+    <script>document.addEventListener("DOMContentLoaded", function () { window.codeElements = document.querySelectorAll(".code"), 0 < window.codeElements.length && (ctx.copycode = { default_text: "Copy", success_text: "Copied", toast: "复制成功" }, utils.js("../js/plugins/copycode.js")) })</script>
+    <script src="../js/extra.js"></script>
+    <script src="../vendor/js/snow.js"></script>
+    <script data-website-id="91357f39-3d88-42f3-bf11-e1c1206ac8ab"
+      src="../../logsphere.codepzj.cn/js/track.js"></script>
+  </div>
+  <script src="../vendor/js/echarts.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var t = document.getElementById("heatmapChart"); if (t) { let e = echarts.init(t, "light"); var a = [18, 18]; let i = (e => { let i = {}; return e.forEach(([e, t]) => { var [a] = e.split("-").map(Number); i[a] || (i[a] = []), i[a].push([e, t]) }), i })([["2023-01-26", 1], ["2023-01-27", 1], ["2023-01-30", 2], ["2023-02-02", 1], ["2023-04-06", 1], ["2023-04-10", 1], ["2023-04-17", 1], ["2023-06-20", 1], ["2024-02-22", 1], ["2024-02-27", 1], ["2024-03-01", 1], ["2024-04-02", 1], ["2024-04-30", 1], ["2025-03-30", 2], ["2025-05-04", 2], ["2025-05-05", 3], ["2025-05-10", 1], ["2025-05-11", 5], ["2025-12-20", 1], ["2025-12-21", 4], ["2025-12-22", 1], ["2025-12-23", 1], ["2026-01-08", 1], ["2026-01-18", 1], ["2026-03-01", 2], ["2026-03-09", 1], ["2026-03-13", 1], ["2026-03-14", 1], ["2026-03-21", 1], ["2026-03-22", 9]]), n = Object.keys(i).reverse(); var o = parseInt(t.getAttribute("year")) || (new Date).getFullYear(), t = n[n.length - 1], l = n[0]; (o < t || l < o) && (o = l), console.log("[hexo-graph]generateHeatmapChart|initYear:", o, "minYear:", t, "maxYear:", l), e.setOption({ grid: {}, tooltip: { position: "top", formatter: e => `${e.value[0]}: ${e.value[1]} Articles` }, calendar: { top: "10%", left: "left", right: "8%", range: o, cellSize: a, splitLine: { lineStyle: { color: "#E0E0E0", width: 1 } }, itemStyle: { borderWidth: 1, borderColor: "#E0E0E0" }, dayLabel: { show: !1 }, monthLabel: { show: !0 }, yearLabel: { show: !1 } }, visualMap: { show: !0, right: "8%", bottom: "5%", type: "piecewise", orient: "horizontal", text: ["More", "Less"], min: 0, max: Math.max(...i[o].map(e => e[1])), inRange: { color: ["#ACE7AE", "#69C16D", "#549F57"] } }, legend: { type: "scroll", icon: "none", data: n, orient: "vertical", top: "5%", right: "right", itemWidth: 20, itemHeight: 20, itemGap: 10, pageIconSize: 10, pageTextStyle: { fontSize: 14 }, selectedMode: "single" }, series: n.map(e => ({ type: "heatmap", coordinateSystem: "calendar", data: i[e], name: e, emphasis: { disabled: !0 }, silent: e !== o })) }), e.dispatchAction({ type: "legendSelect", name: o }), e.on("legendselectchanged", function (t) { console.log("[hexo-graph]generateHeatmapChart|legendselectchanged:", t); let a = Object.keys(t.selected).find(e => t.selected[e]); a && i[a] && e.setOption({ calendar: { range: a }, visualMap: { max: Math.max(...i[a].map(e => e[1])) }, series: n.map(e => ({ type: "heatmap", coordinateSystem: "calendar", data: i[e], name: e, emphasis: { disabled: !0 }, silent: e !== a })) }) }), e.on("click", function (e) { var t; "series" === e.componentType && ([e, t] = e.value[0].split("-"), window.location.href = "/archives/" + e + "/" + t) }) } })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("monthlyChart"); e && ((e = echarts.init(e, "light")).setOption({ xAxis: { type: "category", data: ["2023-01", "2023-02", "2023-04", "2023-06", "2024-02", "2024-03", "2024-04", "2025-03", "2025-05", "2025-12", "2026-01", "2026-03"], axisLabel: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }, yAxis: { type: "value", splitLine: { lineStyle: { type: "dashed", color: "#ccc" } } }, series: [{ name: "Articles", type: "line", data: [4, 1, 3, 1, 2, 1, 2, 2, 11, 7, 2, 15], smooth: !0, lineStyle: { color: "#5470C6", width: 2 }, itemStyle: { color: "#5470C6" }, areaStyle: { color: "rgba(84, 112, 198, 0.4)" }, symbolSize: 10, label: { show: !0, position: "top", formatter: e => e.value, fontSize: 14, color: "#000", fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }] }), e.on("click", function (e) { var [e, t] = e.name.split("-"); window.location.href = "/archives/" + e + "/" + t })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("tagsChart"); e && ((e = echarts.init(e, "light")).setOption({ tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" }, series: [{ type: "pie", radius: "60%", data: [{ name: "成长", value: 5 }, { name: "技术分享", value: 5 }, { name: "Java", value: 5 }, { name: "JAVA", value: 4 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "数据结构", value: 3 }, { name: "面向对象编程", value: 3 }], label: { position: "outside", formatter: "{b} {c} ({d}%)", fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" }, color: ["#5470C6", "#91CC75", "#FAC858", "#EE6666", "#73C0DE", "#3BA272", "#FC8452", "#9A60B4"], labelLine: { show: !0 } }], legend: { bottom: "0", left: "center", data: [{ name: "成长", value: 5 }, { name: "技术分享", value: 5 }, { name: "Java", value: 5 }, { name: "JAVA", value: 4 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "数据结构", value: 3 }, { name: "面向对象编程", value: 3 }].map(e => e.name), textStyle: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } } }), e.on("click", function (e) { window.location.href = "/tags/" + e.name })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("categoriesChart"); e && ((e = echarts.init(e, "light")).setOption({ xAxis: { type: "value", splitLine: { lineStyle: { type: "dashed", color: "#ccc" } } }, yAxis: { type: "category", data: [{ name: "JAVA", value: 9 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "软件设计", value: 2 }, { name: "读书笔记", value: 2 }].map(e => e.name).reverse(), axisLabel: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }, series: [{ name: "Category Count", type: "bar", data: [{ name: "JAVA", value: 9 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "软件设计", value: 2 }, { name: "读书笔记", value: 2 }].map(e => e.value).reverse(), label: { show: !0, position: "right", formatter: e => e.value, fontSize: 14, color: "#000", fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" }, itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#91CC75" }, { offset: 1, color: "#73C0DE" }]) } }] }), e.on("click", function (e) { window.location.href = "/categories/" + e.name })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var t = document.getElementById("categoriesTreeChart"); t && ((t = echarts.init(t, "light")).setOption({ title: { text: "操作提示：单击展开分类，双击进入具体分类页面", textStyle: { fontSize: 12, color: "#999", fontWeight: "normal" }, bottom: 0, left: "center" }, tooltip: { trigger: "item", triggerOn: "mousemove" }, series: [{ type: "tree", data: [{ name: "Categories", children: [{ name: "技术教程", children: [], count: 1, path: "技术教程" }, { name: "设计开发", children: [{ name: "技术分享", children: [], count: 1, path: "设计开发/技术分享" }], count: 1, path: "设计开发" }, { name: "中间件", children: [], count: 3, path: "中间件" }, { name: "微服务", children: [], count: 3, path: "微服务" }, { name: "Spring注解", children: [], count: 1, path: "Spring注解" }, { name: "JAVA高级", children: [], count: 1, path: "JAVA高级" }, { name: "JAVA", children: [], count: 9, path: "JAVA" }, { name: "软件设计", children: [], count: 2, path: "软件设计" }, { name: "分布式", children: [], count: 1, path: "分布式" }, { name: "产品", children: [], count: 1, path: "产品" }, { name: "读书笔记", children: [], count: 2, path: "读书笔记" }], count: 0, path: "" }], initialTreeDepth: -1, top: "5%", bottom: "10%", left: "0%", right: "0%", symbolSize: 15, layout: "orthogonal", orient: "TB", itemStyle: { color: "#91CC75", borderColor: "#73C0DE" }, label: { position: "bottom", verticalAlign: "middle", align: "center", fontSize: 14, distance: 28, formatter: function (t) { return t.data.name + (t.data.count ? " (" + t.data.count + ")" : "") } }, leaves: { label: { position: "top", verticalAlign: "middle", align: "center" } }, emphasis: { focus: "descendant" }, expandAndCollapse: !0 }] }), t.on("dblclick", function (t) { t.data && t.data.path && (window.location.href = "/categories/" + t.data.path) })) })</script>
+</body>
+<!-- Mirrored from chinaai.cc.cd/posts/自定义注解、元注解.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Mar 2026 16:02:21 GMT -->
+
+</html>

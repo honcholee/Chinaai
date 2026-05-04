@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<!-- Mirrored from chinaai.cc.cd/posts/Kafka学习笔记.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Mar 2026 16:02:21 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="Kafka%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0.html">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <meta name="theme-color" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#000">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net/" crossorigin>
+  <link rel="dns-prefetch" href="https://comment.codepzj.cn/">
+  <link rel="preconnect" href="https://comment.codepzj.cn/" crossorigin>
+  <link rel="dns-prefetch" href="https://image.codepzj.cn/">
+  <link rel="preconnect" href="https://image.codepzj.cn/" crossorigin>
+  <link rel="dns-prefetch" href="https://npm.elemecdn.com/">
+  <link rel="preconnect" href="https://npm.elemecdn.com/" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Content-Security-Policy"
+    content=" default-src 'self' https:; block-all-mixed-content; base-uri 'self' https:; form-action 'self' https:; worker-src 'self' https:; connect-src 'self' https: *; img-src 'self' data: https: *; media-src 'self' https: *; font-src 'self' data: https: *; frame-src 'self' https: *; manifest-src 'self' https: *; child-src https:; script-src 'self' https: 'unsafe-inline' *; style-src 'self' https: 'unsafe-inline' *; ">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
+  <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+  <meta content="telephone=no" name="format-detection">
+  <link rel="icon" type="image/jpeg" href="../assets/images/avatar.jpeg">
+  <link rel="shortcut icon" type="image/x-icon" href="../404.html">
+  <link rel="preload" href="../css/extra.css" as="style">
+  <link rel="alternate" href="../atom.xml" title="Kafka学习笔记 | Honcho" type="application/atom+xml">
+  <title>Kafka学习笔记 | Honcho</title>
+  <meta name="author" content="honcho">
+  <meta name="keywords"
+    content="honcho,Honcho的博客,Honcho的blog,chinaai.cc.cd,技术分享,生活思考,产品思考,设计开发,hexo,前端,web,js,html,css,vue,react,angular,node,python,java,go,rust,swift,php,mysql,mongodb,redis,linux,docker,kubernetes,git,github,markdown,seo,webpush,web-push,web-push-notification,web-push-api,web-push-protocol,web-push-service-worker,web-push-api-service-worker,web-push-api-service-worker-protocol,web-push-api-service-worker-specification,web-push-api-service-worker-specification-draft,web-push-api-service-worker-specification-draft-01,web-push-api-service-worker-specification-draft-02,web-push-api-service-worker-specification-draft-03,web-push-api-service-worker-specification-draft-04,web-push-api-service-worker-specification-draft">
+  <meta name="description" content="Kafka学习笔记第一章：基础知识Producer：消息生产者，就是向Kafka broker 发消息的客户端。
+Consumer：消息消费者，向Kafka broker 取消息的客户端。
+Consumer Group:消费者组，由多个consumer组成。消费者组内每个消费者负责消费不同分区...">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kafka学习笔记 | Honcho">
+  <meta property="og:image" content="../assets/images/404.html">
+  <meta property="og:site_name" content="honcho">
+  <meta property="og:url" content="Kafka%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0.html">
+  <link rel="stylesheet" href="../css/main226a.css?v=1.29.1">
+  <meta name="baidu-site-verification" content="codeva-NVhlE81dTF">
+  <meta name="msvalidate.01" content="30CD55A935E75B69A1565E31EA21513B">
+  <meta name="google-site-verification" content="Qy3yx1TuuE2ugoMZxLVO06pQ0cGF_oy7Ruemxkv3Ro0">
+  <link rel="stylesheet" href="../vendor/css/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../css/extra.css">
+  <link rel="stylesheet" href="../../cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">
+  <meta name="generator" content="Hexo 7.3.0">
+</head>
+
+<body>
+  <div class="l_body s:aa content tech" id="start" layout="post">
+    <aside class="l_left">
+      <div class="leftbar-container">
+        <header class="header">
+          <div class="logo-wrap"><a class="avatar" href="../social/about/index.html">
+              <div class="bg"
+                style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp)">
+              </div><img no-lazy src="../assets/images/avatar.jpeg" alt="avatar"
+                onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';">
+            </a><a class="title" href="../index.html">
+              <div class="main" ff="title">Honcho</div>
+              <div class="sub normal cap">代码,硬件,工作</div>
+              <div class="sub hover cap" style="opacity:0">chinaai.cc.cd</div>
+            </a></div>
+        </header>
+        <div class="nav-area">
+          <div class="search-wrapper" id="search-wrapper">
+            <form class="search-form">
+              <div class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg
+                  t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560"
+                  width="200" height="200">
+                  <path
+                    d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z"
+                    p-id="1561"></path>
+                  <path
+                    d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z"
+                    p-id="1562"></path>
+                </svg></div><input type="text" class="search-input" id="search-input" placeholder="站内搜索">
+            </form>
+            <div id="search-result"></div>
+            <div class="search-no-result">没有找到内容！</div>
+          </div>
+          <nav class="menu dis-select"><a class="nav-item active" title="首页" href="../index.html"
+              style="color:#1bcdfc"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z"
+                  opacity=".5" />
+              </svg></a><a class="nav-item" title="文档" href="../wiki/index.html" style="color:#3dc550"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z" />
+                <path fill="currentColor"
+                  d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z"
+                  opacity=".5" />
+                <path fill="currentColor"
+                  d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z" />
+              </svg></a><a class="nav-item" title="探索"
+              href="../explore/sites/%e6%94%b6%e8%97%8f%e7%9a%84%e7%ab%99%e7%82%b9.html" style="color:#fa6400"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5" />
+                <path fill="currentColor"
+                  d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203" />
+              </svg></a><a class="nav-item" title="社交" href="../social/friends/index.html" style="color:#f44336"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                  d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262"
+                  opacity=".5" />
+                <path fill="currentColor"
+                  d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502" />
+              </svg></a></nav>
+        </div>
+        <div class="widgets">
+          <widget class="widget-wrapper post-list">
+            <div class="widget-header dis-select"><span class="name">最近更新</span><a class="cap-action" id="rss"
+                title="Subscribe" href="../atom.xml"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                  viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M5 21q-.825 0-1.412-.587T3 19q0-.825.588-1.412T5 17q.825 0 1.413.588T7 19q0 .825-.587 1.413T5 21m13.5 0q-.65 0-1.088-.475T16.9 19.4q-.275-2.425-1.312-4.537T12.9 11.1q-1.65-1.65-3.762-2.687T4.6 7.1q-.65-.075-1.125-.512T3 5.5q0-.65.45-1.062t1.075-.363q3.075.275 5.763 1.563t4.737 3.337q2.05 2.05 3.338 4.738t1.562 5.762q.05.625-.363 1.075T18.5 21m-6 0q-.625 0-1.075-.437T10.85 19.5q-.225-1.225-.787-2.262T8.65 15.35q-.85-.85-1.888-1.412T4.5 13.15q-.625-.125-1.062-.575T3 11.5q0-.65.45-1.075t1.075-.325q1.825.25 3.413 1.063t2.837 2.062q1.25 1.25 2.063 2.838t1.062 3.412q.1.625-.325 1.075T12.5 21" />
+                </svg></a></div>
+            <div class="widget-body fs14"><a class="item title" href="ai-entrepreneur.html"><span class="title">AI 优先创业
+                  - 普通人致富的最佳路径</span></a><a class="item title" href="aqal-thinking.html"><span class="title">万物认知地图 -
+                  天才思考的模型</span></a><a class="item title" href="deep-work-routine.html"><span class="title">深度工作 Routine
+                  - 4小时完成8小时的工作</span></a><a class="item title" href="first-day-new-life.html"><span
+                  class="title">全新生活第一天 - 深度自我反思的方法论</span></a><a class="item title" href="life-balance.html"><span
+                  class="title">人生的试错期与爆发期 - 平静与进步的平衡</span></a><a class="item title" href="mental-order.html"><span
+                  class="title">掌控注意力 - 走出焦虑与迷茫的唯一路径</span></a><a class="item title"
+                href="openclaw-deployment-guide.html"><span class="title">Windows 环境下部署 OpenClaw 完整指南</span></a><a
+                class="item title" href="reading-habit.html"><span class="title">我的阅读方法 - 每天5分钟，让阅读成为习惯</span></a></div>
+          </widget>
+        </div>
+        <footer class="footer dis-select">
+          <div class="social-wrap"><a class="social" href="https://github.com/honcholee" target="_blank"
+              rel="external nofollow noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/github.svg" alt="github"></a><a class="social" href="mailto:fignet@163.com"
+              rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="../assets/footer/envelopes-bulk.svg"></a><a class="social"
+              href="../social/about/index.html#comments" rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/comment.svg" alt="comment"></a><a class="social"
+              href="javaScript:switchTheme();" rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/moon.svg" alt="moon"></a><a class="social" href="../settings/index.html"
+              rel="noopener noreferrer"><img class="lazy"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                data-src="/assets/footer/settings.svg" alt="settings"></a></div>
+        </footer>
+      </div>
+    </aside>
+    <div class="l_main" id="main">
+      <div class="article banner top">
+        <div class="content">
+          <div class="top bread-nav footnote">
+            <div class="left">
+              <div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="../index.html">主页</a> <span
+                  class="sep"></span><a class="cap breadcrumb" href="../index.html">文章</a><span class="sep"></span><a
+                  class="cap breadcrumb-link" href="../categories/%e4%b8%ad%e9%97%b4%e4%bb%b6/index.html">中间件</a></div>
+              <div class="flex-row" id="post-meta"><span class="text created">发布于：<time
+                    datetime="2025-05-04T14:55:15.000Z">2025-05-04</time></span><span class="sep updated"></span><span
+                  class="text updated">更新于：<time datetime="2025-05-04T14:55:15.000Z">2025-05-04</time></span></div>
+            </div>
+          </div>
+          <div class="bottom only-title">
+            <div class="text-area">
+              <h1 class="text title"><span>Kafka学习笔记</span></h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <article class="md-text content">
+        <h3 id="Kafka学习笔记"><a href="#Kafka学习笔记" class="headerlink" title="Kafka学习笔记"></a>Kafka学习笔记</h3>
+        <h4 id="第一章：基础知识"><a href="#第一章：基础知识" class="headerlink" title="第一章：基础知识"></a>第一章：基础知识</h4>
+        <h5 id="Producer："><a href="#Producer：" class="headerlink" title="Producer："></a>Producer：</h5>
+        <p>消息生产者，就是向Kafka broker 发消息的客户端。</p>
+        <h5 id="Consumer："><a href="#Consumer：" class="headerlink" title="Consumer："></a>Consumer：</h5>
+        <p>消息消费者，向Kafka broker 取消息的客户端。</p>
+        <h5 id="Consumer-Group"><a href="#Consumer-Group" class="headerlink" title="Consumer Group:"></a>Consumer Group:
+        </h5>
+        <p>消费者组，由多个consumer组成。消费者组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费；消费者组之间互不影响。所有的消费者都属于某个消费者组，即消费者组是逻辑上的一个订阅者。</p>
+        <h5 id="Broker："><a href="#Broker：" class="headerlink" title="Broker："></a>Broker：</h5>
+        <p>一台Kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。</p>
+        <h5 id="Topic："><a href="#Topic：" class="headerlink" title="Topic："></a>Topic：</h5>
+        <p>可以理解为一个队列，生产者和消费者面向的都是一个topic。</p>
+        <h5 id="Partition："><a href="#Partition：" class="headerlink" title="Partition："></a>Partition：</h5>
+        <p>为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上，一个topic可以分为多个partition，每个partition是一个有序的队列。</p>
+        <h5 id="Replica："><a href="#Replica：" class="headerlink" title="Replica："></a>Replica：</h5>
+        <p>副本。一个topic的每个分区都有若干个副本，一个Leader和若干个Follower。</p>
+        <h5 id="Leader："><a href="#Leader：" class="headerlink" title="Leader："></a>Leader：</h5>
+        <p>每个分区多个副本的 “主”，生产者发送数据的对象，以及消费者消费数据的对象都是Leader。</p>
+        <h5 id="Follower："><a href="#Follower：" class="headerlink" title="Follower："></a>Follower：</h5>
+        <p>每个分区多个副本中的 “从”，实时从 Leader 中同步数据，保持和 Leader 数据的同步。Leader 发生故障时，某个Follower会成为新的 Leader。</p>
+        <h4 id="第二章：主题创建"><a href="#第二章：主题创建" class="headerlink" title="第二章：主题创建"></a>第二章：主题创建</h4>
+        <p>主题相关 kafka-topics.sh</p>
+        <ol>
+          <li>创建topic</li>
+        </ol>
+        <figure class="highlight bash">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs bash">kafka-topics.sh --create --topic <span class="hljs-built_in">test</span> --bootstrap-server localhost:9092<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <p>参数含义：</p>
+        <ul>
+          <li>–create创建的意思</li>
+          <li>–topic 指定topic的意思后面加上topic名称</li>
+          <li>–bootstrap-server 指定连接那个kafka，<strong>必须传参</strong></li>
+        </ul>
+        <p>注意：</p>
+        <ul>
+          <li>控制台有很多日志是jdk版本问题，需要11以上的版本不会出现日志问题</li>
+        </ul>
+        <ol start="2">
+          <li>查看topic</li>
+        </ol>
+        <p>查看topic列表</p>
+        <figure class="highlight bash">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs bash">kafka-topics.sh --bootstrap-server localhost:9092 --list<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <p>查看topic详情</p>
+        <figure class="highlight bash">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs bash">kafka-topics.sh --bootstrap-server localhost:9092 --topic <span class="hljs-built_in">test</span>  --describe<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <ol start="3">
+          <li>修改topic</li>
+        </ol>
+        <figure class="highlight bash">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs bash">kafka-topics.sh --bootstrap-server localhost:9092 --topic <span class="hljs-built_in">test</span> --alter --partitions 2<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <p>参数含义：</p>
+        <ul>
+          <li>–alter 修改的意思</li>
+        </ul>
+        <ol start="4">
+          <li>删除topic</li>
+        </ol>
+        <figure class="highlight bash">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs bash">kafka-topics.sh --bootstrap-server localhost:9092 --topic <span class="hljs-built_in">test</span> --delete<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <p>注意：</p>
+        <ul>
+          <li>删除topic时，如果是windows安装的kafka，会异常中断，linux不会</li>
+        </ul>
+        <h4 id="第三章：生产者"><a href="#第三章：生产者" class="headerlink" title="第三章：生产者"></a>第三章：生产者</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>参数名</th>
+              <th>参数作用</th>
+              <th>类型</th>
+              <th>默认值</th>
+              <th>推荐值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>bootstrap.servers</td>
+              <td>集群地址，格式为：brokerIP1:端口号,brokerIP2:端口号</td>
+              <td>必须</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>key.serializer</td>
+              <td>对生产数据Key进行序列化的类完整名称</td>
+              <td>必须</td>
+              <td></td>
+              <td>Kafka提供的字符串序列化类：StringSerializer</td>
+            </tr>
+            <tr>
+              <td>value.serializer</td>
+              <td>对生产数据Value进行序列化的类完整名称</td>
+              <td>必须</td>
+              <td></td>
+              <td>Kafka提供的字符串序列化类：StringSerializer</td>
+            </tr>
+            <tr>
+              <td>interceptor.classes</td>
+              <td>拦截器类名，多个用逗号隔开</td>
+              <td>可选</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>batch.size</td>
+              <td>数据批次字节大小。此大小会和数据最大估计值进行比较，取大值。估值&#x3D;61+21+（keySize+1+valueSize+1+1）</td>
+              <td>可选</td>
+              <td>16K</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>retries</td>
+              <td>重试次数</td>
+              <td>可选</td>
+              <td>整型最大值</td>
+              <td>0或整型最大值</td>
+            </tr>
+            <tr>
+              <td>request.timeout.ms</td>
+              <td>请求超时时间</td>
+              <td>可选</td>
+              <td>30s</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>linger.ms</td>
+              <td>数据批次在缓冲区中停留时间</td>
+              <td>可选</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>acks</td>
+              <td>请求应答类型：all(-1), 0, 1</td>
+              <td>可选</td>
+              <td>all(-1)</td>
+              <td>根据数据场景进行设置</td>
+            </tr>
+            <tr>
+              <td>retry.backoff.ms</td>
+              <td>两次重试之间的时间间隔</td>
+              <td>可选</td>
+              <td>100ms</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>buffer.memory</td>
+              <td>数据收集器缓冲区内存大小</td>
+              <td>可选</td>
+              <td>32M</td>
+              <td>64M</td>
+            </tr>
+            <tr>
+              <td>max.in.flight.requests.per.connection</td>
+              <td>每个节点连接的最大同时处理请求的数量</td>
+              <td>可选</td>
+              <td>5</td>
+              <td>小于等于5</td>
+            </tr>
+            <tr>
+              <td>enable.idempotence</td>
+              <td>幂等性，</td>
+              <td>可选</td>
+              <td>true</td>
+              <td>根据数据场景进行设置</td>
+            </tr>
+            <tr>
+              <td>partitioner.ignore.keys</td>
+              <td>是否放弃使用数据key选择分区</td>
+              <td>可选</td>
+              <td>false</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>partitioner.class</td>
+              <td>分区器类名</td>
+              <td>可选</td>
+              <td>null</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 id="生产者流程"><a href="#生产者流程" class="headerlink" title="生产者流程"></a>生产者流程</h5>
+        <p><img class="lazy"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+            data-src="http://bucket.chinaai.cc.cd/blog/2026/01/17/12-52-06-3e1eed9190cfd6393c1e4909f16d01ba-9302cd.png"
+            alt="截屏2025-05-05 上午10.39.19"></p>
+        <h5 id="拦截器和序列化"><a href="#拦截器和序列化" class="headerlink" title="拦截器和序列化"></a>拦截器和序列化</h5>
+        <h6 id="增加拦截器类"><a href="#增加拦截器类" class="headerlink" title="增加拦截器类"></a>增加拦截器类</h6>
+        <ol>
+          <li>实现生产者拦截器接口ProducerInterceptor</li>
+        </ol>
+        <ul>
+          <li>实现接口中的方法，根据业务功能重写具体的方法</li>
+        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th><em><strong>*方法名*</strong></em></th>
+              <th><em><strong>*作用*</strong></em></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>onSend</td>
+              <td>数据发送前，会执行此方法，进行数据发送前的预处理</td>
+            </tr>
+            <tr>
+              <td>onAcknowledgement</td>
+              <td>数据发送后，获取应答时，会执行此方法</td>
+            </tr>
+            <tr>
+              <td>close</td>
+              <td>生产者关闭时，会执行此方法，完成一些资源回收和释放的操作</td>
+            </tr>
+            <tr>
+              <td>configure</td>
+              <td>创建生产者对象的时候，会执行此方法，可以根据场景对生产者对象的配置进行统一修改或转换。</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>配置自定义的拦截器</li>
+        </ul>
+        <p>ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, KafkaInterceptorMock.class.getName()</p>
+        <h5 id="回调方法"><a href="#回调方法" class="headerlink" title="回调方法"></a>回调方法</h5>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// TODO 发送数据</span><br>producer.send(record, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Callback</span>() &#123;<br>   <span class="hljs-comment">// TODO 回调对象</span><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCompletion</span><span class="hljs-params">(RecordMetadata recordMetadata, Exception e)</span> &#123;<br>      <span class="hljs-comment">// TODO 当数据发送成功后，会回调此方法</span><br>      System.out.println(<span class="hljs-string">&quot;数据发送成功：&quot;</span> + recordMetadata.timestamp());<br>  &#125;<br>&#125;);<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <p>默认是异步发送</p>
+        <p>同步发送：代码实现上，采用的是JDK1.5增加的JUC并发编程的Future接口的get方法实现</p>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-comment">// TODO 发送数据</span><br>producer.send(record, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Callback</span>() &#123;<br>   <span class="hljs-comment">// TODO 回调对象</span><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCompletion</span><span class="hljs-params">(RecordMetadata recordMetadata, Exception e)</span> &#123;<br>      <span class="hljs-comment">// TODO 当数据发送成功后，会回调此方法</span><br>      System.out.println(<span class="hljs-string">&quot;数据发送成功：&quot;</span> + recordMetadata.timestamp());<br>  &#125;<br>&#125;).get();<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h5 id="消息分区"><a href="#消息分区" class="headerlink" title="消息分区"></a>消息分区</h5>
+        <p>增加分区器</p>
+        <ul>
+          <li>
+            <p>实现Kafka提供的分区类接口Partitioner</p>
+          </li>
+          <li>
+            <p>我们只关注partition方法即可，因为此方法的返回结果就是需要的分区编号</p>
+          </li>
+          <li>
+            <p>配置分区器 ProducerConfig.PARTITIONER_CLASS_CONFIG, KafkaPartitionerMock.class.getName()</p>
+          </li>
+        </ul>
+        <h5 id="消息可靠性"><a href="#消息可靠性" class="headerlink" title="消息可靠性"></a>消息可靠性</h5>
+        <p>ACK应答</p>
+        <p>0：代表producer往集群发送数据不需要等到集群的返回，不确保消息发送成功。安全性最低但是效
+          率最高。<br>1：代表producer往集群发送数据只要leader应答就可以发送下一条，只确保leader发送成功。<br>all：代表producer往集群发送数据需要所有的follower都完成从leader的同步才会发送下一条，确保
+          leader发送成功和所有的副本都完成备份。安全性最⾼高，但是效率最低。</p>
+        <h5 id="重复与乱序问题"><a href="#重复与乱序问题" class="headerlink" title="重复与乱序问题"></a>重复与乱序问题</h5>
+        <p>kafka因为数据重试引发了重复与乱序问题，解决这个办法kafka引入了幂等性操作</p>
+        <h5 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h5>
+        <p>默认幂等性是不起作用的，所以如果想要使用幂等性操作，只需要在生产者对象的配置中开启幂等性配置即可</p>
+        <p>ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true</p>
+        <table>
+          <thead>
+            <tr>
+              <th>配置项</th>
+              <th>配置值</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>enable.idempotence</td>
+              <td>true</td>
+              <td>开启幂等性</td>
+            </tr>
+            <tr>
+              <td>max.in.flight.requests.per.connection</td>
+              <td>小于等于5</td>
+              <td>每个连接的在途请求数，不能大于5，取值范围为[1,5]</td>
+            </tr>
+            <tr>
+              <td>acks</td>
+              <td>all(-1)</td>
+              <td>确认应答，固定值，不能修改</td>
+            </tr>
+            <tr>
+              <td>retries</td>
+              <td>&gt;0</td>
+              <td>重试次数，推荐使用Int最大值</td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 id="数据事务"><a href="#数据事务" class="headerlink" title="数据事务"></a>数据事务</h5>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"> <span class="hljs-comment">// TODO 启动事务</span><br><br> producer.beginTransaction();<br><br><span class="hljs-comment">// TODO 终止事务</span><br><br>producer.abortTransaction();<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h4 id="第四章：数据存储"><a href="#第四章：数据存储" class="headerlink" title="第四章：数据存储"></a>第四章：数据存储</h4>
+        <p><img class="lazy"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+            data-src="http://bucket.chinaai.cc.cd/blog/2026/01/17/12-52-06-1ab15d51d85fd681df31adc75412d146-229b89.png"
+            alt="截屏2025-05-05 下午1.19.41"></p>
+        <p><img class="lazy"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+            data-src="http://bucket.chinaai.cc.cd/blog/2026/01/17/12-52-06-71f59dd7c2c7fe82b5e18ef3b5c0944b-eb68bb.png"
+            alt="截屏2025-05-05 下午1.16.15"></p>
+        <h5 id="存储组件"><a href="#存储组件" class="headerlink" title="存储组件"></a>存储组件</h5>
+        <p><strong>Ø</strong> <em><strong>*KafkaApis*</strong></em> : Kafka应用接口组件，当Kafka Producer向Kafka
+          Broker发送数据请求后，Kafka Broker接收请求，会使用Apis组件进行请求类型的判断，然后选择相应的方法进行处理。</p>
+        <p><strong>Ø</strong> <em><strong>*ReplicaManager*</strong></em> :
+          副本管理器组件，用于提供主题副本的相关功能，在数据的存储前进行ACK校验和事务检查，并提供数据请求的响应处理</p>
+        <p><strong>Ø</strong> <em><strong>*Partition*</strong></em> :
+          分区对象，主要包含分区状态变换的监控，分区上下线的处理等功能，在数据存储是主要用于对分区副本数量的相关校验，并提供追加数据的功能</p>
+        <p><strong>Ø</strong> <em><strong>*UnifiedLog*</strong></em> : 同一日志管理组件，用于管理数据日志文件的新增，删除等功能，并提供数据日志文件偏移量的相关处理。
+        </p>
+        <p><strong>Ø</strong> <em><strong>*LocalLog*</strong></em> :
+          本地日志组件，管理整个分区副本的数据日志文件。假设当前主题分区中有3个日志文件，那么3个文件都会在组件中进行管理和操作。</p>
+        <p><strong>Ø</strong> <em><strong>*LogSegment*</strong></em> :
+          文件段组件，对应具体的某一个数据日志文件，假设当前主题分区中有3个日志文件，那么3个文件每一个都会对应一个LogSegment组件，并打开文件的数据管道FileChannel。数据存储时，就是采用组件中的FileChannel实现日志数据的追加
+        </p>
+        <p><strong>Ø</strong> <em><strong>*LogConfig*</strong></em>: 日志配置对象，常用的数据存储配置</p>
+        <p>日志配置参数</p>
+        <table>
+          <thead>
+            <tr>
+              <th><em><strong>*参数名*</strong></em></th>
+              <th><em><strong>*参数作用*</strong></em></th>
+              <th><em><strong>*类型*</strong></em></th>
+              <th><em><strong>*默认值*</strong></em></th>
+              <th><em><strong>*推荐值*</strong></em></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>min.insync.replicas</td>
+              <td>最小同步副本数量</td>
+              <td>推荐</td>
+              <td>1</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>log.segment.bytes</td>
+              <td>文件段字节数据大小限制</td>
+              <td>可选</td>
+              <td>1G &#x3D; 1024<em>1024</em>1024 byte</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>log.roll.hours</td>
+              <td>文件段强制滚动时间阈值</td>
+              <td>可选</td>
+              <td>7天 &#x3D;24 * 7 * 60 * 60 * 1000L ms</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>log.flush.interval.messages</td>
+              <td>满足刷写日志文件的数据条数</td>
+              <td>可选</td>
+              <td>Long.MaxValue</td>
+              <td>不推荐</td>
+            </tr>
+            <tr>
+              <td>log.flush.interval.ms</td>
+              <td>满足刷写日志文件的时间周期</td>
+              <td>可选</td>
+              <td>Long.MaxValue</td>
+              <td>不推荐</td>
+            </tr>
+            <tr>
+              <td>log.index.interval.bytes</td>
+              <td>刷写索引文件的字节数</td>
+              <td>可选</td>
+              <td>4 * 1024</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>replica.lag.time.max.ms</td>
+              <td>副本延迟同步时间</td>
+              <td>可选</td>
+              <td>30s</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h5>
+        <h6 id="ACKS校验"><a href="#ACKS校验" class="headerlink" title="ACKS校验"></a>ACKS校验</h6>
+        <p>暂未记录</p>
+        <h5 id="文件存储格式"><a href="#文件存储格式" class="headerlink" title="文件存储格式"></a>文件存储格式</h5>
+        <h6 id="数据日志文件"><a href="#数据日志文件" class="headerlink" title="数据日志文件"></a>数据日志文件</h6>
+        <p>暂未记录</p>
+        <h6 id="数据索引文件"><a href="#数据索引文件" class="headerlink" title="数据索引文件"></a>数据索引文件</h6>
+        <p>暂未记录</p>
+        <h6 id="数据时间索引文件"><a href="#数据时间索引文件" class="headerlink" title="数据时间索引文件"></a>数据时间索引文件</h6>
+        <p>某些场景中，我们不想根据顺序（偏移量）获取Kafka的数据，而是想根据时间来获取的数据。这个时候，可没有对应的偏移量来定位数据，那么查找的效率就非常低了，因为kafka还提供了时间索引文件，咱们来看看它的内容是什么
+        </p>
+        <p>通过时间戳就可以找到偏移量，再通过偏移量找到定位信息，再通过定位信息找到数据不就非常方便了吗。</p>
+        <h6 id="查看文件内容"><a href="#查看文件内容" class="headerlink" title="查看文件内容"></a>查看文件内容</h6>
+        <p>如果我们想要查看文件的内容，直接看是看不了，需要采用特殊的之类</p>
+        <p><strong>执行查看文件的指令</strong></p>
+        <figure class="highlight bash">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs bash">kafka-run-class.bat kafka.tools.DumpLogSegments --files ../../data/kafka/test-0/00000000000000000000.<span class="hljs-built_in">log</span> --print-data-log<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h5 id="数据刷写"><a href="#数据刷写" class="headerlink" title="数据刷写"></a>数据刷写</h5>
+        <p>
+          在Linux系统中，当我们把数据写入文件系统之后，其实数据在操作系统的PageCache（页缓冲）里面，并没有刷到磁盘上。如果操作系统挂了，数据就丢失了。一方面，应用程序可以调用fsync这个系统调用来强制刷盘，另一方面，操作系统有后台线程，定时刷盘。频繁调用fsync会影响性能，需要在性能和可靠性之间进行权衡。实际上，Kafka提供了参数进行数据的刷写
+        </p>
+        <p>Ø log.flush.interval.messages ：达到消息数量时，会将数据flush到日志文件中。</p>
+        <p>Ø log.flush.interval.ms ：间隔多少时间(ms)，执行一次强制的flush操作。</p>
+        <p>Ø flush.scheduler.interval.ms：所有日志刷新到磁盘的频率</p>
+        <p>
+          log.flush.interval.messages和log.flush.interval.ms无论哪个达到，都会flush。官方不建议通过上述的三个参数来强制写盘，数据的可靠性应该通过replica来保证，而强制flush数据到磁盘会对整体性能产生影响。
+        </p>
+        <h5 id="副本同步"><a href="#副本同步" class="headerlink" title="副本同步"></a>副本同步</h5>
+        <p>Kafka中，分区的某个副本会被指定为 Leader，负责响应客户端的读写请求。分区中的其他副本自动成为 Follower，主动拉取（同步）Leader 副本中的数据，写入自己本地日志，确保所有副本上的数据是一致的。
+        </p>
+        <h6 id="启动数据同步线程"><a href="#启动数据同步线程" class="headerlink" title="启动数据同步线程"></a>启动数据同步线程</h6>
+        <p>
+          Kafka创建主题时，会根据副本分配策略向指定的Broker节点发出请求，将不同的副本节点设定为Leader或Follower。一旦某一个Broker节点设定为Follower节点，那么Follower节点会启动数据同步线程ReplicaFetcherThread，从Leader副本节点同步数据。
+        </p>
+        <p>线程运行后，会不断重复两个操作：截断（truncate）和抓取（fetch）。</p>
+        <p>Ø 截断：为了保证分区副本的数据一致性，当分区存在Leader Epoch值时，会将副本的本地日志截断到Leader Epoch对应的最新位移处.如果分区不存在对应的 Leader Epoch
+          记录，那么依然使用原来的高水位机制，将日志调整到高水位值处。</p>
+        <p>Ø 抓取：向Leader同步最新的数据。</p>
+        <h6 id="生成数据同步请求"><a href="#生成数据同步请求" class="headerlink" title="生成数据同步请求"></a>生成数据同步请求</h6>
+        <p>启动线程后，需要周期地向Leader节点发送FETCH请求，用于从Leader获取数据。</p>
+        <p>等待Leader节点的响应的过程中，会阻塞当前同步数据线程。</p>
+        <h6 id="处理响应数据"><a href="#处理响应数据" class="headerlink" title="处理响应数据"></a>处理响应数据</h6>
+        <p>当Leader副本返回响应数据时，其中会包含多个分区数据，当前副本会遍历每一个分区，将分区数据写入数据文件中。</p>
+        <h5 id="更新数据偏移量"><a href="#更新数据偏移量" class="headerlink" title="更新数据偏移量"></a>更新数据偏移量</h5>
+        <p>跟新数据偏移量</p>
+        <h6 id="Offset"><a href="#Offset" class="headerlink" title="Offset"></a>Offset</h6>
+        <p>Kafka的每个分区的数据都是有序的，所谓的数据偏移量，指的就是Kafka在保存数据时，用于快速定位数据的标识，类似于Java中数组的索引，从0开始。</p>
+        <h6 id="LSO"><a href="#LSO" class="headerlink" title="LSO"></a>LSO</h6>
+        <p>起始偏移量（Log Start Offset），每个分区副本都有起始偏移量，用于表示副本数据的起始偏移位置，初始值为0。</p>
+        <p>LSO一般情况下是无需更新的，但是如果数据过期，或用户手动删除数据时，Leader的Log Start
+          Offset可能发生变化，Follower副本的日志需要和Leader保持严格的一致，因此，如果Leader的该值发生变化，Follower自然也要发生变化保持一致。</p>
+        <h6 id="LEO"><a href="#LEO" class="headerlink" title="LEO"></a>LEO</h6>
+        <p>日志末端位移（Log End Offset），表示下一条待写入消息的offset，每个分区副本都会记录自己的LEO。对于Follower副本而言，它能读取到Leader副本 LEO 值以下的所有消息。</p>
+        <h6 id="HW"><a href="#HW" class="headerlink" title="HW"></a>HW</h6>
+        <p>高水位值（High Watermark），定义了消息可见性，标识了一个特定的消息偏移量（offset），消费者只能拉取到这个水位offset之前的消息，同时这个偏移量还可以帮助Kafka完成副本数据同步操作。</p>
+        <h5 id="数据一致性"><a href="#数据一致性" class="headerlink" title="数据一致性"></a>数据一致性</h5>
+        <p>为了提升数据的一致性，Kafka引入了高水位（HW ：High
+          Watermark）机制，Kafka在不同的副本之间维护了一个水位线的机制（其实也是一个偏移量的概念），消费者只能读取到水位线以下的的数据。<strong>这就是所谓的木桶理论：木桶中容纳水的高度，只能是水桶中最短的那块木板的高度</strong>。这里将整个分区看成一个木桶，其中的数据看成水，而每一个副本就是木桶上的一块木板，那么这个分区（木桶）可以被消费者消费的数据（容纳的水）其实就是数据最少的那个副本的最后数据位置（木板高度）。
+        </p>
+        <p>也就是说，消费者一开始在消费Leader的时候，虽然Leader副本中已经有a、b、c、d 4条数据，但是由于高水位线的限制，所以也只能消费到a、b这两条数据。</p>
+        <h6 id="ISR伸缩"><a href="#ISR伸缩" class="headerlink" title="ISR伸缩"></a>ISR伸缩</h6>
+        <p>ISR（In-Sync Replicas）</p>
+        <p>在Kafka中，一个Topic（主题）包含多个Partition（分区），Topic是逻辑概念，而Partition是物理分组。一个Partition包含多个Replica（副本），副本有两种类型Leader
+          Replica&#x2F;Follower
+          Replica，Replica之间是一个Leader副本对应多个Follower副本。注意：分区数可以大于节点数，但副本数不能大于节点数。因为副本需要分布在不同的节点上，才能达到备份的目的。</p>
+        <p>Kafka的分区副本中只有Leader副本具有数据写入的功能，而Follower副本需要不断向Leader发出申请，进行数据的同步。这里所有同步的副本会形成一个列表，我们称之为同步副本列表（<strong>In-Sync
+            Replicas</strong>），也可以简称<em><strong>*ISR*<em><strong>，除了</strong></em>*ISR*<em><strong>以外，还有已分配的副本列表（</strong></em>*Assigned
+              Replicas*<em><strong>），简称</strong></em>*AR。*<em><strong>这里的AR其实不仅仅包含ISR，还包含了没有同步的副本列表（</strong></em>*Out-of-Sync
+              Replicas*<em><strong>），简称</strong></em>*OSR*</strong></em></p>
+        <p>生产者Producer生产数据时，ACKS应答机制如果设置为all（-1），那此时就需要保证同步副本列表ISR中的所有副本全部接收完毕后，Kafka才会进行确认应答。</p>
+        <p>数据存储时，只有ISR中的所有副本LEO数据都更新了，才有可能推高HW偏移量的值。这就可以看出，ISR在Kafka集群的管理中是非常重要的。</p>
+        <h4 id="第五章：-消费数据"><a href="#第五章：-消费数据" class="headerlink" title="第五章： 消费数据"></a>第五章： 消费数据</h4>
+        <p>消费流程</p>
+        <p><img class="lazy"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+            data-src="http://bucket.chinaai.cc.cd/blog/2026/01/17/12-52-06-b0a65f18745ab4b7c3772308828fd08a-b19d36.png"
+            alt="截屏2025-05-05 下午1.18.14"></p>
+        <p>基本步骤:</p>
+        <ol>
+          <li>创建配置对象<ul>
+              <li>服务器地址</li>
+              <li>key序列化</li>
+              <li>value序列化</li>
+              <li>消费者组ID</li>
+            </ul>
+          </li>
+          <li>创建消费者对象 KafkaConsumer</li>
+          <li>订阅主题 subscribe</li>
+          <li>从Kafka的主题中获取数据</li>
+          <li>关闭消费者对象</li>
+        </ol>
+        <h5 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h5>
+        <table>
+          <thead>
+            <tr>
+              <th>参数名</th>
+              <th>参数作用</th>
+              <th>类型</th>
+              <th>默认值</th>
+              <th>推荐值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>bootstrap.servers</td>
+              <td>集群地址，格式为：brokerIP1:端口号,brokerIP2:端口号</td>
+              <td>必须</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>key.deserializer</td>
+              <td>对数据Key进行反序列化的类完整名称</td>
+              <td>必须</td>
+              <td></td>
+              <td>Kafka提供的字符串反序列化类：StringSerializer</td>
+            </tr>
+            <tr>
+              <td>value.deserializer</td>
+              <td>对数据Value进行反序列化的类完整名称</td>
+              <td>必须</td>
+              <td></td>
+              <td>Kafka提供的字符串反序列化类：ValueSerializer</td>
+            </tr>
+            <tr>
+              <td>group.id</td>
+              <td>消费者组ID，用于标识完整的消费场景，一个组中可以包含多个不同的消费者对象。</td>
+              <td>必须</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>auto.offset.reset</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>group.instance.id</td>
+              <td>消费者实例ID，如果指定，那么在消费者组中使用此ID作为memberId前缀</td>
+              <td>可选</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>partition.assignment.strategy</td>
+              <td>分区分配策略</td>
+              <td>可选</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>enable.auto.commit</td>
+              <td>启用偏移量自动提交</td>
+              <td>可选</td>
+              <td>true</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>auto.commit.interval.ms</td>
+              <td>自动提交周期</td>
+              <td>可选</td>
+              <td>5000ms</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>fetch.max.bytes</td>
+              <td>消费者获取服务器端一批消息最大的字节数。如果服务器端一批次的数据大于该值（50m）仍然可以拉取回来这批数据，因此，这不是一个绝对最大值。一批次的大小受message.max.bytes （broker
+                config）or max.message.bytes （topic config）影响</td>
+              <td>可选</td>
+              <td>52428800（50 m）</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>offsets.topic.num.partitions</td>
+              <td>偏移量消费主题分区数</td>
+              <td>可选</td>
+              <td>50</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>获取数据：</p>
+        <p>Kafka会根据消费者发送的参数，返回数据对象ConsumerRecord。返回的数据对象中包括指定的数据。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>数据项</th>
+              <th>数据含义</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>topic</td>
+              <td>主题名称</td>
+            </tr>
+            <tr>
+              <td>partition</td>
+              <td>分区号</td>
+            </tr>
+            <tr>
+              <td>offset</td>
+              <td>偏移量</td>
+            </tr>
+            <tr>
+              <td>timestamp</td>
+              <td>数据时间戳</td>
+            </tr>
+            <tr>
+              <td>key</td>
+              <td>数据key</td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td>数据value</td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 id="偏移量offset"><a href="#偏移量offset" class="headerlink" title="偏移量offset"></a>偏移量offset</h5>
+        <h6 id="起始偏移量"><a href="#起始偏移量" class="headerlink" title="起始偏移量"></a>起始偏移量</h6>
+        <p>kafka默认设置为LEO,需要修改服务启动后开始从什么地方读取数据需要配置：auto.offset.reset</p>
+        <ol>
+          <li>earliest：从最早的数据开始读</li>
+          <li>latest：从最晚的数据开始读</li>
+          <li>none：</li>
+        </ol>
+        <h6 id="指定偏移量消费"><a href="#指定偏移量消费" class="headerlink" title="指定偏移量消费"></a>指定偏移量消费</h6>
+        <p>如果要自定义偏移量区域，则需要先获取集群信息然后代码去实现</p>
+        <p><img class="lazy"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+            data-src="http://bucket.chinaai.cc.cd/blog/2026/01/17/12-52-06-09a8fc82d457b4ea5c03fe91920eebb4-c6cb6d.png"
+            alt="截屏2025-05-05 下午2.36.08"></p>
+        <p>kafka默认会每个5秒把消费者id消费的当前偏移量进行保存，避免机器宕机导致重启不知道该从什么位置开始读取数据</p>
+        <p>如果要修改需要改：auto.commit.interval.ms 不过这个方案并不好，其实kafka还提供了手动提交方案</p>
+        <h6 id="偏移量提交"><a href="#偏移量提交" class="headerlink" title="偏移量提交"></a>偏移量提交</h6>
+        <ol>
+          <li>自动提交</li>
+        </ol>
+        <p>kafka默认就是自动提交，默认5秒提交一次</p>
+        <ol start="2">
+          <li>手动提交</li>
+        </ol>
+        <p>首先配置ENABLE_AUTO_COMMIT_CONFIG:false 先关闭自动提交</p>
+        <ul>
+          <li>消费者对象.commitAsync() 异步提交</li>
+          <li>消费者对象.commitSync()同步提交</li>
+        </ul>
+        <p>更多情况选用异步提交</p>
+        <p>上面的自动提交或手动提交是为了避免重复消费数据或漏消费数据，不过这两种方法依然不能很好解决这两个问题。</p>
+        <ul>
+          <li>自动提交的问题：</li>
+        </ul>
+        <p>数据重复：在消费数据时还未来得及提交偏移量，消费者就重启了，此时就会从上一个偏移量开始消费就出现了重复</p>
+        <ul>
+          <li>手动提交问题：</li>
+        </ul>
+        <p>漏消费：我们把偏移量提交了，但我们数据还没来得及处理，消费者重启了，重启的消费者就会从最新数据开始处理，就漏消费了</p>
+        <p>如果要解决重复消费与漏消费，就必须将拉取数据后的业务处理和偏移量绑定在一起，但kafka并不提供这种事务处理，所以就需要第三方，这个就没有过多介绍</p>
+        <h5 id="消费者组基本介绍"><a href="#消费者组基本介绍" class="headerlink" title="消费者组基本介绍"></a>消费者组基本介绍</h5>
+        <p>一个topic不能被多个消费者消费</p>
+        <p>一个用户可以消费多个topic</p>
+        <p>如果有两个topic，三个用户，那么最后一个用户则不能获取到数据，只起到备用作用</p>
+        <p>当有用户宕机，切换到备用用户时，备用用户如何知道之前到用户消费到哪里了？</p>
+        <p>在kafka的处理是将偏移量存放到zookeeper，但是有一个问题就是会导致消费者频繁的去更新zookeeper节点数据</p>
+        <p>所以0.90版本之前，这个信息是记录在zookeeper内的，在0.90之后的版本，offset保存在**__consumer_offsets**这个内部topic内</p>
+        <h5 id="消费者分配策略介绍"><a href="#消费者分配策略介绍" class="headerlink" title="消费者分配策略介绍"></a>消费者分配策略介绍</h5>
+        <p>
+          消费者中的每个消费者到底消费哪一个主题分区，这个分配策略其实是由消费者的Leader决定的，这个Leader我们称之为群主。群主是多个消费者中，第一个加入组中的消费者，其他消费者我们称之为Follower，称呼上有点类似与分区的Leader和Follower。
+        </p>
+        <p>消费者加入群组的时候，会发送一个JoinGroup请求。群主负责给每一个消费者分配分区。</p>
+        <p>每个消费者只知道自己的分配信息，只有群主知道群组内所有消费者的分配信息。</p>
+        <h5 id="消费者分配策略"><a href="#消费者分配策略" class="headerlink" title="消费者分配策略"></a>消费者分配策略</h5>
+        <ol>
+          <li>
+            <p>RoundRobinAssignor：轮询分配策略</p>
+          </li>
+          <li>
+            <p>RangeAssignor：范围分配策略</p>
+          </li>
+          <li>
+            <p>StickyAssignor：粘性分区</p>
+          </li>
+          <li>
+            <p>CooperativeStickyAssignor</p>
+          </li>
+        </ol>
+        <p>Kafka消费者默认的分区分配就是RangeAssignor，CooperativeStickyAssignor</p>
+        <h4 id="SpringBoot集成"><a href="#SpringBoot集成" class="headerlink" title="SpringBoot集成"></a>SpringBoot集成</h4>
+        <h5 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h5>
+        <figure class="highlight yaml">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">kafka:</span><br>    <span class="hljs-attr">bootstrap-servers:</span> <span class="hljs-string">localhost:9092</span><br>    <span class="hljs-attr">producer:</span><br>      <span class="hljs-attr">acks:</span> <span class="hljs-string">all</span><br>      <span class="hljs-attr">batch-size:</span> <span class="hljs-number">16384</span><br>      <span class="hljs-attr">buffer-memory:</span> <span class="hljs-number">33554432</span><br>      <span class="hljs-attr">key-serializer:</span> <span class="hljs-string">org.apache.kafka.common.serialization.StringSerializer</span><br>      <span class="hljs-attr">value-serializer:</span> <span class="hljs-string">org.apache.kafka.common.serialization.StringSerializer</span><br>      <span class="hljs-attr">retries:</span> <span class="hljs-number">0</span><br>    <span class="hljs-attr">consumer:</span><br>      <span class="hljs-attr">group-id:</span> <span class="hljs-string">test#消费者组</span><br>      <span class="hljs-comment">#消费方式: 在有提交记录的时候，earliest与latest是一样的，从提交记录的下一条开始消费</span><br>      <span class="hljs-comment"># earliest：无提交记录，从头开始消费</span><br>      <span class="hljs-comment">#latest：无提交记录，从最新的消息的下一条开始消费</span><br>      <span class="hljs-attr">auto-offset-reset:</span> <span class="hljs-string">earliest</span><br>      <span class="hljs-attr">enable-auto-commit:</span> <span class="hljs-literal">true</span> <span class="hljs-comment">#是否自动提交偏移量offset</span><br>      <span class="hljs-attr">auto-commit-interval:</span> <span class="hljs-string">1s</span> <span class="hljs-comment">#前提是 enable-auto-commit=true。自动提交的频率</span><br>      <span class="hljs-attr">key-deserializer:</span> <span class="hljs-string">org.apache.kafka.common.serialization.StringDeserializer</span><br>      <span class="hljs-attr">value-deserializer:</span> <span class="hljs-string">org.apache.kafka.common.serialization.StringDeserializer</span><br>      <span class="hljs-attr">max-poll-records:</span> <span class="hljs-number">2</span><br>      <span class="hljs-attr">properties:</span><br>        <span class="hljs-comment">#如果在这个时间内没有收到心跳，该消费者会被踢出组并触发&#123;组再平衡 rebalance&#125;</span><br>        <span class="hljs-attr">session.timeout.ms:</span> <span class="hljs-number">120000</span><br>        <span class="hljs-comment">#最大消费时间。此决定了获取消息后提交偏移量的最大时间，超过设定的时间（默认5分钟），服务端也会认为该消费者失效。踢出并再平衡</span><br>        <span class="hljs-attr">max.poll.interval.ms:</span> <span class="hljs-number">300000</span><br>        <span class="hljs-comment">#配置控制客户端等待请求响应的最长时间。</span><br>        <span class="hljs-comment">#如果在超时之前没有收到响应，客户端将在必要时重新发送请求，</span><br>        <span class="hljs-comment">#或者如果重试次数用尽，则请求失败。</span><br>        <span class="hljs-attr">request.timeout.ms:</span> <span class="hljs-number">60000</span><br>        <span class="hljs-comment">#订阅或分配主题时，允许自动创建主题。0.11之前，必须设置false</span><br>        <span class="hljs-attr">allow.auto.create.topics:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-comment">#poll方法向协调器发送心跳的频率，为session.timeout.ms的三分之一</span><br>        <span class="hljs-attr">heartbeat.interval.ms:</span> <span class="hljs-number">40000</span><br>        <span class="hljs-comment">#每个分区里返回的记录最多不超max.partitions.fetch.bytes 指定的字节</span><br>        <span class="hljs-comment">#0.10.1版本后 如果 fetch 的第一个非空分区中的第一条消息大于这个限制</span><br>        <span class="hljs-comment">#仍然会返回该消息，以确保消费者可以进行</span><br>        <span class="hljs-comment">#max.partition.fetch.bytes=1048576  #1M</span><br>    <span class="hljs-attr">listener:</span><br>      <span class="hljs-comment">#当enable.auto.commit的值设置为false时，该值会生效；为true时不会生效</span><br>      <span class="hljs-comment">#manual_immediate:需要手动调用Acknowledgment.acknowledge()后立即提交</span><br>      <span class="hljs-comment">#ack-mode: manual_immediate</span><br>      <span class="hljs-attr">missing-topics-fatal:</span> <span class="hljs-literal">true</span> <span class="hljs-comment">#如果至少有一个topic不存在，true启动失败。false忽略</span><br>      <span class="hljs-comment">#type: single #单条消费？批量消费？ #批量消费需要配合 consumer.max-poll-records</span><br>      <span class="hljs-attr">type:</span> <span class="hljs-string">batch</span><br>      <span class="hljs-attr">concurrency:</span> <span class="hljs-number">2</span> <span class="hljs-comment">#配置多少，就为为每个消费者实例创建多少个线程。多出分区的线程空闲</span><br>    <span class="hljs-attr">template:</span><br>      <span class="hljs-attr">default-topic:</span> <span class="hljs-string">&quot;test&quot;</span><br><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">9999</span><br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h5 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h5>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.spring.config;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SpringBootKafkaConfig</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">TOPIC_TEST</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;test&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">GROUP_ID</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;test&quot;</span>;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h5 id="发送数据"><a href="#发送数据" class="headerlink" title="发送数据"></a>发送数据</h5>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.spring.controller;<br><br><span class="hljs-keyword">import</span> com.atguigu.springkafka.config.SpringBootKafkaConfig;<br><span class="hljs-keyword">import</span> lombok.extern.slf4j.Slf4j;<br><span class="hljs-keyword">import</span> cn.hutool.json.JSONUtil;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.kafka.core.KafkaTemplate;<br><span class="hljs-keyword">import</span> org.springframework.kafka.support.SendResult;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;<br><br><span class="hljs-keyword">import</span> org.springframework.util.concurrent.ListenableFuture;<br><span class="hljs-keyword">import</span> org.springframework.util.concurrent.ListenableFutureCallback;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/kafka&quot;)</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KafkaProducerController</span> &#123;<br><br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> KafkaTemplate&lt;String, String&gt; kafkaTemplate;<br><br>    <span class="hljs-meta">@ResponseBody</span><br>    <span class="hljs-meta">@PostMapping(value = &quot;/produce&quot;, produces = &quot;application/json&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">produce</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Object obj)</span> &#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">obj2String</span> <span class="hljs-operator">=</span> JSONUtil.toJsonStr(obj);<br>            kafkaTemplate.send(SpringBootKafkaConfig.TOPIC_TEST, obj2String);<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.getMessage();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <h5 id="接收数据"><a href="#接收数据" class="headerlink" title="接收数据"></a>接收数据</h5>
+        <figure class="highlight java">
+          <table>
+            <tr>
+              <td class="gutter">
+                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre>
+              </td>
+              <td class="code">
+                <pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.spring.component;<br><br><span class="hljs-keyword">import</span> cn.hutool.json.JSONObject;<br><span class="hljs-keyword">import</span> cn.hutool.json.JSONUtil;<br><span class="hljs-keyword">import</span> lombok.extern.slf4j.Slf4j;<br><span class="hljs-keyword">import</span> com.atguigu.springkafka.config.SpringBootKafkaConfig;<br><span class="hljs-keyword">import</span> org.springframework.kafka.annotation.KafkaListener;<br><span class="hljs-keyword">import</span> org.springframework.kafka.support.KafkaHeaders;<br><span class="hljs-keyword">import</span> org.springframework.messaging.handler.annotation.Header;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Optional;<br><br><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KafkaDataConsumer</span> &#123;<br>    <span class="hljs-meta">@KafkaListener(topics = SpringBootKafkaConfig.TOPIC_TEST, groupId = SpringBootKafkaConfig.GROUP_ID)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">topic_test</span><span class="hljs-params">(List&lt;String&gt; messages, <span class="hljs-meta">@Header(KafkaHeaders.RECEIVED_TOPIC)</span> String topic)</span> &#123;<br>        <span class="hljs-keyword">for</span> (String message : messages) &#123;<br>            <span class="hljs-keyword">final</span> <span class="hljs-type">JSONObject</span> <span class="hljs-variable">entries</span> <span class="hljs-operator">=</span> JSONUtil.parseObj(message);<br>            System.out.println(SpringBootKafkaConfig.GROUP_ID + <span class="hljs-string">&quot; 消费了： Topic:&quot;</span> + topic + <span class="hljs-string">&quot;,Message:&quot;</span> + entries.getStr(<span class="hljs-string">&quot;data&quot;</span>));<br>            <span class="hljs-comment">//ack.acknowledge();</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre>
+              </td>
+            </tr>
+          </table>
+        </figure>
+        <div class="article-footer fs14">
+          <section id="share">
+            <div class="header"><span>分享文章</span></div>
+            <div class="body">
+              <div class="link"><input class="copy-area" readonly id="copy-link"
+                  value="Kafka%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0.html"></div>
+              <div class="social-wrap dis-select"><a class="social share-item wechat"
+                  onclick="util.toggle(&quot;qrcode-wechat&quot;)"><img class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a
+                  class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer"
+                  href="https://service.weibo.com/share/share.php?url=https://chinaai.cc.cd/posts/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html&amp;title=Kafka%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0%20-%20Alan&amp;summary=Kafka%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0%e7%ac%ac%e4%b8%80%e7%ab%a0%ef%bc%9a%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86Producer%ef%bc%9a%e6%b6%88%e6%81%af%e7%94%9f%e4%ba%a7%e8%80%85%ef%bc%8c%e5%b0%b1%e6%98%af%e5%90%91Kafka%20broker%20%e5%8f%91%e6%b6%88%e6%81%af%e7%9a%84%e5%ae%a2%e6%88%b7%e7%ab%af%e3%80%82Consumer%ef%bc%9a%e6%b6%88%e6%81%af%e6%b6%88%e8%b4%b9%e8%80%85%ef%bc%8c%e5%90%91Kafka%20broker%20%e5%8f%96%e6%b6%88%e6%81%af%e7%9a%84%e5%ae%a2%e6%88%b7%e7%ab%af%e3%80%82Consumer%20Group:%e6%b6%88%e8%b4%b9%e8%80%85%e7%bb%84%ef%bc%8c%e7%94%b1%e5%a4%9a..."><img
+                    class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a
+                  class="social share-item email"
+                  href="mailto:?subject=Kafka学习笔记 - Alan&amp;body=https://chinaai.cc.cd/posts/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html"
+                  rel="external nofollow noreferrer"><img class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a
+                  class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img
+                    class="lazy"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                    data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a>
+              </div>
+              <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0"><img class="lazy"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+                  data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&amp;data=https://chinaai.cc.cd/posts/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html">
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+      <div class="related-wrap" id="read-next">
+        <section class="body">
+          <div class="item" id="prev">
+            <div class="note">较新文章</div><a href="Optional%e7%b1%bb.html">Optional类</a>
+          </div>
+          <div class="item" id="next">
+            <div class="note">较早文章</div><a href="Docker%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0.html">Docker学习笔记</a>
+          </div>
+        </section>
+      </div>
+      <div class="related-wrap" id="related-posts">
+        <section class="header">
+          <div class="title cap theme">您可能感兴趣的文章</div>
+        </section>
+        <section class="body">
+          <div class="related-posts"><a class="item"
+              href="Docker%e4%bd%bf%e7%94%a8%e8%bf%87%e7%9a%84%e5%91%bd%e4%bb%a4.html" title="Docker使用过的命令"><span
+                class="title">Docker使用过的命令</span></a><a class="item"
+              href="Docker%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0.html" title="Docker学习笔记"><span
+                class="title">Docker学习笔记</span></a></div>
+        </section>
+      </div>
+      <div class="related-wrap md-text" id="comments">
+        <section class="header cmt-title cap theme">
+          <p>快来参与讨论吧~</p>
+        </section>
+        <section class="body cmt-body giscus"><svg class="loading"
+            style="vertical-align:middle;fill:currentColor;overflow:hidden" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="2709">
+            <path
+              d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z"
+              p-id="2710"></path>
+          </svg>
+          <div id="giscus" src="../../giscus.app/client.js" data-repo="honchoosy/blog" data-repo-id="R_kgDONmjawA"
+            data-category="Announcements" data-category-id="DIC_kwDONmjawM4ClyM5" data-mapping="pathname"
+            data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+            data-theme="light" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+        </section>
+      </div>
+      <footer class="page-footer footnote">
+        <hr>
+        <div class="sitemap">
+          <div class="sitemap-group"><span class="fs15">博客</span><a href="../social/stats/index.html">数据统计</a><a
+              href="../update/index.html">更新日志</a><a href="../document/policy/index.html">隐私政策</a><a
+              href="../document/disclaimer/index.html">免责声明</a></div>
+          <div class="sitemap-group"><span class="fs15">维基</span><a
+              href="../wiki/tags/%e9%a1%b9%e7%9b%ae/index.html">项目</a><a
+              href="../wiki/tags/%e6%96%87%e6%a1%a3/index.html">文档</a><a
+              href="../wiki/tags/%e7%ac%94%e8%ae%b0/index.html">笔记</a><a
+              href="../wiki/tags/%e7%ad%94%e7%96%91/index.html">答疑</a></div>
+          <div class="sitemap-group"><span class="fs15">探索</span><a
+              href="../explore/sites/%e6%94%b6%e8%97%8f%e7%9a%84%e7%ab%99%e7%82%b9.html">我的站点</a><a
+              href="../explore/notes/%e6%8e%a2%e7%b4%a2%e8%80%85%e7%ac%94%e8%ae%b0.html">年度计划</a></div>
+          <div class="sitemap-group"><span class="fs15">社交</span><a target="_blank"
+              rel="noopener external nofollow noreferrer" href="https://www.travellings.cn/go-by-clouds.html">开往</a><a
+              target="_blank" rel="noopener external nofollow noreferrer" href="https://travel.moe/go">异次元之旅</a></div>
+        </div>
+        <div class="text">
+          <p>本站由 <a href="../index.html">Honcho</a> 使用 <a target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a>
+            主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+        </div>
+      </footer>
+      <div class="main-mask" onclick="sidebar.dismiss()"></div>
+    </div>
+    <aside class="l_right">
+      <div class="widgets">
+        <widget class="widget-wrapper toc" id="data-toc" collapse="false">
+          <div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action"
+              onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+              </svg></a></div>
+          <div class="widget-body">
+            <ol class="toc">
+              <li class="toc-item toc-level-3"><a class="toc-link"
+                  href="#Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-text">Kafka学习笔记</span></a>
+                <ol class="toc-child">
+                  <li class="toc-item toc-level-4"><a class="toc-link"
+                      href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span
+                        class="toc-text">第一章：基础知识</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Producer%EF%BC%9A"><span
+                            class="toc-text">Producer：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Consumer%EF%BC%9A"><span
+                            class="toc-text">Consumer：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Consumer-Group"><span
+                            class="toc-text">Consumer Group:</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Broker%EF%BC%9A"><span
+                            class="toc-text">Broker：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Topic%EF%BC%9A"><span
+                            class="toc-text">Topic：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Partition%EF%BC%9A"><span
+                            class="toc-text">Partition：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Replica%EF%BC%9A"><span
+                            class="toc-text">Replica：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Leader%EF%BC%9A"><span
+                            class="toc-text">Leader：</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#Follower%EF%BC%9A"><span
+                            class="toc-text">Follower：</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-4"><a class="toc-link"
+                      href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E4%B8%BB%E9%A2%98%E5%88%9B%E5%BB%BA"><span
+                        class="toc-text">第二章：主题创建</span></a></li>
+                  <li class="toc-item toc-level-4"><a class="toc-link"
+                      href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E7%94%9F%E4%BA%A7%E8%80%85"><span
+                        class="toc-text">第三章：生产者</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E7%94%9F%E4%BA%A7%E8%80%85%E6%B5%81%E7%A8%8B"><span class="toc-text">生产者流程</span></a>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E5%92%8C%E5%BA%8F%E5%88%97%E5%8C%96"><span
+                            class="toc-text">拦截器和序列化</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E5%A2%9E%E5%8A%A0%E6%8B%A6%E6%88%AA%E5%99%A8%E7%B1%BB"><span
+                                class="toc-text">增加拦截器类</span></a></li>
+                        </ol>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E5%9B%9E%E8%B0%83%E6%96%B9%E6%B3%95"><span class="toc-text">回调方法</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%B6%88%E6%81%AF%E5%88%86%E5%8C%BA"><span class="toc-text">消息分区</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%B6%88%E6%81%AF%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-text">消息可靠性</span></a>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E9%87%8D%E5%A4%8D%E4%B8%8E%E4%B9%B1%E5%BA%8F%E9%97%AE%E9%A2%98"><span
+                            class="toc-text">重复与乱序问题</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B9%82%E7%AD%89%E6%80%A7"><span
+                            class="toc-text">幂等性</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%95%B0%E6%8D%AE%E4%BA%8B%E5%8A%A1"><span class="toc-text">数据事务</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-4"><a class="toc-link"
+                      href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span
+                        class="toc-text">第四章：数据存储</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E5%AD%98%E5%82%A8%E7%BB%84%E4%BB%B6"><span class="toc-text">存储组件</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="toc-text">数据存储</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link" href="#ACKS%E6%A0%A1%E9%AA%8C"><span
+                                class="toc-text">ACKS校验</span></a></li>
+                        </ol>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F"><span
+                            class="toc-text">文件存储格式</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E6%95%B0%E6%8D%AE%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span
+                                class="toc-text">数据日志文件</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E6%95%B0%E6%8D%AE%E7%B4%A2%E5%BC%95%E6%96%87%E4%BB%B6"><span
+                                class="toc-text">数据索引文件</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E6%95%B0%E6%8D%AE%E6%97%B6%E9%97%B4%E7%B4%A2%E5%BC%95%E6%96%87%E4%BB%B6"><span
+                                class="toc-text">数据时间索引文件</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span
+                                class="toc-text">查看文件内容</span></a></li>
+                        </ol>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%95%B0%E6%8D%AE%E5%88%B7%E5%86%99"><span class="toc-text">数据刷写</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E5%89%AF%E6%9C%AC%E5%90%8C%E6%AD%A5"><span class="toc-text">副本同步</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E5%90%AF%E5%8A%A8%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E7%BA%BF%E7%A8%8B"><span
+                                class="toc-text">启动数据同步线程</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82"><span
+                                class="toc-text">生成数据同步请求</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E5%A4%84%E7%90%86%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE"><span
+                                class="toc-text">处理响应数据</span></a></li>
+                        </ol>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%81%8F%E7%A7%BB%E9%87%8F"><span
+                            class="toc-text">更新数据偏移量</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link" href="#Offset"><span
+                                class="toc-text">Offset</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link" href="#LSO"><span
+                                class="toc-text">LSO</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link" href="#LEO"><span
+                                class="toc-text">LEO</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link" href="#HW"><span
+                                class="toc-text">HW</span></a></li>
+                        </ol>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">数据一致性</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link" href="#ISR%E4%BC%B8%E7%BC%A9"><span
+                                class="toc-text">ISR伸缩</span></a></li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-4"><a class="toc-link"
+                      href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A-%E6%B6%88%E8%B4%B9%E6%95%B0%E6%8D%AE"><span
+                        class="toc-text">第五章： 消费数据</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-text">基本配置</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E5%81%8F%E7%A7%BB%E9%87%8Foffset"><span class="toc-text">偏移量offset</span></a>
+                        <ol class="toc-child">
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E8%B5%B7%E5%A7%8B%E5%81%8F%E7%A7%BB%E9%87%8F"><span
+                                class="toc-text">起始偏移量</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E6%8C%87%E5%AE%9A%E5%81%8F%E7%A7%BB%E9%87%8F%E6%B6%88%E8%B4%B9"><span
+                                class="toc-text">指定偏移量消费</span></a></li>
+                          <li class="toc-item toc-level-6"><a class="toc-link"
+                              href="#%E5%81%8F%E7%A7%BB%E9%87%8F%E6%8F%90%E4%BA%A4"><span
+                                class="toc-text">偏移量提交</span></a></li>
+                        </ol>
+                      </li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span
+                            class="toc-text">消费者组基本介绍</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%E4%BB%8B%E7%BB%8D"><span
+                            class="toc-text">消费者分配策略介绍</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span
+                            class="toc-text">消费者分配策略</span></a></li>
+                    </ol>
+                  </li>
+                  <li class="toc-item toc-level-4"><a class="toc-link" href="#SpringBoot%E9%9B%86%E6%88%90"><span
+                        class="toc-text">SpringBoot集成</span></a>
+                    <ol class="toc-child">
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">配置文件</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="toc-text">配置文件</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="toc-text">发送数据</span></a></li>
+                      <li class="toc-item toc-level-5"><a class="toc-link"
+                          href="#%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="toc-text">接收数据</span></a></li>
+                    </ol>
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+          <div class="widget-footer"><a class="edit" target="_blank" rel="noopener external nofollow noreferrer"
+              href="https://github.com/honcholee/blog_hexo/tree/main/source/_posts/2025/05/Kafka学习笔记.md"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M11.943 1.25H13.5a.75.75 0 0 1 0 1.5H12c-2.378 0-4.086.002-5.386.176c-1.279.172-2.05.5-2.62 1.069c-.569.57-.896 1.34-1.068 2.619c-.174 1.3-.176 3.008-.176 5.386s.002 4.086.176 5.386c.172 1.279.5 2.05 1.069 2.62c.57.569 1.34.896 2.619 1.068c1.3.174 3.008.176 5.386.176s4.086-.002 5.386-.176c1.279-.172 2.05-.5 2.62-1.069c.569-.57.896-1.34 1.068-2.619c.174-1.3.176-3.008.176-5.386v-1.5a.75.75 0 0 1 1.5 0v1.557c0 2.309 0 4.118-.19 5.53c-.194 1.444-.6 2.584-1.494 3.479c-.895.895-2.035 1.3-3.48 1.494c-1.411.19-3.22.19-5.529.19h-.114c-2.309 0-4.118 0-5.53-.19c-1.444-.194-2.584-.6-3.479-1.494c-.895-.895-1.3-2.035-1.494-3.48c-.19-1.411-.19-3.22-.19-5.529v-.114c0-2.309 0-4.118.19-5.53c.194-1.444.6-2.584 1.494-3.479c.895-.895 2.035-1.3 3.48-1.494c1.411-.19 3.22-.19 5.529-.19m4.827 1.026a3.503 3.503 0 0 1 4.954 4.953l-6.648 6.649c-.371.37-.604.604-.863.806a5.34 5.34 0 0 1-.987.61c-.297.141-.61.245-1.107.411l-2.905.968a1.492 1.492 0 0 1-1.887-1.887l.968-2.905c.166-.498.27-.81.411-1.107c.167-.35.372-.68.61-.987c.202-.26.435-.492.806-.863zm3.893 1.06a2.003 2.003 0 0 0-2.832 0l-.376.377c.022.096.054.21.098.338c.143.413.415.957.927 1.469a3.875 3.875 0 0 0 1.807 1.025l.376-.376a2.003 2.003 0 0 0 0-2.832m-1.558 4.391a5.397 5.397 0 0 1-1.686-1.146a5.395 5.395 0 0 1-1.146-1.686L11.218 9.95c-.417.417-.58.582-.72.76a3.84 3.84 0 0 0-.437.71c-.098.203-.172.423-.359.982l-.431 1.295l1.032 1.033l1.295-.432c.56-.187.779-.261.983-.358c.251-.12.49-.267.71-.439c.177-.139.342-.302.759-.718z"
+                  clip-rule="evenodd" />
+              </svg><span>编辑本文</span></a> <a class="top" onclick="util.scrollTop()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3" />
+                </g>
+              </svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg
+                xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd"
+                  d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089"
+                  clip-rule="evenodd" />
+                <path fill="currentColor"
+                  d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
+              </svg><span>参与讨论</span></a></div>
+        </widget>
+      </div>
+    </aside>
+    <div class="float-panel blur"><button type="button" style="display:none" class="laptop-only rightbar-toggle mobile"
+        onclick="sidebar.rightbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
+        </svg></button> <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile"
+        onclick="sidebar.leftbar()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+              d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z" />
+            <path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3" />
+          </g>
+        </svg></button></div>
+  </div>
+  <div class="scripts">
+    <script
+      type="text/javascript">let ctx = { date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" }, root: "/", search: {} }; if ((ctx.search.service = "local_search") == ctx.search.service) { let e = Object.assign({}, '{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}'); ctx.search[ctx.search.service] = e } let def = { avatar: "https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg", cover: "https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg" }, deps = { jquery: "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js", marked: "https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js" }</script>
+    <script
+      type="text/javascript">let utils = { css: (e, t, r, a) => { var o, n, s = window.document, i = s.createElement("link"), d = (n = t || (o = (s.body || s.getElementsByTagName("head")[0]).childNodes)[o.length - 1], s.styleSheets); if (a) for (var l in a) a.hasOwnProperty(l) && i.setAttribute(l, a[l]); i.rel = "stylesheet", i.href = e, i.media = "only x", function e(t) { if (s.body) return t(); setTimeout(function () { e(t) }) }(function () { n.parentNode.insertBefore(i, t ? n : n.nextSibling) }); function f(e) { for (var t = i.href, r = d.length; r--;)if (d[r].href === t) return e(); setTimeout(function () { f(e) }) } function u() { i.addEventListener && i.removeEventListener("load", u), i.media = r || "all" } return i.addEventListener && i.addEventListener("load", u), i.onloadcssdefined = f, f(u), i }, js: (o, n) => new Promise((t, e) => { var r = document.createElement("script"); if (o.startsWith("../index.html") && (o = ctx.root + o.substring(1)), r.src = o, n) for (var a of Object.keys(n)) r[a] = n[a]; else r.async = !0; r.onerror = e, r.onload = r.onreadystatechange = function () { var e = this.readyState; e && "loaded" !== e && "complete" !== e || (r.onload = r.onreadystatechange = null, t()) }, document.head.appendChild(r) }), jq: e => { "undefined" == typeof jQuery ? utils.js(deps.jquery).then(e) : e() }, onLoading: e => { e && $(e).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>') }, onLoadSuccess: e => { e && $(e).find(".loading-wrap").remove() }, onLoadFailure: e => { e && ($(e).find(".loading-wrap svg").remove(), $(e).find(".loading-wrap").append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>'), $(e).find(".loading-wrap").addClass("error")) }, request: (n, s, i, d) => { let l = 3; utils.onLoading(n), function o() { new Promise((t, e) => { let r = 0, a = setTimeout(() => { 0 === r && (r = 2, a = null, e("请求超时"), 0 == l) && d() }, 5e3); fetch(s).then(function (e) { if (2 !== r && (clearTimeout(a), t(e), a = null, r = 1), e.ok) return e.json(); throw new Error("Network response was not ok.") }).then(function (e) { l = 0, utils.onLoadSuccess(n), i(e) }).catch(function (e) { 0 < l ? (--l, setTimeout(() => { o() }, 5e3)) : (utils.onLoadFailure(n), d()) }) }) }() } }</script>
+    <script>let sidebar = { leftbar: () => { l_body && (l_body.toggleAttribute("leftbar"), l_body.removeAttribute("rightbar")) }, rightbar: () => { l_body && (l_body.toggleAttribute("rightbar"), l_body.removeAttribute("leftbar")) }, dismiss: () => { l_body && (l_body.removeAttribute("leftbar"), l_body.removeAttribute("rightbar")) }, toggleTOC: () => { document.querySelector("#data-toc").classList.toggle("collapse") } }</script>
+    <script
+      type="text/javascript">(() => { var e; for (e of document.querySelectorAll(".tag-subtree.parent-tag > a > .tag-switcher-wrapper")) e.addEventListener("click", e => { e.target.closest(".tag-subtree.parent-tag").classList.toggle("expanded"), e.preventDefault() }); var t = new URLSearchParams(window.location.search).get("tag"); if (t) { let e = document.querySelector(`.tag-subtree[data-tag="${t}"]`); if (e) for (e.querySelector("a").classList.add("active"); e;)e.classList.add("expanded"), e = e.parentElement.closest(".tag-subtree.parent-tag") } })()</script>
+    <script src="../js/main226a.js?v=1.29.1" defer></script>
+    <script
+      type="text/javascript">let applyTheme = e => { "auto" === e ? document.documentElement.removeAttribute("data-theme") : document.documentElement.setAttribute("data-theme", e), applyThemeToGiscus(e) }, applyThemeToGiscus = e => { e = "auto" === e ? "preferred_color_scheme" : e; var t = document.getElementById("giscus"), t = (t && t.setAttribute("data-theme", e), document.querySelector("#comments > section.giscus > iframe")); t && (e = t.src.replace(/theme=[\w]+/, "theme=" + e), t.src = e) }, switchTheme = () => { let e; switch (document.documentElement.getAttribute("data-theme")) { case "light": e = "dark"; break; case "dark": e = "auto"; break; default: e = "light" }applyTheme(e), window.localStorage.setItem("Stellar.theme", e), hud?.toast?.({ light: "切换到浅色模式", dark: "切换到深色模式", auto: "切换到系统模式" }[e]) }; (() => { var e = window.localStorage.getItem("Stellar.theme"); null !== e && applyTheme(e) })()</script>
+    <script type="module">const el = document.querySelector('#comments #giscus');
+      util.viewportLazyload(el, load_discus, false);
+
+      function load_discus() {
+        if (!el) return;
+        try {
+          el.innerHTML = '';
+        } catch (error) {
+          console.error(error);
+        }
+        const script = document.createElement('script');
+        script.async = true;
+        for (const key of Object.keys(el.attributes)) {
+          const attr = el.attributes[key];
+          if (['class', 'id'].includes(attr.name) === false) {
+            script.setAttribute(attr.name, attr.value);
+          }
+        }
+        el.appendChild(script);
+      }</script>
+    <script
+      defer>window.addEventListener("DOMContentLoaded", s => { ctx.services = Object.assign({}, JSON.parse('{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"../js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"}}')); for (let e of Object.keys(ctx.services)) { let s = ctx.services[e].js; "siteinfo" == e ? (ctx.cardlinks = document.querySelectorAll("a.link-card[cardlink]"), 0 < ctx.cardlinks?.length && utils.js(s, { defer: !0 }).then(function () { setCardLink(ctx.cardlinks) })) : 0 < document.getElementsByClassName("ds-" + e)?.length && utils.jq(() => { e, utils.js(deps.marked).then(function () { utils.js(s, { defer: !0 }) }) }) } })</script>
+    <script>window.addEventListener("DOMContentLoaded", e => { ctx.search = { path: "/search.json" }, utils.js("../js/search/local-search.js", { defer: !0 }) })</script>
+    <script defer src="../../gcore.jsdelivr.net/npm/vanilla-lazyload%4017.3.1/dist/lazyload.min.js"></script>
+    <script>window.lazyLoadOptions = { elements_selector: ".lazy" }, window.addEventListener("LazyLoad::Initialized", function (n) { window.lazyLoadInstance = n.detail.instance }, !1), document.addEventListener("DOMContentLoaded", function () { window.lazyLoadInstance?.update() })</script>
+    <script>ctx.fancybox = { selector: ".timenode p>img,article p img,.tag-plugin>.image-bg>img,.atk-content>p>img", css: "/vendor/css/fancybox.css", js: "/vendor/js/fancybox.umd.js" }; var selector = "[data-fancybox]:not(.error)", checkInterval = (ctx.fancybox.selector && (selector += ", " + ctx.fancybox.selector), setInterval(function () { 0 !== document.querySelectorAll(selector).length && (clearInterval(checkInterval), utils.css(ctx.fancybox.css), utils.js(ctx.fancybox.js, { defer: !0 }).then(function () { Fancybox.bind(selector, { hideScrollbar: !1, Thumbs: { autoStart: !1 }, caption: (e, t) => t.triggerEl.alt || t.triggerEl.dataset.caption || null }) })) }, 1e3))</script>
+    <script>window.addEventListener("DOMContentLoaded", e => { let i = document.getElementById("swiper-api"); null != i && (utils.css("../../unpkg.com/swiper%4010.3.1/swiper-bundle.min.css"), utils.js("../../unpkg.com/swiper%4010.3.1/swiper-bundle.min.js", { defer: !0 }).then(function () { var e = i.getAttribute("effect") || "", t = "true" === i.getAttribute("homepage"); new Swiper(".swiper#swiper-api", { slidesPerView: "auto", spaceBetween: 8, centeredSlides: !t, effect: e, rewind: !t, loop: t, autoplay: !1, pagination: { el: ".swiper-pagination", clickable: !0 }, navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" } }) })) })</script>
+    <script defer src="../vendor/js/chatgpt.js"></script>
+    <script
+      defer>window.addEventListener("DOMContentLoaded", e => { new ChucklePostAI(Object.assign({ el: "article.content", css: "/css/_plugins/tianli_gpt" }, JSON.parse('{"enable":true,"js":"../vendor/js/chatgpt.js","field":"post","key":"5Q5mpqRK5DkwT1X9Gi5e","total_length":1000,"typewriter":true,"summary_directly":true,"rec_method":"all","hide_shuttle":true,"summary_toggle":false,"interface":{"name":"文章摘要","introduce":"我是文章辅助AI，点击下方的按钮，让我生成本文简介","version":"OpenAI","button":["介绍自己","推荐文章","生成摘要","矩阵穿梭"]}}'))) })</script>
+    <script>document.addEventListener("DOMContentLoaded", function () { window.codeElements = document.querySelectorAll(".code"), 0 < window.codeElements.length && (ctx.copycode = { default_text: "Copy", success_text: "Copied", toast: "复制成功" }, utils.js("../js/plugins/copycode.js")) })</script>
+    <script src="../js/extra.js"></script>
+    <script src="../vendor/js/snow.js"></script>
+    <script data-website-id="91357f39-3d88-42f3-bf11-e1c1206ac8ab"
+      src="../../logsphere.codepzj.cn/js/track.js"></script>
+  </div>
+  <script src="../vendor/js/echarts.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var t = document.getElementById("heatmapChart"); if (t) { let e = echarts.init(t, "light"); var a = [18, 18]; let i = (e => { let i = {}; return e.forEach(([e, t]) => { var [a] = e.split("-").map(Number); i[a] || (i[a] = []), i[a].push([e, t]) }), i })([["2023-01-26", 1], ["2023-01-27", 1], ["2023-01-30", 2], ["2023-02-02", 1], ["2023-04-06", 1], ["2023-04-10", 1], ["2023-04-17", 1], ["2023-06-20", 1], ["2024-02-22", 1], ["2024-02-27", 1], ["2024-03-01", 1], ["2024-04-02", 1], ["2024-04-30", 1], ["2025-03-30", 2], ["2025-05-04", 2], ["2025-05-05", 3], ["2025-05-10", 1], ["2025-05-11", 5], ["2025-12-20", 1], ["2025-12-21", 4], ["2025-12-22", 1], ["2025-12-23", 1], ["2026-01-08", 1], ["2026-01-18", 1], ["2026-03-01", 2], ["2026-03-09", 1], ["2026-03-13", 1], ["2026-03-14", 1], ["2026-03-21", 1], ["2026-03-22", 9]]), n = Object.keys(i).reverse(); var o = parseInt(t.getAttribute("year")) || (new Date).getFullYear(), t = n[n.length - 1], l = n[0]; (o < t || l < o) && (o = l), console.log("[hexo-graph]generateHeatmapChart|initYear:", o, "minYear:", t, "maxYear:", l), e.setOption({ grid: {}, tooltip: { position: "top", formatter: e => `${e.value[0]}: ${e.value[1]} Articles` }, calendar: { top: "10%", left: "left", right: "8%", range: o, cellSize: a, splitLine: { lineStyle: { color: "#E0E0E0", width: 1 } }, itemStyle: { borderWidth: 1, borderColor: "#E0E0E0" }, dayLabel: { show: !1 }, monthLabel: { show: !0 }, yearLabel: { show: !1 } }, visualMap: { show: !0, right: "8%", bottom: "5%", type: "piecewise", orient: "horizontal", text: ["More", "Less"], min: 0, max: Math.max(...i[o].map(e => e[1])), inRange: { color: ["#ACE7AE", "#69C16D", "#549F57"] } }, legend: { type: "scroll", icon: "none", data: n, orient: "vertical", top: "5%", right: "right", itemWidth: 20, itemHeight: 20, itemGap: 10, pageIconSize: 10, pageTextStyle: { fontSize: 14 }, selectedMode: "single" }, series: n.map(e => ({ type: "heatmap", coordinateSystem: "calendar", data: i[e], name: e, emphasis: { disabled: !0 }, silent: e !== o })) }), e.dispatchAction({ type: "legendSelect", name: o }), e.on("legendselectchanged", function (t) { console.log("[hexo-graph]generateHeatmapChart|legendselectchanged:", t); let a = Object.keys(t.selected).find(e => t.selected[e]); a && i[a] && e.setOption({ calendar: { range: a }, visualMap: { max: Math.max(...i[a].map(e => e[1])) }, series: n.map(e => ({ type: "heatmap", coordinateSystem: "calendar", data: i[e], name: e, emphasis: { disabled: !0 }, silent: e !== a })) }) }), e.on("click", function (e) { var t; "series" === e.componentType && ([e, t] = e.value[0].split("-"), window.location.href = "/archives/" + e + "/" + t) }) } })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("monthlyChart"); e && ((e = echarts.init(e, "light")).setOption({ xAxis: { type: "category", data: ["2023-01", "2023-02", "2023-04", "2023-06", "2024-02", "2024-03", "2024-04", "2025-03", "2025-05", "2025-12", "2026-01", "2026-03"], axisLabel: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }, yAxis: { type: "value", splitLine: { lineStyle: { type: "dashed", color: "#ccc" } } }, series: [{ name: "Articles", type: "line", data: [4, 1, 3, 1, 2, 1, 2, 2, 11, 7, 2, 15], smooth: !0, lineStyle: { color: "#5470C6", width: 2 }, itemStyle: { color: "#5470C6" }, areaStyle: { color: "rgba(84, 112, 198, 0.4)" }, symbolSize: 10, label: { show: !0, position: "top", formatter: e => e.value, fontSize: 14, color: "#000", fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }] }), e.on("click", function (e) { var [e, t] = e.name.split("-"); window.location.href = "/archives/" + e + "/" + t })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("tagsChart"); e && ((e = echarts.init(e, "light")).setOption({ tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" }, series: [{ type: "pie", radius: "60%", data: [{ name: "成长", value: 5 }, { name: "技术分享", value: 5 }, { name: "Java", value: 5 }, { name: "JAVA", value: 4 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "数据结构", value: 3 }, { name: "面向对象编程", value: 3 }], label: { position: "outside", formatter: "{b} {c} ({d}%)", fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" }, color: ["#5470C6", "#91CC75", "#FAC858", "#EE6666", "#73C0DE", "#3BA272", "#FC8452", "#9A60B4"], labelLine: { show: !0 } }], legend: { bottom: "0", left: "center", data: [{ name: "成长", value: 5 }, { name: "技术分享", value: 5 }, { name: "Java", value: 5 }, { name: "JAVA", value: 4 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "数据结构", value: 3 }, { name: "面向对象编程", value: 3 }].map(e => e.name), textStyle: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } } }), e.on("click", function (e) { window.location.href = "/tags/" + e.name })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var e = document.getElementById("categoriesChart"); e && ((e = echarts.init(e, "light")).setOption({ xAxis: { type: "value", splitLine: { lineStyle: { type: "dashed", color: "#ccc" } } }, yAxis: { type: "category", data: [{ name: "JAVA", value: 9 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "软件设计", value: 2 }, { name: "读书笔记", value: 2 }].map(e => e.name).reverse(), axisLabel: { fontSize: 14, fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" } }, series: [{ name: "Category Count", type: "bar", data: [{ name: "JAVA", value: 9 }, { name: "中间件", value: 3 }, { name: "微服务", value: 3 }, { name: "软件设计", value: 2 }, { name: "读书笔记", value: 2 }].map(e => e.value).reverse(), label: { show: !0, position: "right", formatter: e => e.value, fontSize: 14, color: "#000", fontWeight: "bold", fontFamily: "Microsoft YaHei, SimSun, serif" }, itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#91CC75" }, { offset: 1, color: "#73C0DE" }]) } }] }), e.on("click", function (e) { window.location.href = "/categories/" + e.name })) })</script>
+  <script>document.addEventListener("DOMContentLoaded", function () { var t = document.getElementById("categoriesTreeChart"); t && ((t = echarts.init(t, "light")).setOption({ title: { text: "操作提示：单击展开分类，双击进入具体分类页面", textStyle: { fontSize: 12, color: "#999", fontWeight: "normal" }, bottom: 0, left: "center" }, tooltip: { trigger: "item", triggerOn: "mousemove" }, series: [{ type: "tree", data: [{ name: "Categories", children: [{ name: "技术教程", children: [], count: 1, path: "技术教程" }, { name: "设计开发", children: [{ name: "技术分享", children: [], count: 1, path: "设计开发/技术分享" }], count: 1, path: "设计开发" }, { name: "中间件", children: [], count: 3, path: "中间件" }, { name: "微服务", children: [], count: 3, path: "微服务" }, { name: "Spring注解", children: [], count: 1, path: "Spring注解" }, { name: "JAVA高级", children: [], count: 1, path: "JAVA高级" }, { name: "JAVA", children: [], count: 9, path: "JAVA" }, { name: "软件设计", children: [], count: 2, path: "软件设计" }, { name: "分布式", children: [], count: 1, path: "分布式" }, { name: "产品", children: [], count: 1, path: "产品" }, { name: "读书笔记", children: [], count: 2, path: "读书笔记" }], count: 0, path: "" }], initialTreeDepth: -1, top: "5%", bottom: "10%", left: "0%", right: "0%", symbolSize: 15, layout: "orthogonal", orient: "TB", itemStyle: { color: "#91CC75", borderColor: "#73C0DE" }, label: { position: "bottom", verticalAlign: "middle", align: "center", fontSize: 14, distance: 28, formatter: function (t) { return t.data.name + (t.data.count ? " (" + t.data.count + ")" : "") } }, leaves: { label: { position: "top", verticalAlign: "middle", align: "center" } }, emphasis: { focus: "descendant" }, expandAndCollapse: !0 }] }), t.on("dblclick", function (t) { t.data && t.data.path && (window.location.href = "/categories/" + t.data.path) })) })</script>
+</body>
+<!-- Mirrored from chinaai.cc.cd/posts/Kafka学习笔记.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Mar 2026 16:02:21 GMT -->
+
+</html>
